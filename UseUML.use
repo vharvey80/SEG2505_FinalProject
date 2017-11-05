@@ -1,0 +1,68 @@
+model FamilyTaskManager
+
+enum Category {Material, Grocerie}
+ 
+class Task
+	attributes
+		note : String
+		dueDate : String
+		recurrent : Boolean
+		estimatedTime : Real
+end
+ 
+class User
+	attributes
+		name : String
+		isParent : Boolean
+		profilePicId : Integer
+end
+ 
+class Tool
+	attributes
+		name : String
+		supply : Integer
+		pictureID : Integer
+end
+ 
+class ShoppingItem
+	attributes
+		name : String
+		quantity : Integer
+		needToBuy : Boolean
+		category : Category
+end
+ 
+class Family
+
+end
+ 
+association Task__User between
+	Task[*]
+	User[1..*]
+end
+ 
+association Task__Tool between
+	Task[*]
+	Tool[*]
+end
+ 
+-- All family associations should be unidirectional, but Use won't let me 
+association Family__Task between
+	Family[1]
+	Task[*]
+end
+
+association Family__User between
+	Family[1]
+	User[1..*]
+end
+ 
+association Family__Tool between
+	Family[1]
+	Tool[*]
+end
+ 
+association Family__ShoppingItem between
+	Family[1]
+	ShoppingItem[*]
+end
