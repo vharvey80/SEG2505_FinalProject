@@ -3,3 +3,4 @@ Type your name below to ensure you are able to access/modify repository:
 	Walid
 	Thomas
 	Vincent
+	Jean-Gabriel
