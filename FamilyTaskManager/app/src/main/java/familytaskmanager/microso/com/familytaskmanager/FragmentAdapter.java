@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
  * Created by walid on 2017-11-06.
  */
 
-class FragmentAdapter extends FragmentPagerAdapter {
+public class FragmentAdapter extends FragmentPagerAdapter {
 
     public FragmentAdapter(FragmentManager fm) {
         super(fm);
@@ -39,9 +39,9 @@ class FragmentAdapter extends FragmentPagerAdapter {
             //
             //Your tab titles
             //
-            case 0:return "Profile";
-            case 1:return "Search";
-            case 2: return "Contacts";
+            case 0:return "Shopping";
+            case 1:return "Tasks";
+            case 2: return "People";
             default:return null;
         }
     }

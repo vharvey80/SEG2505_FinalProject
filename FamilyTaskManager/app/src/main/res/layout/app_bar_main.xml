@@ -23,9 +23,10 @@
         // Tab layout to show tabs
         //
         //
+        <!-- This seems to be the tabs -->
         <android.support.design.widget.TabLayout
             android:background="@color/colorPrimary"
-            app:tabSelectedTextColor="#ffffff"
+            app:tabSelectedTextColor="#FFFFFF"
             app:tabIndicatorColor="#FFFFFF"
             app:tabIndicatorHeight="3dp"
             app:tabTextColor="#FFFFFF"
