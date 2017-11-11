@@ -2,42 +2,64 @@ namespace FamilyTaskManager;
 
 class Task
 {
+  Integer id;
+  String title;
   String note; //Could be a List or array if we want many
   Date dueDate;
   Boolean recurrent;
-  Double estimatedTime;
+  Double estimatedTime; // e.g. 1 hour
+  Integer rewardPts;
+  
+  enum TaskState { Active, Completed, Cancelled, Reported }
+  
+  TaskState state;
+  
 }
 
 class User
 {
-  String name;
+  Integer id;
+  String fname;
+  String lname;
   Boolean isParent;
   Integer profilePicId;
+  Integer accumulatedPts;
 }
 
 class Tool
 {
+  Integer id;
   String name;
   Integer supply;
-  Intger pictureID;
+  Integer pictureID;
+  
 }
+
  class ShoppingItem
  {
+   Integer id;
    String name;
    Integer quantity;
    Boolean needToBuy;
-   enum Cateogry { Material, Grocerie }  
+   
+   enum Cateogry { Material, Grocerie } 
+   
    Category category; 
  }
 
 //A class that tracks everything. Could be the MainActivity
 class Family
 {
-  
+  Integer id;
 }
 
 association {  
-  * Task -- 1 User;  
+  * Task assignedTo -- 0..1 User ; 
+  
+}
+
+association {
+  * Task -- 1 User creator;
 }
 
 association {  
@@ -46,17 +68,17 @@ association {
 
 //All the family association should be 1 Family -> OtherClass, but Umple won't let me.
 association {  
-  0..1 Family -> * Tool;
+  1 Family -> * Tool;
 }
 
 association {  
-  0..1 Family -> 1..* User; //By default, we create a user
+  1 Family -> 1..* User; //By default, we create a user
 }
 
 association {  
-  0..1 Family -> * ShoppingItem;
+  1 Family -> * ShoppingItem;
 }
 
 association {  
-  0..1 Family -> * Task;
+  1 Family -> * Task;
 }
