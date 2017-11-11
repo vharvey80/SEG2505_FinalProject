@@ -1,1 +1,40 @@
 Toutes les exigences requises pour notre projet final. (16 octobre 2017)
+
+Exigences fonctionnelles:
+
+1) Le système doit afficher toutes les tâches actuellement non complétées sur un même écran.
+2) Le système doit permettre à un utilisateur de seulement voir les tâches qui lui sont assignées.
+
+3) Le système doit permettre aux usagers de changer de profil utilisateur sur un même appareil.
+4) Le système doit offrir aux utilisateurs des profils “parent” et des profils “enfant”.
+5) Le système doit permettre de créer de nouveaux profils utilisateurs.
+
+6) Le système doit permettre à tout utilisateur d’ajouter une tâche au système.
+7) Le système doit permettre à un utilisateur de mettre une date limite sur une tâche.
+8) Le système doit permettre à un utilisateur d’ajouter des notes à une tâche.
+9) Le système doit permettre à un utilisateur d’ajouter de l’équipement requis à une tâche.
+10) Le système doit permettre à un utilisateur de voir toute l’information reliée à une tâche sur une même page (ou fenêtre “pop-up”).
+11) Le système doit permettre à un utilisateur d’appliquer une récurrence sur une tâche.
+12) Le système doit permettre aux utilisateurs “parents” seulement d’ajouter des récompenses à une tâche.
+13) Le système doit permettre aux utilisateurs “parents” seulement de modifier les informations d’un tâche.
+14) Le système doit permettre aux utilisateurs “parents” seulement d’assigner une tâche.
+15) Le système doit demander une confirmation de l’utilisateur lors de l’allocation d’une tâche.
+
+16) Le système doit permettre à un utilisateur de voir tous les autres utilisateurs sur un seul écran.
+
+17) Le système doit permettre à l’utilisateur de voir tous les éléments de la liste de courses sur un seul écran.
+18) Le système doit permettre à un utilisateur d’ajouter des objets dans la liste de courses.
+
+19) Le système doit mettre à jour automatiquement le garde manger à partir des achats fait dans la liste de courses.
+20) Le système doit permettre à l’utilisateur de supprimer une tâche.
+
+
+Exigences non fonctionnelles:
+
+1) Le système doit enregistrer les tâches en utilisant une base de donnée Firebase.
+2) Le système doit être compatible avec le Android API 26+
+3) Le système doit toujours permettre d’accéder au menu principal en dessous de 4 clics.
+4) Le système doit permettre à un utilisateur de créer et d'allouer une tâche en 6 clics ou moins (à partir de l’écran des tâches).
+5) L’application doit n’avoir aucun coût de développement.
+6) Le système doit permettre de changer d’utilisateur en 4 clics ou moins.
+
