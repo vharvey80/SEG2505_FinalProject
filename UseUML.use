@@ -1,24 +1,42 @@
 model FamilyTaskManager
 
 enum Category {Material, Grocerie}
+enum TaskState { Active, Completed, Cancelled }
  
 class Task
 	attributes
+		id : Integer
+		title : String
 		note : String
-		dueDate : String
+		dueDate : Integer -- Should be date
 		recurrent : Boolean
 		estimatedTime : Real
+		rewardPts : Integer
+		state : TaskState
+	operations
+		assignUser()
+		unassignUser()
+		completeTask()
+		cancelTask()
+		grantReward()
 end
  
 class User
 	attributes
-		name : String
+		id : Integer
+		fName : String
+		lName : String
 		isParent : Boolean
 		profilePicId : Integer
+		accumulatedPts : Integer
+	operations
+		getIsParent()
+		getPassword()
 end
  
 class Tool
 	attributes
+		id : Integer
 		name : String
 		supply : Integer
 		pictureID : Integer
@@ -26,6 +44,7 @@ end
  
 class ShoppingItem
 	attributes
+		id : Integer
 		name : String
 		quantity : Integer
 		needToBuy : Boolean
@@ -33,12 +52,25 @@ class ShoppingItem
 end
  
 class Family
-
+	attributes
+		id: Integer
+	operations
+		requestTaskCreation()
+		lookForTask()
+		addToTaskList()
+		requestSwitchUser()
+		addShoppingItem()
+		addToShoppingList()
 end
  
-association Task__User between
+association CreatedBy between
+	Task[*] role created
+	User[1] role creator
+end
+
+association AssignedTo between
 	Task[*]
-	User[1..*]
+	User[0..1]
 end
  
 association Task__Tool between
