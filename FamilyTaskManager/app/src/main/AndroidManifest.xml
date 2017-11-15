@@ -19,6 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".UserActivity" />
+        <activity android:name=".TaskDetailActivity" />
+        <activity android:name=".FridgeActivity" />
+        <activity android:name=".ToolActivity"></activity>
     </application>
 
 </manifest>
