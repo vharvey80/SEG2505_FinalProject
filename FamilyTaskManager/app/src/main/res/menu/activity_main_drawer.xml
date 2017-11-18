@@ -4,37 +4,36 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_shopping"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/menu_shoppingcart"
             android:title="Shopping List" />
         <item
             android:id="@+id/nav_tasks"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/menu_tasks"
             android:title="Open Tasks" />
         <item
             android:id="@+id/nav_schedule"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_gallery"
             android:title="Schedule" />
         <item
             android:id="@+id/nav_backlog"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_menu_gallery"
             android:title="Task Backlog" />
         <item
             android:id="@+id/nav_people"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/menu_people"
             android:title="People" />
+        <item
+            android:id="@+id/nav_fridge"
+            android:icon="@drawable/menu_fridge"
+            android:title="Cupboard &amp; Fridge" />
+        <item
+            android:id="@+id/nav_tools"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Broom Closet (Tools)" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Settings" />
     </group>
-
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
 
 </menu>

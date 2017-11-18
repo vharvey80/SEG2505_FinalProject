@@ -25,9 +25,9 @@
         //
         <!-- This seems to be the tabs -->
         <android.support.design.widget.TabLayout
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryBlue"
             app:tabSelectedTextColor="#FFFFFF"
-            app:tabIndicatorColor="#FFFFFF"
+            app:tabIndicatorColor="@color/colorOrangeComplementingBlue"
             app:tabIndicatorHeight="3dp"
             app:tabTextColor="#FFFFFF"
             android:layout_width="match_parent"
