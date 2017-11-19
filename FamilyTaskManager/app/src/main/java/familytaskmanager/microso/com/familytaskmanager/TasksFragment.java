@@ -1,13 +1,18 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.io.Serializable;
 
 
 /**
@@ -15,6 +20,8 @@ import android.widget.Toast;
  */
 public class TasksFragment extends Fragment {
 
+
+    TaskListAdapter taskListAdapter;
 
     public TasksFragment() {
         // Required empty public constructor
@@ -35,6 +42,24 @@ public class TasksFragment extends Fragment {
                 taskFabClicked();
             }
         });
+
+
+        //List view code
+        ListView listView = (ListView) view.findViewById(R.id.tasksListView);
+
+        taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), ((MainActivity)getActivity()).getFamilyTaskList());
+
+        listView.setAdapter(taskListAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+
+                Toast.makeText(getActivity(), "You clicked a view", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        //End of List view code
+
 
         return view;
     }

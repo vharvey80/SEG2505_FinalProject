@@ -415,4 +415,48 @@ public class Family {
         return super.toString() + "[" +
                 "id" + ":" + getId() + "]";
     }
+
+    /**
+     * Testong Method.
+     * @return
+     */
+    public static Family createDummyFamily() {
+
+        User mainUser = new User(1, "Walid", "B", true, R.drawable.menu_people, 0);
+
+        Family family = new Family(1, mainUser);
+
+        //Creation of 4 more users for testing
+        User thomas = new User(2, "Thomas", "C", true, R.drawable.menu_people, 0);
+        User vincent = new User(2, "Vincent", "H", true, R.drawable.menu_people, 0);
+        User oliver = new User(2, "oliver", "B", false, R.drawable.menu_people, 0);
+        User jeanGab = new User(2, "Jean-Gabriel", "G", true, R.drawable.menu_people, 0);
+        List<User> users = new ArrayList<>();
+        users.add(mainUser);
+        users.add(thomas);
+        users.add(vincent);
+        users.add(oliver);
+        users.add(jeanGab);
+        family.users = users;
+
+        //Creation of 5 tasks for testing
+        Task dishes = new Task(1, "Dishes", "Dishes note", null, false, 0.25, 5, Task.TaskState.Created, mainUser);
+        dishes.setUser(mainUser);
+        Task sweep = new Task(2, "Sweep", null, null, false, 1, 10, Task.TaskState.Created, mainUser);
+        sweep.setUser(thomas);
+        Task washCar = new Task(1, "Wash Car", "Wash Car note", null, false, 1, 5, Task.TaskState.Created, mainUser);
+        Task shop = new Task(1, "Shop", null, null, false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task otherTask = new Task(1, "Other", "Other task note", null, false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task outOfIdeas = new Task(1, "I'm out of ideas", "Other task note", null, false, 0.25, 5, Task.TaskState.Created, mainUser);
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(dishes);
+        tasks.add(sweep);
+        tasks.add(washCar);
+        tasks.add(shop);
+        tasks.add(otherTask);
+        tasks.add(outOfIdeas);
+        family.tasks = tasks;
+
+        return family;
+    }
 }

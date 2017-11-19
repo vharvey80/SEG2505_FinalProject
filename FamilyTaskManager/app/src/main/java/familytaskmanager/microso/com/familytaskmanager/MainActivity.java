@@ -16,9 +16,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,6 +30,7 @@ public class MainActivity extends AppCompatActivity
     ViewPager vp_pages;
     PagerAdapter pagerAdapter;
     TabLayout tbl_pages;
+    Family family;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,10 @@ public class MainActivity extends AppCompatActivity
         tbl_pages= (TabLayout) findViewById(R.id.tbl_pages);
         tbl_pages.setupWithViewPager(vp_pages);
         //End code for Tab Menu
+
+        //Start of testing code. Getting a dummy family to test.
+        family = Family.createDummyFamily();
+        //End ot testing code.
 
     }
 
@@ -121,5 +130,9 @@ public class MainActivity extends AppCompatActivity
 
     public void switchDrawerItem(int item) {
 
+    }
+
+    public List<Task> getFamilyTaskList() {
+        return family.getTasks();
     }
 }
