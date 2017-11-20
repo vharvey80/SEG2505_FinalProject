@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity
         tbl_pages.setupWithViewPager(vp_pages);
         //End code for Tab Menu
 
+        //Changing action bar title
+        setTitle("Quick access");
+
         //Start of testing code. Getting a dummy family to test.
         family = Family.createDummyFamily();
         //End ot testing code.

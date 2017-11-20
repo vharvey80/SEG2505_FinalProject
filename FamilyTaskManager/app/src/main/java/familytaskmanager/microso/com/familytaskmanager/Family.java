@@ -440,14 +440,14 @@ public class Family {
         family.users = users;
 
         //Creation of 5 tasks for testing
-        Task dishes = new Task(1, "Dishes", "Dishes note", null, false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task dishes = new Task(1, "Dishes", "Dishes note", new Date(2017, 01, 9), false, 0.25, 5, Task.TaskState.Created, mainUser);
         dishes.setUser(mainUser);
-        Task sweep = new Task(2, "Sweep", null, null, false, 1, 10, Task.TaskState.Created, mainUser);
+        Task sweep = new Task(2, "Sweep", "Sweep noooooooote", new Date(2017, 01, 10), false, 1, 10, Task.TaskState.Created, mainUser);
         sweep.setUser(thomas);
-        Task washCar = new Task(1, "Wash Car", "Wash Car note", null, false, 1, 5, Task.TaskState.Created, mainUser);
-        Task shop = new Task(1, "Shop", null, null, false, 0.25, 5, Task.TaskState.Created, mainUser);
-        Task otherTask = new Task(1, "Other", "Other task note", null, false, 0.25, 5, Task.TaskState.Created, mainUser);
-        Task outOfIdeas = new Task(1, "I'm out of ideas", "Other task note", null, false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task washCar = new Task(1, "Wash Car", "Wash Car note", new Date(2017, 01, 11), false, 1, 5, Task.TaskState.Created, thomas);
+        Task shop = new Task(1, "Shop", "shop nooooote", new Date(2017, 01, 11), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task otherTask = new Task(1, "Other", "Other task note", new Date(2017, 01, 12), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task outOfIdeas = new Task(1, "I'm out of ideas", "Other task note", new Date(2017, 01, 12), false, 0.25, 5, Task.TaskState.Created, mainUser);
         List<Task> tasks = new ArrayList<>();
         tasks.add(dishes);
         tasks.add(sweep);

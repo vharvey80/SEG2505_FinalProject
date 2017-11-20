@@ -1,9 +1,10 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.*;
 
-public class Task {
+public class Task implements Serializable {
 
     //------------------------
     // ENUMERATIONS

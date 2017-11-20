@@ -56,6 +56,13 @@ public class TasksFragment extends Fragment {
 
                 Toast.makeText(getActivity(), "You clicked a view", Toast.LENGTH_SHORT).show();
 
+                final Task clickedTask = (Task) parent.getItemAtPosition(position);
+
+
+                Intent intent = new Intent(getActivity().getApplicationContext(), TaskDetailActivity.class);
+                intent.putExtra("task", (Serializable) clickedTask);
+                startActivity(intent);
+
             }
         });
         //End of List view code
