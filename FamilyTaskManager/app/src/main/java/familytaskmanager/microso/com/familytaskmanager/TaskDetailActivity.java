@@ -5,9 +5,13 @@ import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -62,10 +66,37 @@ public class TaskDetailActivity extends AppCompatActivity {
         dueDateField.setText(presentTask.getDueDate().toString());
         TextView creatorNameField = (TextView) findViewById(R.id.creatorName);
         creatorNameField.setText(presentTask.getCreator().getFname());
+        TextView rewardPts = (TextView) findViewById(R.id.rewardValueField);
+        rewardPts.setText(presentTask.getRewardPts() + " points");
+
+        //Setting the Gridview adapter
+        GridView toolGridView = (GridView) findViewById(R.id.taskToolsGrid);
+        TaskActivityGridToolAdapter gridToolAdapter = new TaskActivityGridToolAdapter(getApplicationContext(), presentTask.getTools());
+        toolGridView.setAdapter(gridToolAdapter);
 
         //Setting the note
         TextView noteText = (TextView) findViewById(R.id.noteText);
         noteText.setText(presentTask.getNote());
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.task_detail_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_changeTaskName:
+                Toast.makeText(this, "Can't chane yet, but should be easy", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_deletaTask:
+                Toast.makeText(this, "Can't delete yet, might get complicated", Toast.LENGTH_SHORT).show();
+            default:
+                return super.onOptionsItemSelected(item); //Simply copied this line from official Android Tutorials
+        }
     }
 }
