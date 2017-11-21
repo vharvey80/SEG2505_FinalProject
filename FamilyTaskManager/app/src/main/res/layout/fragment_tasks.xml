@@ -1,15 +1,57 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="familytaskmanager.microso.com.familytaskmanager.TasksFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+
+            <Switch
+                android:id="@+id/taskSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:switchPadding="5dp"
+                android:text="@string/show_my_tasks" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/tasksListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"></ListView>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addTaskFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TASKS FRAGMENT"
-        android:textSize="25dp"
-        android:layout_gravity="center"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="30dp"
+        android:backgroundTint="@color/colorOrangeComplementingBlue"
+        android:clickable="true"
+        app:backgroundTint="@color/colorOrangeComplementingBlue"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/fab_add_blue" />
 
 </FrameLayout>

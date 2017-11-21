@@ -1,15 +1,16 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.*;
 
-public class Task {
+public class Task implements Serializable {
 
     //------------------------
     // ENUMERATIONS
     //------------------------
 
-    public enum TaskState {Active, Completed, Cancelled, Reported}
+    public enum TaskState {Created, Completed, Cancelled}
 
     //------------------------
     // MEMBER VARIABLES
@@ -158,6 +159,15 @@ public class Task {
 
     public boolean hasUser() {
         boolean has = user != null;
+        return has;
+    }
+
+    /**
+     * Checks if the task includes a note.
+     * @return true if the task includes a note.
+     */
+    public boolean hasNote() {
+        boolean has = note != null;
         return has;
     }
 

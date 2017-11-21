@@ -1,9 +1,10 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import java.io.Serializable;
 import java.util.*;
 import java.sql.Date;
 
-public class User {
+public class User implements Serializable {
 
     //------------------------
     // MEMBER VARIABLES

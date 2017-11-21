@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_changeTaskName"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Change Task Name"
+        app:showAsAction="always" />
+
+    <!-- Settings, should always be in the overflow -->
+    <item android:id="@+id/action_deletaTask"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="Delete"
+        app:showAsAction="always"/>
+
+</menu>

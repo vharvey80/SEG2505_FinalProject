@@ -1,8 +1,9 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Tool {
+public class Tool implements Serializable {
 
     //------------------------
     // MEMBER VARIABLES

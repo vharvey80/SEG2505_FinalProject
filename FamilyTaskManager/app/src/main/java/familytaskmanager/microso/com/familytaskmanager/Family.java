@@ -415,4 +415,62 @@ public class Family {
         return super.toString() + "[" +
                 "id" + ":" + getId() + "]";
     }
+
+    /**
+     * Testong Method.
+     * @return
+     */
+    public static Family createDummyFamily() {
+
+        User mainUser = new User(1, "Walid", "B", true, R.drawable.menu_people, 0);
+
+        Family family = new Family(1, mainUser);
+
+        //Creation of 4 more users for testing
+        User thomas = new User(2, "Thomas", "C", true, R.drawable.menu_people, 0);
+        User vincent = new User(2, "Vincent", "H", true, R.drawable.menu_people, 0);
+        User oliver = new User(2, "oliver", "B", false, R.drawable.menu_people, 0);
+        User jeanGab = new User(2, "Jean-Gabriel", "G", true, R.drawable.menu_people, 0);
+        List<User> users = new ArrayList<>();
+        users.add(mainUser);
+        users.add(thomas);
+        users.add(vincent);
+        users.add(oliver);
+        users.add(jeanGab);
+        family.users = users;
+
+        //Creating some tools for the tasks
+        Tool bucket = new Tool(1, "Bucket", 5, R.drawable.ic_menu_manage);
+        Tool mop = new Tool(2, "mop", 4, R.drawable.ic_menu_manage);
+        Tool sponge = new Tool(3, "Sponge", 3, R.drawable.ic_menu_manage);
+        Tool wrench = new Tool(4, "Wrench", 2, R.drawable.ic_menu_manage);
+        Tool broom = new Tool(5, "Broom", 1, R.drawable.ic_menu_manage);
+
+
+        //Creation of 5 tasks for testing
+        Task dishes = new Task(1, "Dishes", "Dishes note", new Date(2017, 01, 9), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        dishes.setUser(mainUser);
+        dishes.addTool(sponge);
+        Task sweep = new Task(2, "Sweep", "Sweep noooooooote", new Date(2017, 01, 10), false, 1, 10, Task.TaskState.Created, mainUser);
+        sweep.setUser(thomas);
+        sweep.addTool(broom);
+        Task washCar = new Task(1, "Wash Car", "Wash Car note", new Date(2017, 01, 11), false, 1, 5, Task.TaskState.Created, thomas);
+        washCar.addTool(bucket);
+        washCar.addTool(sponge);
+        Task shop = new Task(1, "Shop", "shop nooooote", new Date(2017, 01, 11), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        shop.addTool(mop);
+        Task otherTask = new Task(1, "Other", "Other task note", new Date(2017, 01, 12), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        otherTask.addTool(wrench);
+        Task outOfIdeas = new Task(1, "I'm out of ideas", "Other task note", new Date(2017, 01, 12), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(dishes);
+        tasks.add(sweep);
+        tasks.add(washCar);
+        tasks.add(shop);
+        tasks.add(otherTask);
+        tasks.add(outOfIdeas);
+        family.tasks = tasks;
+
+        return family;
+    }
 }
