@@ -33,7 +33,7 @@ public class PeopleListAdapter extends ArrayAdapter{
 
         TextView peopleName = (TextView) rowView.findViewById(R.id.peopleListItemName);
         TextView peopleNumTasks = (TextView) rowView.findViewById(R.id.peopleListItemNumTasks);
-        ImageView peopleIcon = (ImageView) rowView.findViewById(R.id.peopleListItemName);
+        ImageView peopleIcon = (ImageView) rowView.findViewById(R.id.peopleListItemIcon);
 
         User people = values.get(position);
 
