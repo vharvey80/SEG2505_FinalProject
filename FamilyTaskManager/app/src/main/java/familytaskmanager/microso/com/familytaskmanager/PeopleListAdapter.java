@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,14 +30,20 @@ public class PeopleListAdapter extends ArrayAdapter{
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.people_list_item, parent, false);
 
+        //Get the views form the layout
         TextView peopleName = (TextView) rowView.findViewById(R.id.peopleListItemName);
         TextView peopleNumTasks = (TextView) rowView.findViewById(R.id.peopleListItemNumTasks);
         ImageView peopleIcon = (ImageView) rowView.findViewById(R.id.peopleListItemIcon);
 
+        //Get user object from the list
         User people = values.get(position);
 
+        //Set user info into the views
         peopleName.setText(people.getFname()+" "+people.getLname());
-        peopleNumTasks.setText("Allocated tasks: "+people.getTasks().size());
+        String s = "Allocated tasks: "+ people.getTasks().size();
+        peopleNumTasks.setText(s);
         peopleIcon.setImageResource(people.getProfilePicId());
+
+        return rowView;
     }
 }
