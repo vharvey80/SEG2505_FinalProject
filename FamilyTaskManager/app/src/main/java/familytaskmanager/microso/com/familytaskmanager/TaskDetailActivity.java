@@ -1,21 +1,22 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
+import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
-import java.sql.SQLOutput;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
@@ -32,8 +33,10 @@ public class TaskDetailActivity extends AppCompatActivity {
 
         //Setting the title to the task from which the activity was called
         if (presentTask != null) {
+            //getActionBar().setTitle(presentTask.getTitle());
             setTitle(presentTask.getTitle());
         }else {
+            //getActionBar().setTitle("Task");
             setTitle("Task");
         }
 
@@ -71,6 +74,7 @@ public class TaskDetailActivity extends AppCompatActivity {
 
         //Setting the Gridview adapter
         GridView toolGridView = (GridView) findViewById(R.id.taskToolsGrid);
+
         TaskActivityGridToolAdapter gridToolAdapter = new TaskActivityGridToolAdapter(getApplicationContext(), presentTask.getTools());
         toolGridView.setAdapter(gridToolAdapter);
 
@@ -92,6 +96,24 @@ public class TaskDetailActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_changeTaskName:
                 Toast.makeText(this, "Can't chane yet, but should be easy", Toast.LENGTH_SHORT).show();
+
+                LayoutInflater inflater = LayoutInflater.from(this);
+                final View dialogView = inflater.inflate(R.layout.dialog_change_or_create_task, null);
+                MainActivity.setNumberPickersDialog(dialogView);
+
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("Change Task info")
+                        .setView(dialogView)
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                //Log.i("from dialogue", test.getText().toString());
+                            }
+                        })
+                        .setNegativeButton("Cancel", null).create();
+                dialog.show();
+                //Poplating the dialog to make it easier for user
+                this.populateChangeInfoDialog(dialogView);
+
                 return true;
             case R.id.action_deletaTask:
                 Toast.makeText(this, "Can't delete yet, might get complicated", Toast.LENGTH_SHORT).show();
@@ -99,4 +121,27 @@ public class TaskDetailActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item); //Simply copied this line from official Android Tutorials
         }
     }
+
+    private void populateChangeInfoDialog(View dialogView) {
+
+        //Locating all the fields
+        EditText taskName = (EditText)dialogView.findViewById(R.id.dialogTaskNameField);
+        EditText taskTime = (EditText)dialogView.findViewById(R.id.dialogTimeNameField);
+        NumberPicker yearPicker = (NumberPicker) dialogView.findViewById(R.id.dialogYearPicker);
+        NumberPicker monthPicker = (NumberPicker) dialogView.findViewById(R.id.dialogMonthPicker);
+        NumberPicker dayPicker = (NumberPicker) dialogView.findViewById(R.id.dialogDayPicker);
+        EditText taskPoints = (EditText)dialogView.findViewById(R.id.dialogRewardField);
+        EditText taskNote = (EditText)dialogView.findViewById(R.id.dialogNoteField);
+
+        //Populating the fields with current info
+        taskName.setText(presentTask.getTitle());
+        taskTime.setText(Double.toString(presentTask.getEstimatedTime()));
+        //yearPicker.setValue(presentTask.getDueDate().getYear());
+        //monthPicker.setValue(presentTask.getDueDate().getMinutes());
+        //dayPicker.setMinValue(presentTask.getDueDate().getDay());
+        taskPoints.setText(Integer.toString(presentTask.getRewardPts()));
+        taskNote.setText(presentTask.getNote());
+
+    }
+
 }

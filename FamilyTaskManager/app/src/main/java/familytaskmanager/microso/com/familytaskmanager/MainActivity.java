@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -141,4 +142,24 @@ public class MainActivity extends AppCompatActivity
     public List<Task> getFamilyTaskList() {
         return family.getTasks();
     }
+
+    /**
+     * This method arranges the number pickers for date to have appropriate up and down limits.
+     * If using this method, make sure the view you pass contains NumberPickers with the right id.
+     *
+     * @param view
+     *          The view in which the NumberPicker are located
+     */
+    public static void setNumberPickersDialog(View view) {
+        NumberPicker year = (NumberPicker) view.findViewById(R.id.dialogYearPicker);
+        year.setMinValue(2017);
+        year.setMaxValue(2020);
+        NumberPicker month = (NumberPicker) view.findViewById(R.id.dialogMonthPicker);
+        month.setMinValue(1);
+        month.setMaxValue(12);
+        NumberPicker day = (NumberPicker) view.findViewById(R.id.dialogDayPicker);
+        day.setMinValue(1);
+        day.setMaxValue(31);
+    }
+
 }

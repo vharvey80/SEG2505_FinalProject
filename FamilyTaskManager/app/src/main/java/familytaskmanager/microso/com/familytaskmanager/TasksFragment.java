@@ -1,6 +1,8 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -73,6 +75,21 @@ public class TasksFragment extends Fragment {
 
     public void taskFabClicked() {
         Toast.makeText(getActivity(), "Task FAB clicked", Toast.LENGTH_SHORT).show();
+
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        final View dialogView = inflater.inflate(R.layout.dialog_change_or_create_task, null);
+        MainActivity.setNumberPickersDialog(dialogView);
+
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setTitle("Task Info")
+                .setView(dialogView)
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //Log.i("from dialogue", test.getText().toString());
+                    }
+                })
+                .setNegativeButton("Cancel", null).create();
+        dialog.show();
     }
 
 }
