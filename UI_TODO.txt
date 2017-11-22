@@ -4,20 +4,20 @@ TO DO :
 
 - Side menu (navigation drawer). Need to put something to change user (Vincent)
 
-- Shopping item fragment (à la personne qui le fait : regarde les GridView, ça pourrait
- être utile. J'en ai fait un dans le task detail activity)
+- Shopping item fragment (Ã  la personne qui le fait : regarde les GridView, Ã§a pourrait
+ Ãªtre utile. J'en ai fait un dans le task detail activity) (Jean-Gabriel)
 
-- Pop-up pour créer une tâche. (Walid)
+- Pop-up pour crÃ©er une tÃ¢che. (Walid)
 
 - People Fragment (Thomas)
 - User detail activity (Thomas)
-- J'assume qu'il faut un pop-up ou qqchose pour modifier les infos d'un utilisateur, même 
+- J'assume qu'il faut un pop-up ou qqchose pour modifier les infos d'un utilisateur, mÃªme 
   si ce n'est pas dans les mockups.
 
 - Tool activity (no model for that, need to get creative) (Vincent)
 - I assume something will be needed to modify and/or add a tool (could find a way to fit it in activity)
 
-- Fridge Activity (no model for that, need to get creative)
+- Fridge Activity (no model for that, need to get creative) (Jean-Gabriel)
 - I assume something will be needed to modify and/or add a item (could find a way to fit it in activity)
 
 - Colors (not a view, I mean we need to figure out the colors)
@@ -37,4 +37,4 @@ DONE :
 
 ALMOST DONE :
 
-- Pop-up pour modifier une tâche -- Walid
+- Pop-up pour modifier une tÃ¢che -- Walid
