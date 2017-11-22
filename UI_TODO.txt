@@ -2,7 +2,7 @@ UI Components :
 
 TO DO :
 
-- Side menu (navigation drawer). Need to put something to change user
+- Side menu (navigation drawer). Need to put something to change user (Vincent)
 
 - Shopping item fragment (à la personne qui le fait : regarde les GridView, ça pourrait
  être utile. J'en ai fait un dans le task detail activity)
@@ -14,7 +14,7 @@ TO DO :
 - J'assume qu'il faut un pop-up ou qqchose pour modifier les infos d'un utilisateur, même 
   si ce n'est pas dans les mockups.
 
-- Tool activity (no model for that, need to get creative)
+- Tool activity (no model for that, need to get creative) (Vincent)
 - I assume something will be needed to modify and/or add a tool (could find a way to fit it in activity)
 
 - Fridge Activity (no model for that, need to get creative)
