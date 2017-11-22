@@ -37,22 +37,22 @@ public class PeopleFragment extends Fragment {
 
         peopleListAdapter = new PeopleListAdapter(getActivity().getApplicationContext(), ((MainActivity)getActivity()).getFamilyPeopleList());
 
-        listView.setAdapter(taskListAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setAdapter(peopleListAdapter);
+        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 
                 Toast.makeText(getActivity(), "You clicked a view", Toast.LENGTH_SHORT).show();
 
-                final Task clickedTask = (Task) parent.getItemAtPosition(position);
+                final User clickedUser = (User) parent.getItemAtPosition(position);
 
 
-                Intent intent = new Intent(getActivity().getApplicationContext(), TaskDetailActivity.class);
-                intent.putExtra("task", (Serializable) clickedTask);
+                Intent intent = new Intent(getActivity().getApplicationContext(), UserActivity.class);
+                intent.putExtra("user", (Serializable) clickedUser);
                 startActivity(intent);
 
             }
-        });
+        });*/
         //End of List view code
 
         return view;
