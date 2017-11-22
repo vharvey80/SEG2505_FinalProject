@@ -9,8 +9,8 @@ TO DO :
 
 - Pop-up pour créer une tâche. (no model for that, need to get creative)
 
-- People Fragment
-- User detail activity
+- People Fragment (Thomas)
+- User detail activity (Thomas)
 - J'assume qu'il faut un pop-up ou qqchose pour modifier les infos d'un utilisateur, même 
   si ce n'est pas dans les mockups.
 
