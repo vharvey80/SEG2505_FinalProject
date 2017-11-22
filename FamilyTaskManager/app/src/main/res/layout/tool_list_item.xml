@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_background"
+    android:orientation="horizontal"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:gravity="center"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="125dp"
+        android:layout_weight="1.08"
+        android:orientation="vertical"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:id="@+id/toolListItemName"
+            android:layout_width="327dp"
+            android:layout_height="wrap_content"
+            android:text="Tool Name"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/toolListItemSupply"
+            android:layout_width="326dp"
+            android:layout_height="wrap_content"
+            android:text="Supply : "
+            android:textColor="?attr/colorControlNormal"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/delete"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="33dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="x"
+        android:textAlignment="gravity"
+        android:textColor="?attr/colorControlNormal"
+        android:textSize="18sp"/>
+
+</LinearLayout>
