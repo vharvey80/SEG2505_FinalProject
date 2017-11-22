@@ -8,6 +8,7 @@
     <string name="item_name">Item</string>
     <string name="quantity_item">Quantity</string>
     <string name="add_item">Add Item</string>
+    <string name="new_iten">New Item</string>
 
 
     <string name="action_settings">Settings</string>
