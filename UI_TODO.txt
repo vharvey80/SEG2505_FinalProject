@@ -7,7 +7,7 @@ TO DO :
 - Shopping item fragment (à la personne qui le fait : regarde les GridView, ça pourrait
  être utile. J'en ai fait un dans le task detail activity)
 
-- Pop-up pour créer une tâche. (no model for that, need to get creative)
+- Pop-up pour créer une tâche. (Walid)
 
 - People Fragment (Thomas)
 - User detail activity (Thomas)
