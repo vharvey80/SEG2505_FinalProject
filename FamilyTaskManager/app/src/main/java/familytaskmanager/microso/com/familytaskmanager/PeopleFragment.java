@@ -28,7 +28,8 @@ public class PeopleFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_people, container, false);
 
@@ -38,7 +39,7 @@ public class PeopleFragment extends Fragment {
         peopleListAdapter = new PeopleListAdapter(getActivity().getApplicationContext(), ((MainActivity)getActivity()).getFamilyPeopleList());
 
         listView.setAdapter(peopleListAdapter);
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 
@@ -52,7 +53,7 @@ public class PeopleFragment extends Fragment {
                 startActivity(intent);
 
             }
-        });*/
+        });
         //End of List view code
 
         return view;
