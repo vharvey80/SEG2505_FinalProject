@@ -60,6 +60,8 @@ public class ToolActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if(!name_edit.getText().toString().isEmpty() && !supply_edit.getText().toString().isEmpty()) {
                             Toast.makeText(ToolActivity.this, "Adding completed.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(ToolActivity.this, "You need to fill both fields..", Toast.LENGTH_SHORT).show();
                         }
                         dialog.dismiss();
                     }
