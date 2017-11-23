@@ -36,8 +36,6 @@
 
     </LinearLayout>
 
-<<<<<<< HEAD
-=======
     <ListView
         android:layout_width="match_parent"
         android:layout_height="450dp"
@@ -45,7 +43,6 @@
 
     </ListView>
 
->>>>>>> e611967454a9cc86200693e380de0e917fecebee
     <Button
         android:id="@+id/addItemButton"
         android:layout_width="match_parent"

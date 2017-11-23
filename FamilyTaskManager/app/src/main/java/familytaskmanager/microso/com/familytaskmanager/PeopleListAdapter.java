@@ -40,5 +40,6 @@ public class PeopleListAdapter extends ArrayAdapter{
         peopleName.setText(people.getFname()+" "+people.getLname());
         peopleNumTasks.setText("Allocated tasks: "+people.getTasks().size());
         peopleIcon.setImageResource(people.getProfilePicId());
+        return null;
     }
 }
