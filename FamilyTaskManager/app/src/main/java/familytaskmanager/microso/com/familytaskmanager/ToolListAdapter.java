@@ -37,10 +37,10 @@ public class ToolListAdapter extends ArrayAdapter<Tool> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.tool_list_item, parent, false);
         TextView nameView = (TextView) rowView.findViewById(R.id.toolListItemName);
-        TextView supplyView = (TextView) rowView.findViewById(R.id.toolListItemSupply);
+        TextView supplyView = (TextView) rowView.findViewById(R.id.toolListItemNbr);
         Button btnDelete = (Button) rowView.findViewById(R.id.delete);
         nameView.setText(selected_tool.getName());
-        supplyView.setText(supplyView.getText() + Integer.toString(selected_tool.getSupply())); // Look out for the text increment.
+        supplyView.setText(Integer.toString(selected_tool.getSupply()));
         btnDelete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 /*
@@ -60,6 +60,7 @@ public class ToolListAdapter extends ArrayAdapter<Tool> {
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //TODO
+                Toast.makeText(context, "This tool has been deleted.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });

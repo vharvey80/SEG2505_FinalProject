@@ -6,59 +6,83 @@
     android:layout_height="match_parent"
     tools:context="familytaskmanager.microso.com.familytaskmanager.ToolActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="368dp"
-        android:layout_height="495dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="413dp"
+            android:paddingBottom="-10dp"
+            tools:layout_editor_absoluteX="5dp"
+            tools:layout_editor_absoluteY="8dp">
 
-            <TextView
-                android:id="@+id/toolActivityTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="0dp"
-                android:paddingTop="15dp"
-                android:text="Tool management"
-                android:textAlignment="center"
-                android:textSize="30sp" />
+                android:orientation="vertical">
 
-            <View
-                android:layout_width="300dp"
-                android:layout_height="2dp"
-                android:layout_marginLeft="35dp"
-                android:background="#AAAAAA"
-                android:paddingBottom="15dp"
-                android:paddingTop="2dp" />
+                <TextView
+                    android:id="@+id/toolActivityTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="0dp"
+                    android:paddingTop="15dp"
+                    android:text="Tool management"
+                    android:textAlignment="center"
+                    android:textSize="30sp" />
 
-            <ListView
-                android:id="@+id/list_tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@null"
-                android:dividerHeight="10dp"
-                android:paddingLeft="15dp"
-                android:paddingTop="10dp"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="8dp" />
-        </LinearLayout>
+                <View
+                    android:layout_width="300dp"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="35dp"
+                    android:background="#AAAAAA"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="2dp" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/tool_add_btn"
+                <ListView
+                    android:id="@+id/list_tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="8dp"
+                    tools:elevation="4dp"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            app:backgroundTint="@color/colorPrimaryBlue"
-            app:elevation="5dp"
-            app:fabSize="normal"
-            app:srcCompat="@android:drawable/stat_notify_more"
-            tools:layout_editor_absoluteX="312dp"
-            tools:layout_editor_absoluteY="439dp" />
+            android:layout_height="86dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
 
-    </RelativeLayout>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/tool_add_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end|bottom"
+                android:layout_marginEnd="14dp"
+                android:clickable="true"
+                android:scaleType="center"
+                app:backgroundTint="#4444FF"
+                app:borderWidth="6dp"
+                app:elevation="5dp"
+                app:fabSize="normal"
+                app:rippleColor="@color/cardview_dark_background"
+                app:srcCompat="@drawable/toolsadd"
+                tools:layout_editor_absoluteX="312dp"
+                tools:layout_editor_absoluteY="439dp" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

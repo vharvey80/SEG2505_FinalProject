@@ -4,9 +4,22 @@
         <shape android:shape="rectangle"
             android:dither="true">
 
-            <corners android:radius="2dp"/>
+            <corners android:radius="3dp"/>
 
-            <solid android:color="#808080" />
+            <solid android:color="#4444FF" />
+
+        </shape>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle"
+            android:dither="true">
+
+            <corners android:radius="3dp"/>
+
+            <padding android:right="2dp" />
+
+            <solid android:color="#4444FF" />
 
         </shape>
     </item>
@@ -25,4 +38,5 @@
                 android:top="8dp" />
         </shape>
     </item>
+
 </layer-list>
