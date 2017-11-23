@@ -22,7 +22,8 @@
     <Spinner
         android:id="@+id/userMenuList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:popupBackground="#FFFFFF">
         
     </Spinner>
 

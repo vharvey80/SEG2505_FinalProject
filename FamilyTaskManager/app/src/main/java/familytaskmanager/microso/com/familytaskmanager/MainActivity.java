@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +23,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -66,7 +68,16 @@ public class MainActivity extends AppCompatActivity
 
         //Start of testing code. Getting a dummy family to test.
         family = Family.createDummyFamily();
+        Toast.makeText(this, "FADSFDSAFADS", Toast.LENGTH_SHORT).show();
         //End ot testing code.
+
+        //Test nav bar stuff
+        View v = navigationView.getHeaderView(0);
+        Spinner s = (Spinner) v.findViewById(R.id.userMenuList);
+
+        UserSpinnerAdapter userSpinnerAdapter = new UserSpinnerAdapter(this.getApplicationContext(), family.getUsers());
+        s.setAdapter(userSpinnerAdapter);
+        //END
 
     }
 
@@ -142,6 +153,8 @@ public class MainActivity extends AppCompatActivity
     public List<Task> getFamilyTaskList() {
         return family.getTasks();
     }
+
+    public List<Tool> getFamilyToolList() { return family.getTools(); }
 
     /**
      * This method arranges the number pickers for date to have appropriate up and down limits.
