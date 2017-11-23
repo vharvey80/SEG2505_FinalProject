@@ -51,7 +51,9 @@ public class TasksFragment extends Fragment {
         //List view code
         ListView listView = (ListView) view.findViewById(R.id.tasksListView);
 
-        taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), ((MainActivity)getActivity()).getFamilyTaskList());
+        taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(),
+                ((MainActivity)getActivity()).getFamilyTaskList() ,((MainActivity)getActivity()).getFamilyUserList(),
+                getActivity());
 
         listView.setAdapter(taskListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

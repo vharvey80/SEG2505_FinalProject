@@ -156,6 +156,8 @@ public class MainActivity extends AppCompatActivity
 
     public List<Tool> getFamilyToolList() { return family.getTools(); }
 
+    public List<User> getFamilyUserList() { return family.getUsers(); }
+
     /**
      * This method arranges the number pickers for date to have appropriate up and down limits.
      * If using this method, make sure the view you pass contains NumberPickers with the right id.
