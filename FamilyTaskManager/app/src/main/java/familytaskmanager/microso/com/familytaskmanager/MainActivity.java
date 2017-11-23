@@ -1,5 +1,6 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,6 +8,8 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,10 +23,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     PagerAdapter pagerAdapter;
     TabLayout tbl_pages;
     Family family;
+    public ArrayList<User> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,21 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        /* CODE FOR USER CHANGE SPINNER */
+        ArrayList<User> users = new ArrayList<User>();
+        for (int i = 0; i < 5; i++) {
+            users.add(new User((i + 1), "Fname_" + i, "Lname_" + i, true, 1, (1 + i)));
+        }
+
+        UserChangeAdapter user_adapter = new UserChangeAdapter(this, users);
+        user_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+
+        View v = navigationView.getHeaderView(0);
+        Spinner user_spinner_list_view = (Spinner) v.findViewById(R.id.userMenuList);
+
+        user_spinner_list_view.setAdapter(user_adapter);
+        /* END USER CHANGE */
 
         //Start code for Tab Menu
         vp_pages= (ViewPager) findViewById(R.id.vp_pages);

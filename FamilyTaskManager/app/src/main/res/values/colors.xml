@@ -4,9 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="colorPrimaryBlue">#45C4FF</color>
+    <color name="colorPrimaryBlue">#1086bd</color>
     <color name="colorPrimaryBlueDark">#0C7EB2</color>
-    <color name="colorOrangeComplementingBlue">#FF8B00</color>
+    <color name="colorOrangeComplementingBlue">#ffa335</color>
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
 </resources>
