@@ -6,11 +6,59 @@
     android:layout_height="match_parent"
     tools:context="familytaskmanager.microso.com.familytaskmanager.ToolActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TOOL ACTIVITY"
-        android:textSize="25dp"
-        android:layout_gravity="center"/>
+    <RelativeLayout
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/toolActivityTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="0dp"
+                android:paddingTop="15dp"
+                android:text="Tool management"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+
+            <View
+                android:layout_width="300dp"
+                android:layout_height="2dp"
+                android:layout_marginLeft="35dp"
+                android:background="#AAAAAA"
+                android:paddingBottom="15dp"
+                android:paddingTop="2dp" />
+
+            <ListView
+                android:id="@+id/list_tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:dividerHeight="10dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="8dp" />
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/tool_add_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:backgroundTint="@color/colorPrimaryBlue"
+            app:elevation="5dp"
+            app:fabSize="normal"
+            app:srcCompat="@android:drawable/stat_notify_more"
+            tools:layout_editor_absoluteX="312dp"
+            tools:layout_editor_absoluteY="439dp" />
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

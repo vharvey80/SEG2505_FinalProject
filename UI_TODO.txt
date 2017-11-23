@@ -13,6 +13,9 @@ TO DO :
 - User detail activity (Thomas)
 - J'assume qu'il faut un pop-up ou qqchose pour modifier les infos d'un utilisateur, même 
   si ce n'est pas dans les mockups.
+  
+  - Create user (Oliver)
+  - Modify user (Oliver)
 
 - Tool activity (no model for that, need to get creative) (Vincent)
 - I assume something will be needed to modify and/or add a tool (could find a way to fit it in activity)

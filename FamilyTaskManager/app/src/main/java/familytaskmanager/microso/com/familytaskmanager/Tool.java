@@ -13,7 +13,7 @@ public class Tool implements Serializable {
     private int id;
     private String name;
     private int supply;
-    private int pictureID;
+    //private int pictureID;
 
     //Tool Associations
     private List<Task> tasks;
@@ -22,11 +22,11 @@ public class Tool implements Serializable {
     // CONSTRUCTOR
     //------------------------
 
-    public Tool(int aId, String aName, int aSupply, int aPictureID) {
+    public Tool(int aId, String aName, int aSupply) {
         id = aId;
         name = aName;
         supply = aSupply;
-        pictureID = aPictureID;
+        //pictureID = aPictureID;
         tasks = new ArrayList<Task>();
     }
 
@@ -55,12 +55,12 @@ public class Tool implements Serializable {
         return wasSet;
     }
 
-    public boolean setPictureID(int aPictureID) {
+    /*public boolean setPictureID(int aPictureID) {
         boolean wasSet = false;
-        pictureID = aPictureID;
+        //pictureID = aPictureID;
         wasSet = true;
         return wasSet;
-    }
+    }*/
 
     public int getId() {
         return id;
@@ -74,9 +74,9 @@ public class Tool implements Serializable {
         return supply;
     }
 
-    public int getPictureID() {
+    /*public int getPictureID() {
         return pictureID;
-    }
+    }*/
 
     public Task getTask(int index) {
         Task aTask = tasks.get(index);
@@ -190,7 +190,7 @@ public class Tool implements Serializable {
         return super.toString() + "[" +
                 "id" + ":" + getId() + "," +
                 "name" + ":" + getName() + "," +
-                "supply" + ":" + getSupply() + "," +
-                "pictureID" + ":" + getPictureID() + "]";
+                "supply" + ":" + getSupply() + "," /*+
+                "pictureID" + ":" + getPictureID()*/ + "]";
     }
 }
