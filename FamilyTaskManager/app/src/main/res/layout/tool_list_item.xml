@@ -54,10 +54,11 @@
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="33dp"
         android:layout_height="wrap_content"
+        android:elevation="0dp"
         android:gravity="center"
         android:text="x"
         android:textAlignment="gravity"
         android:textColor="?attr/colorControlNormal"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
 </LinearLayout>

@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -40,27 +42,25 @@ public class ToolListAdapter extends ArrayAdapter<Tool> {
         TextView supplyView = (TextView) rowView.findViewById(R.id.toolListItemNbr);
         Button btnDelete = (Button) rowView.findViewById(R.id.delete);
         nameView.setText(selected_tool.getName());
+        btnDelete.setId(selected_tool.getId()); // Set le même id aux buttons que leur tool (item) correspondant.
         supplyView.setText(Integer.toString(selected_tool.getSupply()));
         btnDelete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                /*
-                   Je suis pas capable d'aller chercher quel bouton a été cliquer. En sachant quel bouton a été cliquer,
-                   nous serions capable de savoir quel item to delete. En sachant quel item to delete on pourrait
-                   l'envoyer dans la fonction areYouSure(Tool toolToDelete).
-                 */
-                areYouSure(selected_tool); // Selected tool is not the one we're looking for.
+                Tool s_tool = tools.get((v.getId() - 1)); // Va chercher le tool correspondant dans la liste de tools. (à améliorer)
+
+                areYouSure(s_tool); // Selected tool is not the one we're looking for.
             }
         });
         return rowView;
     }
 
-    private void areYouSure(Tool toolToDelete) {
+    private void areYouSure(final Tool toolToDelete) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
         builder.setTitle("Are you sure you want to delete this tool ? ");
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //TODO
-                Toast.makeText(context, "This tool has been deleted.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, toolToDelete.getName() + " has been deleted.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
