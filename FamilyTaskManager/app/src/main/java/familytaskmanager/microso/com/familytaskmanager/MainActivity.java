@@ -1,5 +1,8 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import java.util.*;
+
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -140,5 +143,10 @@ public class MainActivity extends AppCompatActivity
 
     public List<Task> getFamilyTaskList() {
         return family.getTasks();
+    }
+
+
+    public List<User> getFamilyPeopleList() {
+        return family.getUsers();
     }
 }
