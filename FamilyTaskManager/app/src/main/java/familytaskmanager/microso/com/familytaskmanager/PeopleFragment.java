@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -47,9 +49,13 @@ public class PeopleFragment extends Fragment {
                 final User clickedUser = (User) parent.getItemAtPosition(position);
 
 
-                //Intent intent = new Intent(getActivity().getApplicationContext(), UserActivity.class);
-                //intent.putExtra("task", (Serializable) clickedTask);
-                //startActivity(intent);
+                Intent intent = new Intent(getActivity().getApplicationContext(), UserActivity.class);
+                intent.putExtra("user", (Serializable) clickedUser);
+                /*Bundle b = new Bundle();
+                ArrayList<Task> taskList = (ArrayList<Task>) ((MainActivity) getActivity()).getFamilyTaskList();
+                b.putSerializable("list",taskList);
+                intent.putExtra("list", b);*/
+                startActivity(intent);
 
             }
         });
