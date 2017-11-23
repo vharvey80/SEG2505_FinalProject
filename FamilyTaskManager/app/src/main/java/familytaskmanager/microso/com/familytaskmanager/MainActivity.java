@@ -1,5 +1,6 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,6 +8,8 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,9 +26,11 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     PagerAdapter pagerAdapter;
     TabLayout tbl_pages;
     Family family;
+    public ArrayList<User> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +59,25 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+        ArrayList<User> users = new ArrayList<User>();
+
+        for (int i = 0; i < 5; i++) {
+            users.add(new User((i + 1), "Fname_" + i, "Lname_" + i, true, 1, 20));
+        }
+
+        UserChangeAdapter user_adapter = new UserChangeAdapter(this, users);
+        user_adapter.setDropDownViewResource(R.layout.user_change_list_item);
+
+        View v = navigationView.getHeaderView(0);
+        Spinner user_spinner_list_view = (Spinner) v.findViewById(R.id.userMenuList);
+
+        user_spinner_list_view.setAdapter(user_adapter);
+
+        /*users = new ArrayList<User>();
+        users.add(new User(1, "Vincent", "Harvey", true, 1, 19));
+        users.add(new User(2, "Walid", "Bounouar", true, 1, 122));
+        users.add(new User(3, "Thomas", "Charette", true, 1, 2));*/
+
 
         //Start code for Tab Menu
         vp_pages= (ViewPager) findViewById(R.id.vp_pages);

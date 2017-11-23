@@ -40,7 +40,7 @@ public class ToolListAdapter extends ArrayAdapter<Tool> {
         TextView supplyView = (TextView) rowView.findViewById(R.id.toolListItemSupply);
         Button btnDelete = (Button) rowView.findViewById(R.id.delete);
         nameView.setText(selected_tool.getName());
-        supplyView.setText(supplyView.getText() + Integer.toString(selected_tool.getSupply()));
+        supplyView.setText(supplyView.getText() + Integer.toString(selected_tool.getSupply())); // Look out for the text increment.
         btnDelete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 /*
