@@ -164,4 +164,8 @@ public class MainActivity extends AppCompatActivity
     public List<Task> getFamilyTaskList() {
         return family.getTasks();
     }
+
+    public List<User> getFamilyPeopleList() {
+        return family.getUsers();
+    }
 }
