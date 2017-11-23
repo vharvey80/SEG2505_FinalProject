@@ -253,9 +253,9 @@
                 android:id="@+id/ReqEquipment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Required Equipement"
                 android:layout_margin="5dp"
-                android:textColor="#009698"/>
+                android:text="Required Equipement"
+                android:textColor="#009698" />
 
             <GridView
                 android:id="@+id/taskToolsGrid"
