@@ -59,25 +59,20 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        /* CODE FOR USER CHANGE SPINNER */
         ArrayList<User> users = new ArrayList<User>();
-
         for (int i = 0; i < 5; i++) {
-            users.add(new User((i + 1), "Fname_" + i, "Lname_" + i, true, 1, 20));
+            users.add(new User((i + 1), "Fname_" + i, "Lname_" + i, true, 1, (1 + i)));
         }
 
         UserChangeAdapter user_adapter = new UserChangeAdapter(this, users);
-        user_adapter.setDropDownViewResource(R.layout.user_change_list_item);
+        user_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
         View v = navigationView.getHeaderView(0);
         Spinner user_spinner_list_view = (Spinner) v.findViewById(R.id.userMenuList);
 
         user_spinner_list_view.setAdapter(user_adapter);
-
-        /*users = new ArrayList<User>();
-        users.add(new User(1, "Vincent", "Harvey", true, 1, 19));
-        users.add(new User(2, "Walid", "Bounouar", true, 1, 122));
-        users.add(new User(3, "Thomas", "Charette", true, 1, 2));*/
-
+        /* END USER CHANGE */
 
         //Start code for Tab Menu
         vp_pages= (ViewPager) findViewById(R.id.vp_pages);

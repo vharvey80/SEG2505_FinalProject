@@ -26,13 +26,14 @@
                 android:text="Tool management"
                 android:textAlignment="center"
                 android:textSize="30sp" />
+
             <View
                 android:layout_width="300dp"
                 android:layout_height="2dp"
-                android:background="#AAAAAA"
                 android:layout_marginLeft="35dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="15dp"/>
+                android:background="#AAAAAA"
+                android:paddingBottom="15dp"
+                android:paddingTop="2dp" />
 
             <ListView
                 android:id="@+id/list_tools"
@@ -40,11 +41,23 @@
                 android:layout_height="match_parent"
                 android:divider="@null"
                 android:dividerHeight="10dp"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="8dp"
                 android:paddingLeft="15dp"
-                android:paddingTop="10dp"/>
+                android:paddingTop="10dp"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="8dp" />
         </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/tool_add_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:backgroundTint="@color/colorPrimaryBlue"
+            app:elevation="5dp"
+            app:fabSize="normal"
+            app:srcCompat="@android:drawable/stat_notify_more"
+            tools:layout_editor_absoluteX="312dp"
+            tools:layout_editor_absoluteY="439dp" />
 
     </RelativeLayout>
 

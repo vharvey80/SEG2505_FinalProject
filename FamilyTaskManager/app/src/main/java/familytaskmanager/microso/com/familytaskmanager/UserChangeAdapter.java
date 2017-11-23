@@ -38,8 +38,9 @@ public class UserChangeAdapter extends ArrayAdapter<User> {
         View rowView = inflater.inflate(R.layout.user_change_list_item, parent, false);
 
         TextView nameView = (TextView) rowView.findViewById(R.id.userchangelistname);
-        //ImageView picView = (ImageView) rowView.findViewById(R.id.user_picture);
+        TextView ptsView = (TextView) rowView.findViewById(R.id.userchangelistpts);
         nameView.setText(selected_user.getFname());
+        ptsView.setText("Points : " + Integer.toString(selected_user.getAccumulatedPts()));
         //picView.setImageResource(selected_user.getProfilePicId());
         return rowView;
     }
