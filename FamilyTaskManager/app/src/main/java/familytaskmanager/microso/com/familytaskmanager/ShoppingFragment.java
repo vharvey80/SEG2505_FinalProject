@@ -23,8 +23,10 @@ public class ShoppingFragment extends Fragment {
 
     ListView toolsListview;
     ListView groceriesListview;
-    ArrayList<ShoppingItem> groceries;
-    ArrayList<ShoppingItem> tools;
+    ArrayList<ShoppingItem> groceries = new ArrayList<ShoppingItem>();
+    ArrayList<ShoppingItem> tools = new ArrayList<ShoppingItem>();
+    ShoppingItemAdapter adapterGrocery;
+    ShoppingItemAdapter adapterTools;
     Context context;
 
     public ShoppingFragment() {
@@ -36,23 +38,26 @@ public class ShoppingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.fragment_shopping, container, false);
 
-        //Populating the ArrayLists
-        groceries = new ArrayList<ShoppingItem>();
-        tools = new ArrayList<ShoppingItem>();
-
         tools.add(new ShoppingItem(1, "Bucket", 5, true, ShoppingItem.Category.Material));
+        tools.add(new ShoppingItem(2, "Broom", 5, true, ShoppingItem.Category.Material));
+        tools.add(new ShoppingItem(3, "Wrench", 5, true, ShoppingItem.Category.Material));
+        tools.add(new ShoppingItem(4, "Screwdriver", 5, true, ShoppingItem.Category.Material));
+        tools.add(new ShoppingItem(5, "Planks", 5, true, ShoppingItem.Category.Material));
+
+        groceries.add(new ShoppingItem(1, "Butter", 1, true, ShoppingItem.Category.Grocerie));
+        groceries.add(new ShoppingItem(1, "Chips", 2, true, ShoppingItem.Category.Grocerie));
 
         groceriesListview = (ListView) view.findViewById(R.id.ListView_Groceries);
         toolsListview = (ListView) view.findViewById(R.id.ListView_Tools);
 
-        ShoppingItemAdapter adapterGrocery = new ShoppingItemAdapter(getActivity().getApplicationContext(), groceries);
-        ShoppingItemAdapter adapterTools = new ShoppingItemAdapter(getActivity().getApplicationContext(), tools);
+        adapterGrocery = new ShoppingItemAdapter(getActivity().getApplicationContext(), groceries);
+        adapterTools = new ShoppingItemAdapter(getActivity().getApplicationContext(), tools);
 
         groceriesListview.setAdapter(adapterGrocery);
         toolsListview.setAdapter(adapterTools);
+
         groceriesListview.setItemsCanFocus(false);
         toolsListview.setItemsCanFocus(false);
 
@@ -60,7 +65,7 @@ public class ShoppingFragment extends Fragment {
         toolsListview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
 
-        return inflater.inflate(R.layout.fragment_shopping, container, false);
+        return view;
     }
 
 

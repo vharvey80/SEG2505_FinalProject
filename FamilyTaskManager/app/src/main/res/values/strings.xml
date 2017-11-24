@@ -6,10 +6,10 @@
 
     <!-- ShoppingFragment Strings -->
     <string-array name="shoppingItem_array">
-        <item>Tool</item>
+        <item>Material</item>
         <item>Grocerie</item>
     </string-array>
-    <string name="tools">Tools</string>
+    <string name="material">Material</string>
     <string name="groceries">Groceries</string>
 
 
@@ -17,7 +17,7 @@
     <string name="item_name">Item</string>
     <string name="quantity_item">Quantity</string>
     <string name="add_item">Add Item</string>
-    <string name="new_iten">New Item</string>
+    <string name="new_item">New Item</string>
 
 
     <string name="action_settings">Settings</string>

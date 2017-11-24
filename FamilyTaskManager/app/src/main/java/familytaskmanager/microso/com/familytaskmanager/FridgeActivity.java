@@ -29,6 +29,7 @@ public class FridgeActivity extends AppCompatActivity {
 
         fridge.add(new Grocerie(1, "Tomatoes", 8));
         fridge.add(new Grocerie(2, "Potatoes", 16));
+        fridge.add(new Grocerie(3, "Bread", 1));
 
         FridgeListAdapter adapter = new FridgeListAdapter(this, fridge);
         listView.setAdapter(adapter);
