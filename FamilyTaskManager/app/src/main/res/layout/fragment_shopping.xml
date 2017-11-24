@@ -8,8 +8,14 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:gravity=""
         android:layout_height="wrap_content">
 
         <TextView
@@ -18,12 +24,12 @@
             android:layout_height="wrap_content"
             android:text="@string/tools" />
 
-        <GridView
-            android:id="@+id/GridView_Tools"
+        <ListView
+            android:id="@+id/ListView_Tools"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@+id/textView"
-            android:numColumns="2" />
+            android:layout_height="145dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView" />
 
 
     </RelativeLayout>
@@ -45,15 +51,12 @@
             android:layout_height="wrap_content"
             android:text="@string/groceries" />
 
-        <GridView
-            android:id="@+id/GridView_Groceries"
+        <ListView
+            android:id="@+id/ListView_Groceries"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="145dp"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView2"
-            android:numColumns="2"
-            android:visibility="visible" />
-        >>>>>>> e611967454a9cc86200693e380de0e917fecebee
+            android:layout_below="@+id/textView2" />
     </RelativeLayout>
 
     <View
@@ -65,7 +68,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="100dp"
         android:orientation="horizontal">
 
 
@@ -97,9 +100,9 @@
                 android:id="@+id/spinner_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:entries="@array/shoppingItem_array"
-                android:gravity="center"
-                android:layout_weight="1" />
+                android:gravity="center" />
         </LinearLayout>
 
     </LinearLayout>
