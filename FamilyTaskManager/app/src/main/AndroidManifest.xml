@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserActivity" />
+        <activity android:name=".UserActivity"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".TaskDetailActivity"
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".FridgeActivity"
