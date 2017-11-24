@@ -307,12 +307,13 @@ public class User implements Serializable {
 
 
     public String toString() {
-        return super.toString() + "[" +
+        /*return super.toString() + "[" +
                 "id" + ":" + getId() + "," +
                 "fname" + ":" + getFname() + "," +
                 "lname" + ":" + getLname() + "," +
                 "isParent" + ":" + getIsParent() + "," +
                 "profilePicId" + ":" + getProfilePicId() + "," +
-                "accumulatedPts" + ":" + getAccumulatedPts() + "]";
+                "accumulatedPts" + ":" + getAccumulatedPts() + "]";*/
+        return (lname + " " + fname);
     }
 }

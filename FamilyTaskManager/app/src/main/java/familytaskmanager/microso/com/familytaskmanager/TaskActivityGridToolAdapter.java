@@ -31,15 +31,13 @@ public class TaskActivityGridToolAdapter extends ArrayAdapter {
         View rowView = inflater.inflate(R.layout.task_detail_tool_item, parent, false);
 
         TextView toolName = (TextView) rowView.findViewById(R.id.toolGridItemName);
-        ImageView toolIcon = (ImageView) rowView.findViewById(R.id.toolGridItemIcon);
 
         Tool tool = values.get(position);
         if(tool == null) {
-            tool = new Tool(-1, "No tool needed", 0, R.drawable.ic_menu_manage);
+            tool = new Tool(-1, "No tool needed", 0);
         }
 
         toolName.setText(tool.getName());
-        toolIcon.setImageResource(tool.getPictureID());
 
         return rowView;
     }

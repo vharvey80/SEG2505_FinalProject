@@ -440,11 +440,11 @@ public class Family {
         family.users = users;
 
         //Creating some tools for the tasks
-        Tool bucket = new Tool(1, "Bucket", 5, R.drawable.ic_menu_manage);
-        Tool mop = new Tool(2, "mop", 4, R.drawable.ic_menu_manage);
-        Tool sponge = new Tool(3, "Sponge", 3, R.drawable.ic_menu_manage);
-        Tool wrench = new Tool(4, "Wrench", 2, R.drawable.ic_menu_manage);
-        Tool broom = new Tool(5, "Broom", 1, R.drawable.ic_menu_manage);
+        Tool bucket = new Tool(1, "Bucket", 5);
+        Tool mop = new Tool(2, "mop", 4);
+        Tool sponge = new Tool(3, "Sponge", 3);
+        Tool wrench = new Tool(4, "Wrench", 2);
+        Tool broom = new Tool(5, "Broom", 1);
         family.tools.add(bucket);
         family.tools.add(mop);
         family.tools.add(sponge);

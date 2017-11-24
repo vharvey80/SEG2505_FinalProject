@@ -11,15 +11,6 @@
         android:orientation="horizontal"
         android:layout_margin="10dp">
 
-        <ImageView
-            android:id="@+id/toolGridItemIcon"
-            android:layout_width="75dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            app:srcCompat="@drawable/ic_menu_manage" />
-
-
         <TextView
             android:id="@+id/toolGridItemName"
             android:layout_width="match_parent"

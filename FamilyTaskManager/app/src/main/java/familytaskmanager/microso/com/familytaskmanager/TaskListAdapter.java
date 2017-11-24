@@ -94,7 +94,7 @@ public class TaskListAdapter extends ArrayAdapter {
 
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
-        alertDialogBuilder.setTitle("Choose User");
+        alertDialogBuilder.setTitle("Choose User To Assign");
         alertDialogBuilder.setView(dialogView);
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
@@ -103,9 +103,9 @@ public class TaskListAdapter extends ArrayAdapter {
         //List view code
         ListView listView = (ListView) dialogView.findViewById(R.id.dialogUserList);
 
-        TaskListAdapter adapter = new TaskListAdapter(context, values, userList, activity);
+        PeopleListAdapter peopleListAdapter = new PeopleListAdapter(context, userList);
+        listView.setAdapter(peopleListAdapter);
 
-        listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
