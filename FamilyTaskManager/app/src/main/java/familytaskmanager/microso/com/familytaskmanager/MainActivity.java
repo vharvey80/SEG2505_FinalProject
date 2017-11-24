@@ -25,6 +25,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity
 
         //Start of testing code. Getting a dummy family to test.
         family = Family.createDummyFamily();
+        Toast.makeText(this, "FADSFDSAFADS", Toast.LENGTH_SHORT).show();
         //End ot testing code.
 
     }
@@ -163,6 +165,29 @@ public class MainActivity extends AppCompatActivity
 
     public List<Task> getFamilyTaskList() {
         return family.getTasks();
+    }
+
+    public List<Tool> getFamilyToolList() { return family.getTools(); }
+
+    public List<User> getFamilyUserList() { return family.getUsers(); }
+
+    /**
+     * This method arranges the number pickers for date to have appropriate up and down limits.
+     * If using this method, make sure the view you pass contains NumberPickers with the right id.
+     *
+     * @param view
+     *          The view in which the NumberPicker are located
+     */
+    public static void setNumberPickersDialog(View view) {
+        NumberPicker year = (NumberPicker) view.findViewById(R.id.dialogYearPicker);
+        year.setMinValue(2017);
+        year.setMaxValue(2020);
+        NumberPicker month = (NumberPicker) view.findViewById(R.id.dialogMonthPicker);
+        month.setMinValue(1);
+        month.setMaxValue(12);
+        NumberPicker day = (NumberPicker) view.findViewById(R.id.dialogDayPicker);
+        day.setMinValue(1);
+        day.setMaxValue(31);
     }
 
     public List<User> getFamilyPeopleList() {

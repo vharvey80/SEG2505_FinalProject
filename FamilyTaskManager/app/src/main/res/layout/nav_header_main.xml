@@ -25,7 +25,6 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#FFF"
         android:popupBackground="#FFF">
-
     </Spinner>
 
 </LinearLayout>
