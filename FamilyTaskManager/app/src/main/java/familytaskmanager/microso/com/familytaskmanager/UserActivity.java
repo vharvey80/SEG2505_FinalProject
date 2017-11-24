@@ -48,7 +48,9 @@ public class UserActivity extends AppCompatActivity {
 
         //Set tasks list view
         ListView listView = (ListView) findViewById(R.id.currentTasksListView);
-        TaskListAdapter taskListAdapter = new TaskListAdapter(this, taskList);
+        //IMPORTANT! I passed null as an argument for the moment, since we focus on UI for now
+        //This will need to be fixed (need to find best solution).
+        TaskListAdapter taskListAdapter = new TaskListAdapter(this.getApplicationContext(), taskList, null, this);
         listView.setAdapter(taskListAdapter);
     }
 }

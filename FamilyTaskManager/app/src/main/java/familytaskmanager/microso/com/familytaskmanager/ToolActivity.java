@@ -29,14 +29,9 @@ public class ToolActivity extends AppCompatActivity {
         tools.add(new Tool(2, "Broom", 1));
         tools.add(new Tool(3, "Sponge", 12));
         tools.add(new Tool(4, "Wrench", 2));
-        tools.add(new Tool(5, "Bucket", 5));
-        tools.add(new Tool(6, "Broom", 1));
-        tools.add(new Tool(7, "Sponge", 12));
-        tools.add(new Tool(8, "Wrench", 2));
-        tools.add(new Tool(9, "Bucket", 5));
-        tools.add(new Tool(10, "Broom", 1));
-        tools.add(new Tool(11, "Sponge", 12));
-        tools.add(new Tool(12, "Wrench", 2));
+        tools.add(new Tool(5, "Bicycle", 1));
+        tools.add(new Tool(6, "Kleenex", 1));
+        tools.add(new Tool(7, "Mouse", 1));
 
         ToolListAdapter adapter = new ToolListAdapter(this, tools);
         listView.setAdapter(adapter);
