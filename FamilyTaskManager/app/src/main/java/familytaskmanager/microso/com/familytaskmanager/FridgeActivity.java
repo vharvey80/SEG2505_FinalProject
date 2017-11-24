@@ -67,7 +67,7 @@ public class FridgeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if(!name_edit.getText().toString().isEmpty() && !supply_edit.getText().toString().isEmpty()) {
-                            Toast.makeText(FridgeActivity.this, name_edit.getText() + " has been added to your tools.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FridgeActivity.this, name_edit.getText() + " has been added to your fridge.", Toast.LENGTH_SHORT).show();
                             /*tools.add(new Tool(5, name_edit.getText().toString(), Integer.parseInt(supply_edit.getText().toString())));
                             finish();
                             startActivity(getIntent());*/
