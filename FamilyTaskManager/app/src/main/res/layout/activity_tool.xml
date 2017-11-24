@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="familytaskmanager.microso.com.familytaskmanager.ToolActivity">
+    tools:context="familytaskmanager.microso.com.familytaskmanager.UserActivity">
 
     <LinearLayout
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="8dp"
@@ -15,7 +15,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="413dp"
+            android:layout_height="448dp"
             android:paddingBottom="-10dp"
             tools:layout_editor_absoluteX="5dp"
             tools:layout_editor_absoluteY="8dp">
@@ -46,21 +46,22 @@
                 <ListView
                     android:id="@+id/list_tools"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="371dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
                     android:divider="@null"
                     android:dividerHeight="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
+                    tools:elevation="4dp"
                     tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="8dp"
-                    tools:elevation="4dp"/>
+                    tools:layout_editor_absoluteY="8dp" />
             </LinearLayout>
 
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="86dp"
+            android:layout_height="wrap_content"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
@@ -84,5 +85,4 @@
                 tools:layout_editor_absoluteY="439dp" />
         </RelativeLayout>
     </LinearLayout>
-
-</android.support.constraint.ConstraintLayout>
+</ScrollView>
