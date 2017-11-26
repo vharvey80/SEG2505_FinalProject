@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1085211616832",
+    "firebase_url": "https://familytaskmanager-8d0e3.firebaseio.com",
+    "project_id": "familytaskmanager-8d0e3",
+    "storage_bucket": "familytaskmanager-8d0e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085211616832:android:e7c88e5660db3ae2",
+        "android_client_info": {
+          "package_name": "familytaskmanager.microso.com.familytaskmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1085211616832-qnv3n9hbnaf3of320l18huip6ljdehr2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq5DuAi81IeeNMNPrWmVTlpvshoV3tl64"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
