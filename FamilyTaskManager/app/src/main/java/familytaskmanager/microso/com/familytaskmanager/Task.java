@@ -200,6 +200,7 @@ public class Task implements Serializable {
         return index;
     }
 
+
     public boolean setUser(User aUser) {
         boolean wasSet = false;
         User existingUser = user;

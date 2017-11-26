@@ -4,9 +4,26 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- ShoppingFragment Strings -->
+    <string-array name="shoppingItem_array">
+        <item>Material</item>
+        <item>Grocerie</item>
+    </string-array>
+    <string name="material">Material</string>
+    <string name="groceries">Groceries</string>
+
+
+    <!--Fridge Activity Strings-->
+    <string name="item_name">Item</string>
+    <string name="quantity_item">Quantity</string>
+    <string name="add_item">Add Item</string>
+    <string name="new_item">New Item</string>
+
+
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="show_my_tasks">Show only my tasks</string>
+
 </resources>

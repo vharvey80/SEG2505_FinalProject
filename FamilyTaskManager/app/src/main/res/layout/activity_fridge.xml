@@ -1,16 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="familytaskmanager.microso.com.familytaskmanager.FridgeActivity">
+    tools:context="familytaskmanager.microso.com.familytaskmanager.ToolActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="FRIDGE ACTIVITY"
-        android:textSize="25dp"
-        android:layout_gravity="center"/>
+        android:orientation="vertical">
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
 
-</android.support.constraint.ConstraintLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="448dp"
+            android:paddingBottom="-10dp"
+            tools:layout_editor_absoluteX="5dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/fridgeActivityTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="0dp"
+                    android:paddingTop="15dp"
+                    android:text="Fridge management"
+                    android:textAlignment="center"
+                    android:textSize="30sp" />
+
+                <View
+                    android:layout_width="300dp"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="35dp"
+                    android:background="#AAAAAA"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="2dp" />
+
+                <ListView
+                    android:id="@+id/list_groceries"
+                    android:layout_width="match_parent"
+                    android:layout_height="371dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:divider="@null"
+                    android:dividerHeight="10dp"
+                    tools:elevation="4dp"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="8dp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/grocerie_add_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end|bottom"
+                android:clickable="true"
+                android:layout_marginEnd="14dp"
+                android:scaleType="center"
+                app:backgroundTint="#4444FF"
+                app:borderWidth="6dp"
+                app:elevation="5dp"
+                app:fabSize="normal"
+                app:rippleColor="@color/cardview_dark_background"
+                app:srcCompat="@drawable/tooladd"
+                tools:layout_editor_absoluteX="312dp"
+                tools:layout_editor_absoluteY="439dp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>
