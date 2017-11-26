@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity
     PagerAdapter pagerAdapter;
     TabLayout tbl_pages;
     Family family;
+    Family familyDB;
     public ArrayList<User> users;
 
     @Override
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         /* CODE FOR USER CHANGE SPINNER */
         ArrayList<User> users = new ArrayList<User>();
         for (int i = 0; i < 5; i++) {
-            users.add(new User((i + 1), "Fname_" + i, "Lname_" + i, true, 1, (1 + i)));
+            users.add(new User(Integer.toString(i + 1), "Fname_" + i, "Lname_" + i, true, 1, (1 + i)));
         }
 
         UserChangeAdapter user_adapter = new UserChangeAdapter(this, users);
@@ -80,7 +81,8 @@ public class MainActivity extends AppCompatActivity
         setTitle("Quick access");
 
         //Start of testing code. Getting a dummy family to test.
-        family = Family.createDummyFamily();
+        family = Family.createDummyFamily();  /******* LOOK OUT FOR THIS FUCK**** METHOD ******/
+        // TODO: 2017-11-26 CLEAN THIIS UP!!!!!!! 
         Toast.makeText(this, "FADSFDSAFADS", Toast.LENGTH_SHORT).show();
         //End ot testing code.
 
@@ -94,6 +96,13 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        family.onStartFamily();
+        //familyDB.onStartFamily();
     }
 
     @Override
@@ -155,8 +164,12 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public List<Task> getFamilyTaskList() {
-        return family.getTasks();
+    public List<Task> getFamilyActiveTaskList() {
+        return family.getActiveTasks();
+    }
+
+    public List<Task> getFamilyInactiveTaskList() {
+        return family.getInactiveTasks();
     }
 
     public List<Tool> getFamilyToolList() { return family.getTools(); }

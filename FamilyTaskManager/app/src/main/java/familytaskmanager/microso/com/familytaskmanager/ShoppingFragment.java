@@ -40,14 +40,14 @@ public class ShoppingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shopping, container, false);
 
-        tools.add(new ShoppingItem(1, "Bucket", 5, true, ShoppingItem.Category.Material));
-        tools.add(new ShoppingItem(2, "Broom", 5, true, ShoppingItem.Category.Material));
-        tools.add(new ShoppingItem(3, "Wrench", 5, true, ShoppingItem.Category.Material));
-        tools.add(new ShoppingItem(4, "Screwdriver", 5, true, ShoppingItem.Category.Material));
-        tools.add(new ShoppingItem(5, "Planks", 5, true, ShoppingItem.Category.Material));
+        tools.add(new ShoppingItem("1", "Bucket", 5, true, ShoppingItem.Category.Material));
+        tools.add(new ShoppingItem("2", "Broom", 5, true, ShoppingItem.Category.Material));
+        tools.add(new ShoppingItem("3", "Wrench", 5, true, ShoppingItem.Category.Material));
+        tools.add(new ShoppingItem("4", "Screwdriver", 5, true, ShoppingItem.Category.Material));
+        tools.add(new ShoppingItem("5", "Planks", 5, true, ShoppingItem.Category.Material));
 
-        groceries.add(new ShoppingItem(1, "Butter", 1, true, ShoppingItem.Category.Grocerie));
-        groceries.add(new ShoppingItem(1, "Chips", 2, true, ShoppingItem.Category.Grocerie));
+        groceries.add(new ShoppingItem("1", "Butter", 1, true, ShoppingItem.Category.Grocerie));
+        groceries.add(new ShoppingItem("1", "Chips", 2, true, ShoppingItem.Category.Grocerie));
 
         groceriesListview = (ListView) view.findViewById(R.id.ListView_Groceries);
         toolsListview = (ListView) view.findViewById(R.id.ListView_Tools);

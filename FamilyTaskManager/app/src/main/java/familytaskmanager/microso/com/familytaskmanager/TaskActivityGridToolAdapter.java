@@ -34,7 +34,7 @@ public class TaskActivityGridToolAdapter extends ArrayAdapter {
 
         Tool tool = values.get(position);
         if(tool == null) {
-            tool = new Tool(-1, "No tool needed", 0);
+            tool = new Tool("-1", "No tool needed", 0);
         }
 
         toolName.setText(tool.getName());

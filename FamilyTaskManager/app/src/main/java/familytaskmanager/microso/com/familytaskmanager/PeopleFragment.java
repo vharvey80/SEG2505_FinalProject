@@ -51,10 +51,6 @@ public class PeopleFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity().getApplicationContext(), UserActivity.class);
                 intent.putExtra("user", (Serializable) clickedUser);
-                /*Bundle b = new Bundle();
-                ArrayList<Task> taskList = (ArrayList<Task>) ((MainActivity) getActivity()).getFamilyTaskList();
-                b.putSerializable("list",taskList);
-                intent.putExtra("list", b);*/
                 startActivity(intent);
 
             }

@@ -17,7 +17,7 @@ public class Task implements Serializable {
     //------------------------
 
     //Task Attributes
-    private int id;
+    private String id;
     private String title;
     private String note;
     private Date dueDate;
@@ -34,8 +34,11 @@ public class Task implements Serializable {
     //------------------------
     // CONSTRUCTOR
     //------------------------
+    public Task() {
+        // For Firebase
+    }
 
-    public Task(int aId, String aTitle, String aNote, Date aDueDate, boolean aRecurrent, double aEstimatedTime, int aRewardPts, TaskState aState, User aCreator) {
+    public Task(String aId, String aTitle, String aNote, Date aDueDate, boolean aRecurrent, double aEstimatedTime, int aRewardPts, TaskState aState, User aCreator) {
         id = aId;
         title = aTitle;
         note = aNote;
@@ -55,7 +58,7 @@ public class Task implements Serializable {
     // INTERFACE
     //------------------------
 
-    public boolean setId(int aId) {
+    public boolean setId(String aId) {
         boolean wasSet = false;
         id = aId;
         wasSet = true;
@@ -111,7 +114,7 @@ public class Task implements Serializable {
         return wasSet;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -147,10 +150,6 @@ public class Task implements Serializable {
 
     public TaskState getState() {
         return state;
-    }
-
-    public boolean isRecurrent() {
-        return recurrent;
     }
 
     public User getUser() {

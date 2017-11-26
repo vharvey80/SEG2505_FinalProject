@@ -11,7 +11,7 @@ public class User implements Serializable {
     //------------------------
 
     //User Attributes
-    private int id;
+    private String id;
     private String fname;
     private String lname;
     private boolean isParent;
@@ -25,8 +25,11 @@ public class User implements Serializable {
     //------------------------
     // CONSTRUCTOR
     //------------------------
+    public User() {
+        // For Firebase
+    }
 
-    public User(int aId, String aFname, String aLname, boolean aIsParent, int aProfilePicId, int aAccumulatedPts) {
+    public User(String aId, String aFname, String aLname, boolean aIsParent, int aProfilePicId, int aAccumulatedPts) {
         id = aId;
         fname = aFname;
         lname = aLname;
@@ -41,7 +44,7 @@ public class User implements Serializable {
     // INTERFACE
     //------------------------
 
-    public boolean setId(int aId) {
+    public boolean setId(String aId) {
         boolean wasSet = false;
         id = aId;
         wasSet = true;
@@ -83,7 +86,7 @@ public class User implements Serializable {
         return wasSet;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -107,9 +110,9 @@ public class User implements Serializable {
         return accumulatedPts;
     }
 
-    public boolean isIsParent() {
+    /*public boolean isIsParent() {
         return isParent;
-    }
+    }*/
 
     public Task getAssignedTo(int index) {
         Task aAssignedTo = assignedTo.get(index);
@@ -231,7 +234,7 @@ public class User implements Serializable {
         return 0;
     }
 
-    public Task addTask(int aId, String aTitle, String aNote, Date aDueDate, boolean aRecurrent, double aEstimatedTime, int aRewardPts, Task.TaskState aState) {
+    public Task addTask(String aId, String aTitle, String aNote, Date aDueDate, boolean aRecurrent, double aEstimatedTime, int aRewardPts, Task.TaskState aState) {
         return new Task(aId, aTitle, aNote, aDueDate, aRecurrent, aEstimatedTime, aRewardPts, aState, this);
     }
 
