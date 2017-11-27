@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+// TODO: 2017-11-26  For some reason import below gives error. Investigate if time.
+//import java.util.function.ToDoubleBiFunction;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -80,8 +82,17 @@ public class MainActivity extends AppCompatActivity
         //Changing action bar title
         setTitle("Quick access");
 
+        //Creating the family. Family will take care of loading all necessary info from database
+        // TODO: 2017-11-26  I'm trying to create the family in clean, final way. Someone please check
+        //So the best I came up with, is no user in contructor, but in onStart (of MainActivity)
+        //we will check if family has a user, if not, it will be added
+        family = new Family(0); //Random id
+
+        //End of creation of family
+
+
         //Start of testing code. Getting a dummy family to test.
-        family = Family.createDummyFamily();  /******* LOOK OUT FOR THIS FUCK**** METHOD ******/
+        //family = Family.createDummyFamily();  /******* LOOK OUT FOR THIS FUCK**** METHOD ******/
         // TODO: 2017-11-26 CLEAN THIIS UP!!!!!!! 
         Toast.makeText(this, "FADSFDSAFADS", Toast.LENGTH_SHORT).show();
         //End ot testing code.
@@ -102,7 +113,19 @@ public class MainActivity extends AppCompatActivity
     protected void onStart(){
         super.onStart();
         family.onStartFamily();
+
+        // TODO: 2017-11-26 Follow up to the ToDo in MainActivity
+        //After some testing, this seems to fail because of some kind of delay
+        //There is a way to delay the execution of the if, but that not nice code
+
+        //Checking if family has at least one user
+        /*if (!family.hasUsers()) {
+            User defaultUser = new User(null, "Default User", "Default", true, R.drawable.menu_people, 0);
+            family.addUser(defaultUser); //Takes care of DB stuff
+        }*/
+
         //familyDB.onStartFamily();
+
     }
 
     @Override
@@ -198,4 +221,5 @@ public class MainActivity extends AppCompatActivity
     public List<User> getFamilyPeopleList() {
         return family.getUsers();
     }
+
 }

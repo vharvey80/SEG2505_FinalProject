@@ -37,14 +37,11 @@ public class Family {
     // CONSTRUCTOR
     //------------------------
 
-    public Family(int aId, User... allUsers) {
+    public Family(int aId) {
         id = aId;
         tools = new ArrayList<Tool>();
         users = new ArrayList<User>();
-        boolean didAddUsers = setUsers(allUsers);
-        if (!didAddUsers) {
-            throw new RuntimeException("Unable to create Family, must have at least 1 users");
-        }
+
         shoppingItems = new ArrayList<ShoppingItem>();
         activeTasks = new ArrayList<Task>();
         inactiveTasks = new ArrayList<Task>();
@@ -54,6 +51,7 @@ public class Family {
         shoppingItemsReference = database.getReference("ShoppingItems");
         activeTasksReference = database.getReference("ActiveTasks");
         inactiveTasksReference = database.getReference("InactiveTasks");
+
     }
 
     //------------------------
@@ -429,6 +427,7 @@ public class Family {
                 // Clearing the list
                 tools.clear();
 
+
                 // Iterating through all the nodes
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     // getting each tool
@@ -542,6 +541,7 @@ public class Family {
 
             }
         });
+
     }
 
     public void initializeDummyDB() {
@@ -553,7 +553,7 @@ public class Family {
 
         User mainUser = new User("1", "Walid", "B", true, R.drawable.menu_people, 0);
 
-        Family family = new Family(1, mainUser);
+        Family family = new Family(1);
 
         //Creation of 4 more users for testing
         User thomas = new User("2", "Thomas", "C", true, R.drawable.menu_people, 0);

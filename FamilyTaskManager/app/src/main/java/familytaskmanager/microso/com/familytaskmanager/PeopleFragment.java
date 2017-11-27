@@ -38,6 +38,9 @@ public class PeopleFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.peopleListView);
 
         peopleListAdapter = new PeopleListAdapter(getActivity().getApplicationContext(), ((MainActivity)getActivity()).getFamilyPeopleList());
+        for(User u : ((MainActivity)getActivity()).getFamilyPeopleList()) {
+            System.out.println("In PeopleFragment, printing user " + u);
+        }
         listView.setAdapter(peopleListAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
