@@ -421,6 +421,38 @@ public class Family {
      */
     public void onStartFamily() {
         // Creating all the reference we need for the database.
+        usersReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Clearing the list
+                users.clear();
+
+                // Iterating through all the nodes
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    // getting each user
+                    User user = postSnapshot.getValue(User.class);
+
+                    // Add user getted in the list
+                    users.add(user);
+                }
+
+                //We always want at least one user in App
+                if (users.isEmpty()) {
+                    String user_id = usersReference.push().getKey();
+                    User defaultUser = new User(user_id, "Default", "User", true, R.drawable.menu_people, 0);
+                    usersReference.child(user_id).setValue(defaultUser);
+                    users.add(defaultUser);
+                }
+
+                // Might be problems with the adapters... ?
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         toolsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -435,30 +467,6 @@ public class Family {
 
                     // Add tool getted in the list
                     tools.add(tool);
-                }
-
-                // Might be problems with the adapters... ?
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        usersReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //Clearing the list
-                users.clear();
-
-                // Iterating through all the nodes
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    // getting each user
-                    User user = postSnapshot.getValue(User.class);
-
-                    // Add user getted in the list
-                    users.add(user);
                 }
 
                 // Might be problems with the adapters... ?

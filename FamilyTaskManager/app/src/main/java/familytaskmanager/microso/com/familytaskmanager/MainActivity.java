@@ -2,6 +2,7 @@ package familytaskmanager.microso.com.familytaskmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -84,19 +85,14 @@ public class MainActivity extends AppCompatActivity
 
         //Creating the family. Family will take care of loading all necessary info from database
         // TODO: 2017-11-26  I'm trying to create the family in clean, final way. Someone please check
-        //So the best I came up with, is no user in contructor, but in onStart (of MainActivity)
-        //we will check if family has a user, if not, it will be added
+        //So the best I came up with, is no user in constructor, but in onStart (of Family)
+        //after loading all the users, if list is empty, we add one
         family = new Family(0); //Random id
 
         //End of creation of family
 
-
-        //Start of testing code. Getting a dummy family to test.
-        //family = Family.createDummyFamily();  /******* LOOK OUT FOR THIS FUCK**** METHOD ******/
-        // TODO: 2017-11-26 CLEAN THIIS UP!!!!!!! 
-        Toast.makeText(this, "FADSFDSAFADS", Toast.LENGTH_SHORT).show();
-        //End ot testing code.
-
+        //TODO: 2017-11-27 Remove this Toast at some point, just here to know when onCreate is called
+        Toast.makeText(this, "MainActivity's onCreate called", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -113,19 +109,6 @@ public class MainActivity extends AppCompatActivity
     protected void onStart(){
         super.onStart();
         family.onStartFamily();
-
-        // TODO: 2017-11-26 Follow up to the ToDo in MainActivity
-        //After some testing, this seems to fail because of some kind of delay
-        //There is a way to delay the execution of the if, but that not nice code
-
-        //Checking if family has at least one user
-        /*if (!family.hasUsers()) {
-            User defaultUser = new User(null, "Default User", "Default", true, R.drawable.menu_people, 0);
-            family.addUser(defaultUser); //Takes care of DB stuff
-        }*/
-
-        //familyDB.onStartFamily();
-
     }
 
     @Override
