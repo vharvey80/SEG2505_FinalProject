@@ -354,6 +354,12 @@ public class Family {
         if (activeTasks.contains(aTask)) {
             return false;
         }
+        //TODO Either we set state as "assigned" or we change State machine
+        /** DATABASE CODE **/
+            String task_id = activeTasksReference.push().getKey();
+            aTask.setId(task_id);
+            activeTasksReference.child(task_id).setValue(aTask);
+        /** END **/
         activeTasks.add(aTask);
         wasAdded = true;
         return wasAdded;
@@ -550,6 +556,53 @@ public class Family {
             }
         });
 
+    }
+
+    public Task requestTaskCreation(User creator, String name, double time, int year, int month,
+                                    int day, int reward, String note) {
+
+        boolean createTask = this.lookForTask(name);
+
+        Task newTask = null;
+
+        //if task does not exist, we create it.
+        if(!createTask) {
+            //Start by creating date
+            Calendar c = Calendar.getInstance();
+            c.set(year, month-1, day); //months are 0-11
+            Date date = new Date(c.getTimeInMillis());
+
+            //TODO get if it's recurrent
+            //id will be set when adding
+            //TODO review the TaskState, we might have changed plans
+            //At this point, the Task is in created State
+            newTask = new Task(null, name, note, null, false, time, reward,
+                    Task.TaskState.Created, creator);
+
+            this.addTask(newTask);
+
+        }
+
+        return newTask;
+
+    }
+
+    /**
+     * Helper method to see if a Task with the name given in argument exists in active Tasks
+     * @param name
+     * @return
+     */
+    private boolean lookForTask(String name) {
+        boolean exists = false;
+
+        for (Task t : this.activeTasks) {
+            if (t.getTitle().equals(name)) {
+                exists = true;
+                break;
+            }
+        }
+
+        return exists;
     }
 
     public void initializeDummyDB() {

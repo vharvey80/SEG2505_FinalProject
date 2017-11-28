@@ -205,4 +205,30 @@ public class MainActivity extends AppCompatActivity
         return family.getUsers();
     }
 
+    /**
+     * This method asks the family to create a new tasks, also giving the present user
+     * Might return null if taask of same name exist already
+     * TODO change the prensent user. Especially if it's now in Family
+     * @param taskName
+     * @param validTime
+     * @param year
+     * @param month
+     * @param day
+     * @param validReward
+     * @param taskNote
+     * @return
+     */
+    public Task requestTaskCreation(String taskName, double validTime, int year, int month,
+                                    int day, int validReward, String taskNote) {
+
+        //TODO Remove this dummy user and replace by currentUser
+        User creator = new User("1", "C.U.", "Creator Dummy", true, R.drawable.menu_people, 0);
+
+        Task created = family.requestTaskCreation(creator, taskName, validTime, year, month, day,
+                validReward, taskNote);
+
+        return created;
+
+    }
+
 }

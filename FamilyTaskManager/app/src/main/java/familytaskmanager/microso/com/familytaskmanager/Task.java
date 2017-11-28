@@ -48,9 +48,10 @@ public class Task implements Serializable {
         rewardPts = aRewardPts;
         state = aState;
         boolean didAddCreator = setCreator(aCreator);
-        if (!didAddCreator) {
+        //TODO uncomment the bellow check
+        /*if (!didAddCreator) {
             throw new RuntimeException("Unable to create task due to creator");
-        }
+        }*/
         tools = new ArrayList<Tool>();
     }
 
