@@ -174,7 +174,7 @@ public class TaskDetailActivity extends AppCompatActivity {
 
         //Locating all the fields
         EditText taskName = (EditText)dialogView.findViewById(R.id.dialogTaskNameField);
-        EditText taskTime = (EditText)dialogView.findViewById(R.id.dialogTimeNameField);
+        EditText taskTime = (EditText)dialogView.findViewById(R.id.dialogTimeField);
         NumberPicker yearPicker = (NumberPicker) dialogView.findViewById(R.id.dialogYearPicker);
         NumberPicker monthPicker = (NumberPicker) dialogView.findViewById(R.id.dialogMonthPicker);
         NumberPicker dayPicker = (NumberPicker) dialogView.findViewById(R.id.dialogDayPicker);

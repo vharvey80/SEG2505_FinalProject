@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -108,7 +110,33 @@ public class TasksFragment extends Fragment {
                 .setView(dialogView)
                 .setPositiveButton("Confirm and Next", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        //Here would be logic after entering info
+                        //Here we get all the info entered on the first dialog
+                        EditText nameInput = (EditText) dialogView.findViewById(R.id.dialogTaskNameField);
+                        String taskName = nameInput.getText().toString();
+
+                        EditText timeInput = (EditText) dialogView.findViewById(R.id.dialogTimeField);
+                        String taskTime = timeInput.getText().toString();
+
+                        NumberPicker yearInput = (NumberPicker) dialogView.findViewById(R.id.dialogYearPicker);
+                        int year = yearInput.getValue();
+
+                        NumberPicker monthInput = (NumberPicker) dialogView.findViewById(R.id.dialogMonthPicker);
+                        int month = monthInput.getValue();
+
+                        NumberPicker dayInput = (NumberPicker) dialogView.findViewById(R.id.dialogDayPicker);
+                        int day = dayInput.getValue();
+
+                        EditText rewardInput = (EditText) dialogView.findViewById(R.id.dialogRewardField);
+                        String taskReward = rewardInput.getText().toString();
+
+                        EditText noteInput = (EditText) dialogView.findViewById(R.id.dialogNoteField);
+                        String taskNote = noteInput.getText().toString();
+                        //End of getting the info
+
+                        //Calling private method to validate all fields
+                        //Return task if all valid. Return null in other case
+
+
                         showDialogPart2();
                     }
                 })
