@@ -36,13 +36,13 @@
             android:layout_margin="5dp">
 
             <TextView
-                android:id="@+id/dialogTimeNameLabel"
+                android:id="@+id/dialogTimeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Estimated Time: " />
 
             <EditText
-                android:id="@+id/dialogTimeNameField"
+                android:id="@+id/dialogTimeField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

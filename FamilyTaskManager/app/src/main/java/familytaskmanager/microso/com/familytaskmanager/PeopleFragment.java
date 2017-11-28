@@ -38,6 +38,9 @@ public class PeopleFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.peopleListView);
 
         peopleListAdapter = new PeopleListAdapter(getActivity().getApplicationContext(), ((MainActivity)getActivity()).getFamilyPeopleList());
+        for(User u : ((MainActivity)getActivity()).getFamilyPeopleList()) {
+            System.out.println("In PeopleFragment, printing user " + u);
+        }
         listView.setAdapter(peopleListAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -51,10 +54,6 @@ public class PeopleFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity().getApplicationContext(), UserActivity.class);
                 intent.putExtra("user", (Serializable) clickedUser);
-                /*Bundle b = new Bundle();
-                ArrayList<Task> taskList = (ArrayList<Task>) ((MainActivity) getActivity()).getFamilyTaskList();
-                b.putSerializable("list",taskList);
-                intent.putExtra("list", b);*/
                 startActivity(intent);
 
             }

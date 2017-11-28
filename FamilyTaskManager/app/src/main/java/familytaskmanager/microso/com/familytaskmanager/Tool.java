@@ -10,10 +10,9 @@ public class Tool implements Serializable {
     //------------------------
 
     //Tool Attributes
-    private int id;
+    private String id;
     private String name;
     private int supply;
-    //private int pictureID;
 
     //Tool Associations
     private List<Task> tasks;
@@ -21,8 +20,11 @@ public class Tool implements Serializable {
     //------------------------
     // CONSTRUCTOR
     //------------------------
+    public Tool() {
+        // For Firebase
+    }
 
-    public Tool(int aId, String aName, int aSupply) {
+    public Tool(String aId, String aName, int aSupply) {
         id = aId;
         name = aName;
         supply = aSupply;
@@ -34,7 +36,7 @@ public class Tool implements Serializable {
     // INTERFACE
     //------------------------
 
-    public boolean setId(int aId) {
+    public boolean setId(String aId) {
         boolean wasSet = false;
         id = aId;
         wasSet = true;
@@ -62,7 +64,7 @@ public class Tool implements Serializable {
         return wasSet;
     }*/
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

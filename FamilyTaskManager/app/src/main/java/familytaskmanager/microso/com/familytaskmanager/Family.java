@@ -3,6 +3,12 @@ package familytaskmanager.microso.com.familytaskmanager;
 import java.util.*;
 import java.sql.Date;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class Family {
 
     //------------------------
@@ -16,22 +22,36 @@ public class Family {
     private List<Tool> tools;
     private List<User> users;
     private List<ShoppingItem> shoppingItems;
-    private List<Task> tasks;
+    private List<Task> activeTasks;
+    private List<Task> inactiveTasks;
+
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+    private DatabaseReference toolsReference;
+    private DatabaseReference usersReference;
+    private DatabaseReference shoppingItemsReference;
+    private DatabaseReference activeTasksReference;
+    private DatabaseReference inactiveTasksReference;
 
     //------------------------
     // CONSTRUCTOR
     //------------------------
 
-    public Family(int aId, User... allUsers) {
+    public Family(int aId) {
         id = aId;
         tools = new ArrayList<Tool>();
         users = new ArrayList<User>();
-        boolean didAddUsers = setUsers(allUsers);
-        if (!didAddUsers) {
-            throw new RuntimeException("Unable to create Family, must have at least 1 users");
-        }
+
         shoppingItems = new ArrayList<ShoppingItem>();
-        tasks = new ArrayList<Task>();
+        activeTasks = new ArrayList<Task>();
+        inactiveTasks = new ArrayList<Task>();
+
+        toolsReference = database.getReference("Tools");
+        usersReference = database.getReference("Users");
+        shoppingItemsReference = database.getReference("ShoppingItems");
+        activeTasksReference = database.getReference("ActiveTasks");
+        inactiveTasksReference = database.getReference("InactiveTasks");
+
     }
 
     //------------------------
@@ -124,28 +144,38 @@ public class Family {
         return index;
     }
 
-    public Task getTask(int index) {
-        Task aTask = tasks.get(index);
+    public Task getActiveTask(int index) {
+        Task aTask = activeTasks.get(index);
         return aTask;
     }
 
-    public List<Task> getTasks() {
-        List<Task> newTasks = Collections.unmodifiableList(tasks);
+    public Task getInactiveTask(int index) {
+        Task aTask = inactiveTasks.get(index);
+        return aTask;
+    }
+
+    public List<Task> getActiveTasks() {
+        List<Task> newTasks = Collections.unmodifiableList(activeTasks);
+        return newTasks;
+    }
+
+    public List<Task> getInactiveTasks() {
+        List<Task> newTasks = Collections.unmodifiableList(inactiveTasks);
         return newTasks;
     }
 
     public int numberOfTasks() {
-        int number = tasks.size();
+        int number = activeTasks.size() + inactiveTasks.size();
         return number;
-    }
+    } // Might change
 
-    public boolean hasTasks() {
-        boolean has = tasks.size() > 0;
+    public boolean hasActiveTasks() {
+        boolean has = activeTasks.size() > 0;
         return has;
     }
 
     public int indexOfTask(Task aTask) {
-        int index = tasks.indexOf(aTask);
+        int index = activeTasks.indexOf(aTask);
         return index;
     }
 
@@ -153,75 +183,61 @@ public class Family {
         return 0;
     }
 
+    // Modified for the database.
     public boolean addTool(Tool aTool) {
         boolean wasAdded = false;
         if (tools.contains(aTool)) {
             return false;
         }
+        /** DATABASE CODE **/
+            String tool_id = toolsReference.push().getKey();
+            aTool.setId(tool_id);
+            toolsReference.child(tool_id).setValue(aTool);
+        /** END **/
         tools.add(aTool);
         wasAdded = true;
         return wasAdded;
     }
 
+    // Modified for the database.
     public boolean removeTool(Tool aTool) {
         boolean wasRemoved = false;
+        DatabaseReference tool_del_ref; // temporary reference
         if (tools.contains(aTool)) {
+            /** DATABASE CODE **/
+                tool_del_ref = toolsReference.child(aTool.getId()); // get reference
+                tool_del_ref.removeValue(); // delete the tool
+            /** END **/
             tools.remove(aTool);
             wasRemoved = true;
         }
         return wasRemoved;
     }
 
-    public boolean addToolAt(Tool aTool, int index) {
-        boolean wasAdded = false;
-        if (addTool(aTool)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfTools()) {
-                index = numberOfTools() - 1;
-            }
-            tools.remove(aTool);
-            tools.add(index, aTool);
-            wasAdded = true;
-        }
-        return wasAdded;
-    }
-
-    public boolean addOrMoveToolAt(Tool aTool, int index) {
-        boolean wasAdded = false;
-        if (tools.contains(aTool)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfTools()) {
-                index = numberOfTools() - 1;
-            }
-            tools.remove(aTool);
-            tools.add(index, aTool);
-            wasAdded = true;
-        } else {
-            wasAdded = addToolAt(aTool, index);
-        }
-        return wasAdded;
-    }
-
     public static int minimumNumberOfUsers() {
         return 1;
     }
 
+    // Modified for databse.
     public boolean addUser(User aUser) {
         boolean wasAdded = false;
         if (users.contains(aUser)) {
             return false;
         }
+        /** DATABASE CODE **/
+            String user_id = usersReference.push().getKey();
+            aUser.setId(user_id);
+            usersReference.child(user_id).setValue(aUser);
+        /** END **/
         users.add(aUser);
         wasAdded = true;
         return wasAdded;
     }
 
+    // Modified for databse.
     public boolean removeUser(User aUser) {
         boolean wasRemoved = false;
+        DatabaseReference user_del_ref; // temporary reference
         if (!users.contains(aUser)) {
             return wasRemoved;
         }
@@ -229,10 +245,27 @@ public class Family {
         if (numberOfUsers() <= minimumNumberOfUsers()) {
             return wasRemoved;
         }
-
+        /** DATABASE CODE **/
+            user_del_ref = usersReference.child(aUser.getId()); // get reference
+            user_del_ref.removeValue(); // delete the tool
+        /** END **/
         users.remove(aUser);
         wasRemoved = true;
         return wasRemoved;
+    }
+
+    public boolean updateUser(User aUser) {
+        boolean wasUpdated = false;
+        DatabaseReference user_update_ref;
+        if (users.contains(aUser)) {
+            return false;
+        }
+        /** DATABASE CODE **/
+            user_update_ref = usersReference.child(aUser.getId());
+            user_update_ref.setValue(aUser);
+        /** END **/
+        wasUpdated = true;
+        return wasUpdated;
     }
 
     public boolean setUsers(User... newUsers) {
@@ -253,40 +286,6 @@ public class Family {
         users.addAll(verifiedUsers);
         wasSet = true;
         return wasSet;
-    }
-
-    public boolean addUserAt(User aUser, int index) {
-        boolean wasAdded = false;
-        if (addUser(aUser)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfUsers()) {
-                index = numberOfUsers() - 1;
-            }
-            users.remove(aUser);
-            users.add(index, aUser);
-            wasAdded = true;
-        }
-        return wasAdded;
-    }
-
-    public boolean addOrMoveUserAt(User aUser, int index) {
-        boolean wasAdded = false;
-        if (users.contains(aUser)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfUsers()) {
-                index = numberOfUsers() - 1;
-            }
-            users.remove(aUser);
-            users.add(index, aUser);
-            wasAdded = true;
-        } else {
-            wasAdded = addUserAt(aUser, index);
-        }
-        return wasAdded;
     }
 
     public static int minimumNumberOfShoppingItems() {
@@ -352,18 +351,18 @@ public class Family {
 
     public boolean addTask(Task aTask) {
         boolean wasAdded = false;
-        if (tasks.contains(aTask)) {
+        if (activeTasks.contains(aTask)) {
             return false;
         }
-        tasks.add(aTask);
+        activeTasks.add(aTask);
         wasAdded = true;
         return wasAdded;
     }
 
     public boolean removeTask(Task aTask) {
         boolean wasRemoved = false;
-        if (tasks.contains(aTask)) {
-            tasks.remove(aTask);
+        if (activeTasks.contains(aTask)) {
+            activeTasks.remove(aTask);
             wasRemoved = true;
         }
         return wasRemoved;
@@ -378,8 +377,8 @@ public class Family {
             if (index > numberOfTasks()) {
                 index = numberOfTasks() - 1;
             }
-            tasks.remove(aTask);
-            tasks.add(index, aTask);
+            activeTasks.remove(aTask);
+            activeTasks.add(index, aTask);
             wasAdded = true;
         }
         return wasAdded;
@@ -387,15 +386,15 @@ public class Family {
 
     public boolean addOrMoveTaskAt(Task aTask, int index) {
         boolean wasAdded = false;
-        if (tasks.contains(aTask)) {
+        if (activeTasks.contains(aTask)) {
             if (index < 0) {
                 index = 0;
             }
             if (index > numberOfTasks()) {
                 index = numberOfTasks() - 1;
             }
-            tasks.remove(aTask);
-            tasks.add(index, aTask);
+            activeTasks.remove(aTask);
+            activeTasks.add(index, aTask);
             wasAdded = true;
         } else {
             wasAdded = addTaskAt(aTask, index);
@@ -407,7 +406,7 @@ public class Family {
         tools.clear();
         users.clear();
         shoppingItems.clear();
-        tasks.clear();
+        activeTasks.clear();
     }
 
 
@@ -420,31 +419,173 @@ public class Family {
      * Testong Method.
      * @return
      */
+    public void onStartFamily() {
+        // Creating all the reference we need for the database.
+        usersReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Clearing the list
+                users.clear();
+
+                // Iterating through all the nodes
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    // getting each user
+                    User user = postSnapshot.getValue(User.class);
+
+                    // Add user getted in the list
+                    users.add(user);
+                }
+
+                //We always want at least one user in App
+                if (users.isEmpty()) {
+                    String user_id = usersReference.push().getKey();
+                    User defaultUser = new User(user_id, "Default", "User", true, R.drawable.menu_people, 0);
+                    usersReference.child(user_id).setValue(defaultUser);
+                    users.add(defaultUser);
+                }
+
+                // Might be problems with the adapters... ?
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        toolsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Clearing the list
+                tools.clear();
+
+
+                // Iterating through all the nodes
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    // getting each tool
+                    Tool tool = postSnapshot.getValue(Tool.class);
+
+                    // Add tool getted in the list
+                    tools.add(tool);
+                }
+
+                // Might be problems with the adapters... ?
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        shoppingItemsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Clearing the list
+                shoppingItems.clear();
+
+                // Iterating through all the nodes
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    // getting each item
+                    ShoppingItem shoppingItem = postSnapshot.getValue(ShoppingItem.class);
+
+                    // Add shopping getted in the list
+                    shoppingItems.add(shoppingItem);
+                }
+
+                // Might be problems with the adapters... ?
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        activeTasksReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Clearing the list
+                activeTasks.clear();
+
+                // Iterating through all the nodes
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    // getting each item
+                    Task activeTask = postSnapshot.getValue(Task.class);
+
+                    // Add item getted in the list
+                    activeTasks.add(activeTask);
+                }
+
+                // Might be problems with the adapters... ?
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        inactiveTasksReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Clearing the list
+                inactiveTasks.clear();
+
+                // Iterating through all the nodes
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    // getting each item
+                    Task inactiveTask = postSnapshot.getValue(Task.class);
+
+                    // Add item getted in the list
+                    inactiveTasks.add(inactiveTask);
+                }
+
+                // Might be problems with the adapters... ?
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void initializeDummyDB() {
+        String tool_id = toolsReference.push().getKey();
+        toolsReference.child(tool_id).setValue(new Tool(tool_id, "Walid", 2));
+    }
+
     public static Family createDummyFamily() {
 
-        User mainUser = new User(1, "Walid", "B", true, R.drawable.menu_people, 0);
+        User mainUser = new User("1", "Walid", "B", true, R.drawable.menu_people, 0);
 
-        Family family = new Family(1, mainUser);
+        Family family = new Family(1);
 
         //Creation of 4 more users for testing
-        User thomas = new User(2, "Thomas", "C", true, R.drawable.menu_people, 0);
-        User vincent = new User(2, "Vincent", "H", true, R.drawable.menu_people, 0);
-        User oliver = new User(2, "oliver", "B", false, R.drawable.menu_people, 0);
-        User jeanGab = new User(2, "Jean-Gabriel", "G", true, R.drawable.menu_people, 0);
-        List<User> users = new ArrayList<>();
+        User thomas = new User("2", "Thomas", "C", true, R.drawable.menu_people, 0);
+        User vincent = new User("3", "Vincent", "H", true, R.drawable.menu_people, 0);
+        User oliver = new User("4", "oliver", "B", false, R.drawable.menu_people, 0);
+        User jeanGab = new User("5", "Jean-Gabriel", "G", true, R.drawable.menu_people, 0);
+        family.addUser(mainUser);
+        family.addUser(thomas);
+        family.addUser(vincent);
+        family.addUser(oliver);
+        /*List<User> users = new ArrayList<>();
         users.add(mainUser);
         users.add(thomas);
         users.add(vincent);
         users.add(oliver);
         users.add(jeanGab);
-        family.users = users;
+        family.users = users;*/
 
         //Creating some tools for the tasks
-        Tool bucket = new Tool(1, "Bucket", 5);
-        Tool mop = new Tool(2, "mop", 4);
-        Tool sponge = new Tool(3, "Sponge", 3);
-        Tool wrench = new Tool(4, "Wrench", 2);
-        Tool broom = new Tool(5, "Broom", 1);
+        Tool bucket = new Tool("1", "Bucket", 5);
+        Tool mop = new Tool("2", "mop", 4);
+        Tool sponge = new Tool("3", "Sponge", 3);
+        Tool wrench = new Tool("4", "Wrench", 2);
+        Tool broom = new Tool("5", "Broom", 1);
         family.tools.add(bucket);
         family.tools.add(mop);
         family.tools.add(sponge);
@@ -452,20 +593,20 @@ public class Family {
         family.tools.add(broom);
 
         //Creation of 5 tasks for testing
-        Task dishes = new Task(1, "Dishes", "Dishes note", new Date((2017-1900), 02, 9), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task dishes = new Task("1", "Dishes", "Dishes note", new Date((2017-1900), 02, 9), false, 0.25, 5, Task.TaskState.Created, mainUser);
         dishes.setUser(mainUser);
         dishes.addTool(sponge);
-        Task sweep = new Task(2, "Sweep", "Sweep noooooooote", new Date((2017-1900), 01, 10), false, 1, 10, Task.TaskState.Created, mainUser);
+        Task sweep = new Task("2", "Sweep", "Sweep noooooooote", new Date((2017-1900), 01, 10), false, 1, 10, Task.TaskState.Created, mainUser);
         sweep.setUser(thomas);
         sweep.addTool(broom);
-        Task washCar = new Task(1, "Wash Car", "Wash Car note", new Date((2017-1900), 01, 11), false, 1, 5, Task.TaskState.Created, thomas);
+        Task washCar = new Task("1", "Wash Car", "Wash Car note", new Date((2017-1900), 01, 11), false, 1, 5, Task.TaskState.Created, thomas);
         washCar.addTool(bucket);
         washCar.addTool(sponge);
-        Task shop = new Task(1, "Shop", "shop nooooote", new Date((2017-1900), 01, 11), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task shop = new Task("1", "Shop", "shop nooooote", new Date((2017-1900), 01, 11), false, 0.25, 5, Task.TaskState.Created, mainUser);
         shop.addTool(mop);
-        Task otherTask = new Task(1, "Other", "Other task note", new Date((2017-1900), 01, 12), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task otherTask = new Task("1", "Other", "Other task note", new Date((2017-1900), 01, 12), false, 0.25, 5, Task.TaskState.Created, mainUser);
         otherTask.addTool(wrench);
-        Task outOfIdeas = new Task(1, "I'm out of ideas", "Other task note", new Date((2017-1900), 01, 12), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task outOfIdeas = new Task("1", "I'm out of ideas", "Other task note", new Date((2017-1900), 01, 12), false, 0.25, 5, Task.TaskState.Created, mainUser);
         List<Task> tasks = new ArrayList<>();
         tasks.add(dishes);
         tasks.add(sweep);
@@ -473,7 +614,7 @@ public class Family {
         tasks.add(shop);
         tasks.add(otherTask);
         tasks.add(outOfIdeas);
-        family.tasks = tasks;
+        family.activeTasks = tasks;
 
         return family;
     }

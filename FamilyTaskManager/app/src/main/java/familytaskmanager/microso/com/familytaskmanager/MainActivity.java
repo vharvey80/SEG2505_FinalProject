@@ -2,6 +2,7 @@ package familytaskmanager.microso.com.familytaskmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -26,6 +27,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+// TODO: 2017-11-26  For some reason import below gives error. Investigate if time.
+//import java.util.function.ToDoubleBiFunction;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     PagerAdapter pagerAdapter;
     TabLayout tbl_pages;
     Family family;
+    Family familyDB;
     public ArrayList<User> users;
 
     @Override
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity
         /* CODE FOR USER CHANGE SPINNER */
         ArrayList<User> users = new ArrayList<User>();
         for (int i = 0; i < 5; i++) {
-            users.add(new User((i + 1), "Fname_" + i, "Lname_" + i, true, 1, (1 + i)));
+            users.add(new User(Integer.toString(i + 1), "Fname_" + i, "Lname_" + i, true, 1, (1 + i)));
         }
 
         UserChangeAdapter user_adapter = new UserChangeAdapter(this, users);
@@ -79,11 +83,16 @@ public class MainActivity extends AppCompatActivity
         //Changing action bar title
         setTitle("Quick access");
 
-        //Start of testing code. Getting a dummy family to test.
-        family = Family.createDummyFamily();
-        Toast.makeText(this, "FADSFDSAFADS", Toast.LENGTH_SHORT).show();
-        //End ot testing code.
+        //Creating the family. Family will take care of loading all necessary info from database
+        // TODO: 2017-11-26  I'm trying to create the family in clean, final way. Someone please check
+        //So the best I came up with, is no user in constructor, but in onStart (of Family)
+        //after loading all the users, if list is empty, we add one
+        family = new Family(0); //Random id
 
+        //End of creation of family
+
+        //TODO: 2017-11-27 Remove this Toast at some point, just here to know when onCreate is called
+        Toast.makeText(this, "MainActivity's onCreate called", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -94,6 +103,12 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        family.onStartFamily();
     }
 
     @Override
@@ -155,8 +170,12 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public List<Task> getFamilyTaskList() {
-        return family.getTasks();
+    public List<Task> getFamilyActiveTaskList() {
+        return family.getActiveTasks();
+    }
+
+    public List<Task> getFamilyInactiveTaskList() {
+        return family.getInactiveTasks();
     }
 
     public List<Tool> getFamilyToolList() { return family.getTools(); }
@@ -185,4 +204,5 @@ public class MainActivity extends AppCompatActivity
     public List<User> getFamilyPeopleList() {
         return family.getUsers();
     }
+
 }

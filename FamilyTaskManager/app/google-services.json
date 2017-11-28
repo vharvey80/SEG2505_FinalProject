@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1085211616832-6roj26e6g4jkebifm7q12vsgc9pl1jtj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "familytaskmanager.microso.com.familytaskmanager",
+            "certificate_hash": "5bcde1962b6e7c78ef511df79c240819f538b4dc"
+          }
+        },
+        {
           "client_id": "1085211616832-qnv3n9hbnaf3of320l18huip6ljdehr2.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085211616832-qnv3n9hbnaf3of320l18huip6ljdehr2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

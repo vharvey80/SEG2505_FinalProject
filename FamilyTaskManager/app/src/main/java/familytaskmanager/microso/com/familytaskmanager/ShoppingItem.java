@@ -14,7 +14,7 @@ public class ShoppingItem {
     //------------------------
 
     //ShoppingItem Attributes
-    private int id;
+    private String id;
     private String name;
     private int quantity;
     private boolean needToBuy;
@@ -23,8 +23,11 @@ public class ShoppingItem {
     //------------------------
     // CONSTRUCTOR
     //------------------------
+    public ShoppingItem() {
+        // For Firebase.
+    }
 
-    public ShoppingItem(int aId, String aName, int aQuantity, boolean aNeedToBuy, Category aCategory) {
+    public ShoppingItem(String aId, String aName, int aQuantity, boolean aNeedToBuy, Category aCategory) {
         id = aId;
         name = aName;
         quantity = aQuantity;
@@ -36,7 +39,7 @@ public class ShoppingItem {
     // INTERFACE
     //------------------------
 
-    public boolean setId(int aId) {
+    public boolean setId(String aId) {
         boolean wasSet = false;
         id = aId;
         wasSet = true;
@@ -71,7 +74,7 @@ public class ShoppingItem {
         return wasSet;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

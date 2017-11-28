@@ -42,7 +42,7 @@ public class PeopleListAdapter extends ArrayAdapter{
         //Set user info into the views
         String s = people.getFname()+" "+people.getLname();
         peopleName.setText(s);
-        s = "Allocated tasks: "+ people.getTasks().size();
+        //s = "Allocated tasks: "+ people.getTasks().size();   /********* LOOK OUT FOR THE NULL POINTER EXCEPTION *********/
         peopleNumTasks.setText(s);
         peopleIcon.setImageResource(people.getProfilePicId());
         return rowView;

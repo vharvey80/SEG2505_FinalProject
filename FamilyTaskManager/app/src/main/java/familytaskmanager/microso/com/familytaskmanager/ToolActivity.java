@@ -25,13 +25,11 @@ public class ToolActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.list_tools);
 
-        tools.add(new Tool(1, "Bucket", 5));
-        tools.add(new Tool(2, "Broom", 1));
-        tools.add(new Tool(3, "Sponge", 12));
-        tools.add(new Tool(4, "Wrench", 2));
-        tools.add(new Tool(5, "Bicycle", 1));
-        tools.add(new Tool(6, "Kleenex", 1));
-        tools.add(new Tool(7, "Mouse", 1));
+        tools.add(new Tool("1", "Bucket", 5));
+        tools.add(new Tool("2", "Broom", 1));
+        tools.add(new Tool("3", "Sponge", 12));
+        tools.add(new Tool("4", "Wrench", 2));
+        tools.add(new Tool("5", "Bicycle", 1));
 
         ToolListAdapter adapter = new ToolListAdapter(this, tools);
         listView.setAdapter(adapter);
@@ -70,9 +68,6 @@ public class ToolActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if(!name_edit.getText().toString().isEmpty() && !supply_edit.getText().toString().isEmpty()) {
                             Toast.makeText(ToolActivity.this, name_edit.getText() + " has been added to your tools.", Toast.LENGTH_SHORT).show();
-                            /*tools.add(new Tool(5, name_edit.getText().toString(), Integer.parseInt(supply_edit.getText().toString())));
-                            finish();
-                            startActivity(getIntent());*/
                             dialog.dismiss();
                         } else {
                             Toast.makeText(ToolActivity.this, "You need to fill both fields..", Toast.LENGTH_SHORT).show();
