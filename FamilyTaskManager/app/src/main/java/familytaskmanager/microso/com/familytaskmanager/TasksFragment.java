@@ -182,7 +182,6 @@ public class TasksFragment extends Fragment {
 
                     if (createdTask == null) {
                         Toast.makeText(getActivity(), "A task of the same name exists already", Toast.LENGTH_LONG).show();
-                        dialog.cancel();
                     } else {
                         taskListAdapter.notifyDataSetChanged(); //need to update adapter after adding task
                         Toast.makeText(getActivity(), "Task Succesfully Created!", Toast.LENGTH_SHORT).show();

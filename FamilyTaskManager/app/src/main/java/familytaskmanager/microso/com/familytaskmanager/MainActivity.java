@@ -72,12 +72,12 @@ public class MainActivity extends AppCompatActivity
         /* END USER CHANGE */
 
         //Start code for Tab Menu
-        vp_pages= (ViewPager) findViewById(R.id.vp_pages);
+        /*vp_pages= (ViewPager) findViewById(R.id.vp_pages);
         pagerAdapter = new FragmentAdapter(getSupportFragmentManager());
         vp_pages.setAdapter(pagerAdapter);
 
         tbl_pages= (TabLayout) findViewById(R.id.tbl_pages);
-        tbl_pages.setupWithViewPager(vp_pages);
+        tbl_pages.setupWithViewPager(vp_pages);*/
         //End code for Tab Menu
 
         //Changing action bar title
@@ -109,6 +109,26 @@ public class MainActivity extends AppCompatActivity
     protected void onStart(){
         super.onStart();
         family.onStartFamily();
+
+        //Start code for Tab Menu
+
+        //Delay needed because of asynchonous DB
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                vp_pages= (ViewPager) findViewById(R.id.vp_pages);
+                pagerAdapter = new FragmentAdapter(getSupportFragmentManager());
+                vp_pages.setAdapter(pagerAdapter);
+
+                tbl_pages= (TabLayout) findViewById(R.id.tbl_pages);
+                tbl_pages.setupWithViewPager(vp_pages);
+            }
+
+        }, 500);
+
+        //End code for Tab Menu
     }
 
     @Override

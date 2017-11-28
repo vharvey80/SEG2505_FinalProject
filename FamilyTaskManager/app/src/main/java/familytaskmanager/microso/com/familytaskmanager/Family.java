@@ -438,6 +438,11 @@ public class Family {
                     // getting each user
                     User user = postSnapshot.getValue(User.class);
 
+                    if(user.getTasks() == null) {
+                        List<Task> tasks = new ArrayList<Task>();
+                        user.setTasks(tasks);
+                    }
+
                     // Add user getted in the list
                     users.add(user);
                 }
@@ -519,6 +524,17 @@ public class Family {
                     // getting each item
                     Task activeTask = postSnapshot.getValue(Task.class);
 
+                    //Collections sometimes come back null from DB, which should not be case
+                    //So here we check and corret
+                    if (activeTask.getUsers() == null) {
+                        Map<String, User> users = new HashMap<String, User>();
+                        activeTask.setUsers(users);
+                    }
+                    if (activeTask.getTools() == null) {
+                        List<Tool> tools = new ArrayList<Tool>();
+                        activeTask.setTools(tools);
+                    }
+
                     // Add item getted in the list
                     activeTasks.add(activeTask);
                 }
@@ -542,6 +558,8 @@ public class Family {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     // getting each item
                     Task inactiveTask = postSnapshot.getValue(Task.class);
+
+                    //TODO add security for null values coming from DB
 
                     // Add item getted in the list
                     inactiveTasks.add(inactiveTask);
@@ -570,13 +588,12 @@ public class Family {
             //Start by creating date
             Calendar c = Calendar.getInstance();
             c.set(year, month-1, day); //months are 0-11
-            Date date = new Date(c.getTimeInMillis());
 
             //TODO get if it's recurrent
             //id will be set when adding
             //TODO review the TaskState, we might have changed plans
             //At this point, the Task is in created State
-            newTask = new Task(null, name, note, null, false, time, reward,
+            newTask = new Task(null, name, note, c.getTimeInMillis(), false, time, reward,
                     Task.TaskState.Created, creator);
 
             this.addTask(newTask);
@@ -596,6 +613,7 @@ public class Family {
         boolean exists = false;
 
         for (Task t : this.activeTasks) {
+            System.out.println(t);
             if (t.getTitle().equals(name)) {
                 exists = true;
                 break;
@@ -646,20 +664,20 @@ public class Family {
         family.tools.add(broom);
 
         //Creation of 5 tasks for testing
-        Task dishes = new Task("1", "Dishes", "Dishes note", new Date((2017-1900), 02, 9), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task dishes = new Task("1", "Dishes", "Dishes note", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
         dishes.setUser(mainUser);
         dishes.addTool(sponge);
-        Task sweep = new Task("2", "Sweep", "Sweep noooooooote", new Date((2017-1900), 01, 10), false, 1, 10, Task.TaskState.Created, mainUser);
+        Task sweep = new Task("2", "Sweep", "Sweep noooooooote", 1511880133, false, 1, 10, Task.TaskState.Created, mainUser);
         sweep.setUser(thomas);
         sweep.addTool(broom);
-        Task washCar = new Task("1", "Wash Car", "Wash Car note", new Date((2017-1900), 01, 11), false, 1, 5, Task.TaskState.Created, thomas);
+        Task washCar = new Task("1", "Wash Car", "Wash Car note", 1511880133, false, 1, 5, Task.TaskState.Created, thomas);
         washCar.addTool(bucket);
         washCar.addTool(sponge);
-        Task shop = new Task("1", "Shop", "shop nooooote", new Date((2017-1900), 01, 11), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task shop = new Task("1", "Shop", "shop nooooote", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
         shop.addTool(mop);
-        Task otherTask = new Task("1", "Other", "Other task note", new Date((2017-1900), 01, 12), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task otherTask = new Task("1", "Other", "Other task note", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
         otherTask.addTool(wrench);
-        Task outOfIdeas = new Task("1", "I'm out of ideas", "Other task note", new Date((2017-1900), 01, 12), false, 0.25, 5, Task.TaskState.Created, mainUser);
+        Task outOfIdeas = new Task("1", "I'm out of ideas", "Other task note", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
         List<Task> tasks = new ArrayList<>();
         tasks.add(dishes);
         tasks.add(sweep);
