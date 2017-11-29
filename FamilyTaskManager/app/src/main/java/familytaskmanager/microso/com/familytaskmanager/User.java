@@ -145,8 +145,8 @@ public class User implements Serializable {
     }
 
     public List<Task> getTasks() {
-        List<Task> newTasks = Collections.unmodifiableList(tasks);
-        return newTasks;
+        //List<Task> newTasks = Collections.unmodifiableList(tasks);
+        return this.tasks;
     }
 
     public int numberOfTasks() {
@@ -234,7 +234,7 @@ public class User implements Serializable {
         return 0;
     }
 
-    public Task addTask(String aId, String aTitle, String aNote, Date aDueDate, boolean aRecurrent, double aEstimatedTime, int aRewardPts, Task.TaskState aState) {
+    public Task addTask(String aId, String aTitle, String aNote, long aDueDate, boolean aRecurrent, double aEstimatedTime, int aRewardPts, Task.TaskState aState) {
         return new Task(aId, aTitle, aNote, aDueDate, aRecurrent, aEstimatedTime, aRewardPts, aState, this);
     }
 
@@ -306,6 +306,10 @@ public class User implements Serializable {
             Task aTask = tasks.get(i - 1);
             aTask.delete();
         }
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
 

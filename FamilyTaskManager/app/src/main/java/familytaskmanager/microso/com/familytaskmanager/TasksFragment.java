@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
@@ -101,64 +102,134 @@ public class TasksFragment extends Fragment {
     }
 
     private void showDialogPart1() {
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         final View dialogView = inflater.inflate(R.layout.dialog_change_or_create_task_1, null);
         MainActivity.setNumberPickersDialog(dialogView);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setTitle("Task Info (1/2)");
 
-        AlertDialog dialog = new AlertDialog.Builder(getActivity())
-                .setTitle("Task Info (1/2)")
-                .setView(dialogView)
-                .setPositiveButton("Confirm and Next", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //Here we get all the info entered on the first dialog
-                        EditText nameInput = (EditText) dialogView.findViewById(R.id.dialogTaskNameField);
-                        String taskName = nameInput.getText().toString();
+        //get buttons to set onClick
+        final Button buttonConfirm = (Button) dialogView.findViewById(R.id.dialogConfirmAndNext);
+        final Button buttonCancel = (Button) dialogView.findViewById(R.id.dialogCancel);
 
-                        EditText timeInput = (EditText) dialogView.findViewById(R.id.dialogTimeField);
-                        String taskTime = timeInput.getText().toString();
-
-                        NumberPicker yearInput = (NumberPicker) dialogView.findViewById(R.id.dialogYearPicker);
-                        int year = yearInput.getValue();
-
-                        NumberPicker monthInput = (NumberPicker) dialogView.findViewById(R.id.dialogMonthPicker);
-                        int month = monthInput.getValue();
-
-                        NumberPicker dayInput = (NumberPicker) dialogView.findViewById(R.id.dialogDayPicker);
-                        int day = dayInput.getValue();
-
-                        EditText rewardInput = (EditText) dialogView.findViewById(R.id.dialogRewardField);
-                        String taskReward = rewardInput.getText().toString();
-
-                        EditText noteInput = (EditText) dialogView.findViewById(R.id.dialogNoteField);
-                        String taskNote = noteInput.getText().toString();
-                        //End of getting the info
-
-                        //Calling private method to validate all fields
-                        //Return task if all valid. Return null in other case
-
-
-                        showDialogPart2();
-                    }
-                })
-                .setNegativeButton("Cancel", null).create();
+        final AlertDialog dialog = dialogBuilder.create();
         dialog.show();
+
+        //setting function of the confirm button
+        buttonConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Setting boolean to stop advancement if needed
+                boolean allGood = true;
+
+                //Here we get all the info entered on the first dialog
+                EditText nameInput = (EditText) dialogView.findViewById(R.id.dialogTaskNameField);
+                String taskName = nameInput.getText().toString();
+
+                EditText timeInput = (EditText) dialogView.findViewById(R.id.dialogTimeField);
+                String taskTime = timeInput.getText().toString();
+
+                NumberPicker yearInput = (NumberPicker) dialogView.findViewById(R.id.dialogYearPicker);
+                int year = yearInput.getValue();
+
+                NumberPicker monthInput = (NumberPicker) dialogView.findViewById(R.id.dialogMonthPicker);
+                int month = monthInput.getValue();
+
+                NumberPicker dayInput = (NumberPicker) dialogView.findViewById(R.id.dialogDayPicker);
+                int day = dayInput.getValue();
+
+                EditText rewardInput = (EditText) dialogView.findViewById(R.id.dialogRewardField);
+                String taskReward = rewardInput.getText().toString();
+
+                EditText noteInput = (EditText) dialogView.findViewById(R.id.dialogNoteField);
+                String taskNote = noteInput.getText().toString();
+                //End of getting the info
+
+                //Checking if any field is empty
+                boolean allFilled = checkAllFilled(taskName, taskTime, taskReward, taskNote);
+                if (!allFilled) {
+                    Toast.makeText(getActivity(), "Please fill all fields.", Toast.LENGTH_LONG).show();
+                    allGood = false;
+                }
+
+                //validating the rest. Only show message if all is good up to validation.
+                // Avoiding to many messages to user
+                double validTime = validateTime(taskTime); //validating input
+                if (validTime == -1 && allGood) {
+                    Toast.makeText(getActivity(), "Wrong Time input. Make sure its a number over 0.", Toast.LENGTH_LONG).show();
+                    allGood = false;
+                }
+
+                boolean validDate = validateDate(year, month, day); //Validating date
+                if (!validDate && allGood) {
+                    Toast.makeText(getActivity(), "Wrong Date input. Make sure to respect the number of days per month.", Toast.LENGTH_LONG).show();
+                    allGood = false;
+                }
+
+                int validReward = validateReward(taskReward); //validating input
+                if (validReward == -1 && allGood) {
+                    Toast.makeText(getActivity(), "Wrong Reward input. Make sure its an integer over 0.", Toast.LENGTH_LONG).show();
+                    allGood = false;
+                }
+                //End of validating fields
+
+                if (allGood) {
+                    dialog.cancel();
+                    Task createdTask = ((MainActivity)getActivity()).requestTaskCreation(taskName,
+                            validTime, year, month, day, validReward, taskNote);
+
+                    if (createdTask == null) {
+                        Toast.makeText(getActivity(), "A task of the same name exists already", Toast.LENGTH_LONG).show();
+                    } else {
+                        taskListAdapter.notifyDataSetChanged(); //need to update adapter after adding task
+                        Toast.makeText(getActivity(), "Task Succesfully Created!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+        //cancel button function
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
     }
 
     private void showDialogPart2() {
 
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         final View dialogView = inflater.inflate(R.layout.dialog_change_or_create_task_2, null);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setTitle("Task Info (2/2)");
 
-        AlertDialog dialog = new AlertDialog.Builder(getActivity())
-                .setTitle("Task Info (2/2)")
-                .setView(dialogView)
-                .setPositiveButton("Finish", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //Here would be logic after choosing tools
-                    }
-                })
-                .setNegativeButton("Cancel", null).create();
+        //get buttons to set onClick
+        final Button buttonConfirm = (Button) dialogView.findViewById(R.id.dialogConfirmAndNext);
+        final Button buttonCancel = (Button) dialogView.findViewById(R.id.dialogCancel);
+
+        final AlertDialog dialog = dialogBuilder.create();
         dialog.show();
+
+        //setting function of the confirm button
+        buttonConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //logic here
+                dialog.cancel(); //TODO remove when functionality added
+            }
+        });
+
+        //cancel button function
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
 
         List<Tool> toolList = ((MainActivity)getActivity()).getFamilyToolList();
         ListView list = (ListView) dialogView.findViewById(R.id.toolListView);
@@ -166,6 +237,105 @@ public class TasksFragment extends Fragment {
 
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_multiple_choice, toolArray);
         list.setAdapter(adapter);
+    }
+
+    /**
+     * Helper method. Return double if time given is valid. Else, returns -1.
+     * TODO: Add description for arguments
+     * @param time
+     * @return
+     */
+    private double validateTime(String time) {
+
+        double output;
+
+        try {
+            output = Double.parseDouble(time);
+        }catch (Exception ex) {
+            output = -1;
+        }
+
+        if (output <= 0) {
+            output = -1;
+        }
+
+        return output;
+
+    }
+
+    /**
+     * Helper method. Return true if date given is valid. Else, returns false.
+     * TODO: Add description for arguments
+     * @param month
+     * @param day
+     * @return
+     */
+    private boolean validateDate(int year, int month, int day) {
+
+        boolean valid = true;
+
+        //Test February with 28 days
+        if (month == 2) {
+            boolean leapYear = ((year % 4) == 0);
+            if ((day > 28 && !leapYear) || (day > 29 && leapYear)) {
+                valid = false;
+            }
+        }
+
+        //test 30 day month
+        if (month == 4 || month == 6 || month == 9 || month == 11) {
+            if (day > 30) {
+                valid = false;
+            }
+        }
+
+        return valid;
+
+    }
+
+    /**
+     * Helper method. Return int if points given is valid. Else, returns -1.
+     * TODO: Add description for arguments
+     * @param pts
+     * @return
+     */
+    private int validateReward(String pts) {
+
+        int output;
+
+        try {
+            output = Integer.parseInt(pts);
+        }catch (Exception ex) {
+            output = -1;
+        }
+
+        if (output <= 0) {
+            output = -1;
+        }
+
+        return output;
+
+    }
+
+    /**
+     * Helper method to check if all fields are filled
+     * TODO descriptes arugments
+     * @param taskName
+     * @param taskTime
+     * @param taskReward
+     * @param taskNote
+     * @return
+     */
+    private boolean checkAllFilled(String taskName, String taskTime, String taskReward, String taskNote) {
+
+        boolean valid = true;
+
+        if (taskName.isEmpty() || taskTime.isEmpty() || taskReward.isEmpty() || taskNote.isEmpty()) {
+            valid = false;
+        }
+
+        return valid;
+
     }
 
 }

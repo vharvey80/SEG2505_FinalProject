@@ -4,27 +4,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:layout_margin="15dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/chooseToolLabel"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:paddingLeft="10dp"
-            android:text="Please check all the tools you want"/>
+            android:gravity="center_horizontal"
+            android:layout_margin="15dp"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true">
 
-        <ListView
-            android:id="@+id/toolListView"
+            <TextView
+                android:id="@+id/chooseToolLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:paddingLeft="10dp"
+                android:text="Please check all the tools you want"/>
+
+            <ListView
+                android:id="@+id/toolListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:choiceMode="multipleChoice"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:choiceMode="multipleChoice"/>
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
 
-    </LinearLayout>
+
+            <Button
+                android:id="@+id/dialogCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel" />
+
+            <Button
+                android:id="@+id/dialogConfirmAndNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Finish"/>
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

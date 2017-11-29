@@ -19,6 +19,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -81,7 +82,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         //Setting up Calendar to get date in a proper manner
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(presentTask.getDueDate());
+        calendar.setTime(new Date(presentTask.getDueDate()));
 
         TextView dueDateField = (TextView) findViewById(R.id.limitDateText);
         dueDateField.setText(dateFormat.format(calendar.getTime()));
@@ -187,7 +188,7 @@ public class TaskDetailActivity extends AppCompatActivity {
 
         //Setting up Calendar to get date in a proper manner
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(presentTask.getDueDate());
+        calendar.setTime(new Date(presentTask.getDueDate()));
 
         yearPicker.setValue(calendar.get(Calendar.YEAR));
         monthPicker.setValue(calendar.get(Calendar.MONTH));

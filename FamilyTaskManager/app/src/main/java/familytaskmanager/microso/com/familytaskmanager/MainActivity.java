@@ -72,12 +72,12 @@ public class MainActivity extends AppCompatActivity
         /* END USER CHANGE */
 
         //Start code for Tab Menu
-        vp_pages= (ViewPager) findViewById(R.id.vp_pages);
+        /*vp_pages= (ViewPager) findViewById(R.id.vp_pages);
         pagerAdapter = new FragmentAdapter(getSupportFragmentManager());
         vp_pages.setAdapter(pagerAdapter);
 
         tbl_pages= (TabLayout) findViewById(R.id.tbl_pages);
-        tbl_pages.setupWithViewPager(vp_pages);
+        tbl_pages.setupWithViewPager(vp_pages);*/
         //End code for Tab Menu
 
         //Changing action bar title
@@ -109,6 +109,26 @@ public class MainActivity extends AppCompatActivity
     protected void onStart(){
         super.onStart();
         family.onStartFamily();
+
+        //Start code for Tab Menu
+
+        //Delay needed because of asynchonous DB
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                vp_pages= (ViewPager) findViewById(R.id.vp_pages);
+                pagerAdapter = new FragmentAdapter(getSupportFragmentManager());
+                vp_pages.setAdapter(pagerAdapter);
+
+                tbl_pages= (TabLayout) findViewById(R.id.tbl_pages);
+                tbl_pages.setupWithViewPager(vp_pages);
+            }
+
+        }, 500);
+
+        //End code for Tab Menu
     }
 
     @Override
@@ -203,6 +223,32 @@ public class MainActivity extends AppCompatActivity
 
     public List<User> getFamilyPeopleList() {
         return family.getUsers();
+    }
+
+    /**
+     * This method asks the family to create a new tasks, also giving the present user
+     * Might return null if taask of same name exist already
+     * TODO change the prensent user. Especially if it's now in Family
+     * @param taskName
+     * @param validTime
+     * @param year
+     * @param month
+     * @param day
+     * @param validReward
+     * @param taskNote
+     * @return
+     */
+    public Task requestTaskCreation(String taskName, double validTime, int year, int month,
+                                    int day, int validReward, String taskNote) {
+
+        //TODO Remove this dummy user and replace by currentUser
+        User creator = new User("1", "C.U.", "Creator Dummy", true, R.drawable.menu_people, 0);
+
+        Task created = family.requestTaskCreation(creator, taskName, validTime, year, month, day,
+                validReward, taskNote);
+
+        return created;
+
     }
 
 }

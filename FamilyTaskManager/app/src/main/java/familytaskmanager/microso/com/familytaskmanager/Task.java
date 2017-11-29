@@ -1,5 +1,7 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import android.widget.Toast;
+
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.*;
@@ -20,15 +22,17 @@ public class Task implements Serializable {
     private String id;
     private String title;
     private String note;
-    private Date dueDate;
+    //I store Date as long (epoch Date), since Date is not supported in Firebase
+    private long dueDate;
     private boolean recurrent;
     private double estimatedTime;
     private int rewardPts;
     private TaskState state;
 
     //Task Associations
-    private User user;
-    private User creator;
+    //key "user" is assigned user. Key "creator" is creator
+    //Need to use map to make firebase work
+    private Map<String, User> users;
     private List<Tool> tools;
 
     //------------------------
@@ -38,7 +42,7 @@ public class Task implements Serializable {
         // For Firebase
     }
 
-    public Task(String aId, String aTitle, String aNote, Date aDueDate, boolean aRecurrent, double aEstimatedTime, int aRewardPts, TaskState aState, User aCreator) {
+    public Task(String aId, String aTitle, String aNote, long aDueDate, boolean aRecurrent, double aEstimatedTime, int aRewardPts, TaskState aState, User aCreator) {
         id = aId;
         title = aTitle;
         note = aNote;
@@ -47,10 +51,13 @@ public class Task implements Serializable {
         estimatedTime = aEstimatedTime;
         rewardPts = aRewardPts;
         state = aState;
-        boolean didAddCreator = setCreator(aCreator);
-        if (!didAddCreator) {
+        users = new HashMap<>();
+        users.put("creator", aCreator);
+        //boolean didAddCreator = setCreator(aCreator);
+        //TODO uncomment the bellow check
+        /*if (!didAddCreator) {
             throw new RuntimeException("Unable to create task due to creator");
-        }
+        }*/
         tools = new ArrayList<Tool>();
     }
 
@@ -79,7 +86,7 @@ public class Task implements Serializable {
         return wasSet;
     }
 
-    public boolean setDueDate(Date aDueDate) {
+    public boolean setDueDate(long aDueDate) {
         boolean wasSet = false;
         dueDate = aDueDate;
         wasSet = true;
@@ -129,7 +136,7 @@ public class Task implements Serializable {
         return note;
     }
 
-    public Date getDueDate() {
+    public long getDueDate() {
         return dueDate;
     }
 
@@ -153,11 +160,11 @@ public class Task implements Serializable {
     }
 
     public User getUser() {
-        return user;
+        return users.get("user");
     }
 
     public boolean hasUser() {
-        boolean has = user != null;
+        boolean has = users.get("user") != null;
         return has;
     }
 
@@ -171,7 +178,7 @@ public class Task implements Serializable {
     }
 
     public User getCreator() {
-        return creator;
+        return users.get("creator");
     }
 
     public Tool getTool(int index) {
@@ -180,8 +187,9 @@ public class Task implements Serializable {
     }
 
     public List<Tool> getTools() {
-        List<Tool> newTools = Collections.unmodifiableList(tools);
-        return newTools;
+        //TODO analyze code
+        //List<Tool> newTools = Collections.unmodifiableList(tools);
+        return tools;
     }
 
     public int numberOfTools() {
@@ -202,8 +210,9 @@ public class Task implements Serializable {
 
     public boolean setUser(User aUser) {
         boolean wasSet = false;
-        User existingUser = user;
-        user = aUser;
+        User existingUser = users.get("user");
+        users.put("user", aUser);
+        //user = aUser;
         if (existingUser != null && !existingUser.equals(aUser)) {
             existingUser.removeAssignedTo(this);
         }
@@ -220,12 +229,13 @@ public class Task implements Serializable {
             return wasSet;
         }
 
-        User existingCreator = creator;
-        creator = aCreator;
+        User existingCreator = users.get("creator");
+        users.put("creator", aCreator);
+        //creator = aCreator;
         if (existingCreator != null && !existingCreator.equals(aCreator)) {
             existingCreator.removeTask(this);
         }
-        creator.addTask(this);
+        users.get("creator").addTask(this);
         wasSet = true;
         return wasSet;
     }
@@ -305,13 +315,15 @@ public class Task implements Serializable {
     }
 
     public void delete() {
-        if (user != null) {
-            User placeholderUser = user;
-            this.user = null;
+        if (users.get("user") != null) {
+            User placeholderUser = users.get("user");
+            this.users.put("user", null);
+            //this.user = null;
             placeholderUser.removeAssignedTo(this);
         }
-        User placeholderCreator = creator;
-        this.creator = null;
+        User placeholderCreator = users.get("cretor");
+        this.users.put("creator", null);
+        //this.creator = null;
         placeholderCreator.removeTask(this);
         ArrayList<Tool> copyOfTools = new ArrayList<Tool>(tools);
         tools.clear();
@@ -329,9 +341,16 @@ public class Task implements Serializable {
                 "recurrent" + ":" + getRecurrent() + "," +
                 "estimatedTime" + ":" + getEstimatedTime() + "," +
                 "rewardPts" + ":" + getRewardPts() + "]" + System.getProperties().getProperty("line.separator") +
-                "  " + "dueDate" + "=" + (getDueDate() != null ? !getDueDate().equals(this) ? getDueDate().toString().replaceAll("  ", "    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+                "  " + "dueDate" + "=" + getDueDate() + " " +
                 "  " + "state" + "=" + (getState() != null ? !getState().equals(this) ? getState().toString().replaceAll("  ", "    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
                 "  " + "user = " + (getUser() != null ? Integer.toHexString(System.identityHashCode(getUser())) : "null") + System.getProperties().getProperty("line.separator") +
                 "  " + "creator = " + (getCreator() != null ? Integer.toHexString(System.identityHashCode(getCreator())) : "null");
     }
+
+    //TODO maybe remove these methods if map test not work.
+    public Map<String, User> getUsers() { return users; }
+
+    public void setUsers(Map<String, User> users) { this. users = users; }
+
+    public void setTools(List<Tool> tools) { this.tools = tools; }
 }
