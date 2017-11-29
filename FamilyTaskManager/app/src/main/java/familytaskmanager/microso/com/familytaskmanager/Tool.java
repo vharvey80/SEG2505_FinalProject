@@ -179,12 +179,13 @@ public class Tool implements Serializable {
         return wasAdded;
     }
 
-    public void delete() {
+    public ArrayList<Task> delete() {
         ArrayList<Task> copyOfTasks = new ArrayList<Task>(tasks);
         tasks.clear();
         for (Task aTask : copyOfTasks) {
             aTask.removeTool(this);
         }
+        return copyOfTasks;
     }
 
 
