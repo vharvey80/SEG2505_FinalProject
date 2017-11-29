@@ -94,10 +94,17 @@ public class ToolActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        addedTools.clear();
+        deletedTools.clear();
+    }
+
+    @Override
     public void finish() {
         Toast.makeText(this, "I've returned", Toast.LENGTH_SHORT).show();
         returnedIntent.putExtra("addedTools", (Serializable) addedTools);
-        returnedIntent.putExtra("deletedTool", (Serializable) deletedTools);
+        returnedIntent.putExtra("deletedTools", (Serializable) deletedTools);
         setResult(1, returnedIntent);
         super.finish();
     }
@@ -123,6 +130,11 @@ public class ToolActivity extends AppCompatActivity {
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //TODO
+                tools.remove(toolToDelete);
+                deletedTools.add(toolToDelete);
+                /*if (!addedTools.contains(toolToDelete)) { deletedTools.add(toolToDelete); }
+                else { addedTools.remove(toolToDelete); }*/
+                toolListAdapter.notifyDataSetChanged();
                 Toast.makeText(ToolActivity.this, toolToDelete.getName() + " has been deleted.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }

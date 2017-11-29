@@ -1,5 +1,7 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import android.widget.Toast;
+
 import java.util.*;
 import java.sql.Date;
 
@@ -597,12 +599,10 @@ public class Family {
     }
 
     public boolean requestToolDelete(Tool deletedTool) {
-        ArrayList<Task> task_to_update = deletedTool.delete();
+        //ArrayList<Task> task_to_update = deletedTool.delete();
         try {
-            for (Task t : task_to_update) {
-                t.updateTask();
-                return true;
-            }
+            this.removeTool(deletedTool);
+            return true;
         } catch (Error e) { return false; }
     }
 
