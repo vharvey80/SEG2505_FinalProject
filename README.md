@@ -8,6 +8,6 @@ https://docs.google.com/a/uottawa.ca/document/d/1vb7b9JtmPd65R-PVSDahh-AqChiWjxE
 
 2) Diagrammes UML (8 points) --------> 19 novembre (DONE)
 
-3) Interface usager (2 points) --------> 24 novembre (WORKING ON IT)
+3) Interface usager (2 points) --------> 24 novembre (DONE)
 
-4) Application (APK), rapport final et présentation (8 points) --------> 6 décembre
+4) Application (APK), rapport final et présentation (8 points) --------> 6 décembre (WORKING ON IT)
