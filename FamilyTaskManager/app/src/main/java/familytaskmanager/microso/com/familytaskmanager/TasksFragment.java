@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -168,6 +169,7 @@ public class TasksFragment extends Fragment {
                     allGood = false;
                 }
 
+                //TODO make sure if not parent, reward = 0 pts
                 int validReward = validateReward(taskReward); //validating input
                 if (validReward == -1 && allGood) {
                     Toast.makeText(getActivity(), "Wrong Reward input. Make sure its an integer over 0.", Toast.LENGTH_LONG).show();
@@ -185,6 +187,7 @@ public class TasksFragment extends Fragment {
                     } else {
                         taskListAdapter.notifyDataSetChanged(); //need to update adapter after adding task
                         Toast.makeText(getActivity(), "Task Succesfully Created!", Toast.LENGTH_SHORT).show();
+                        showDialogPart2(createdTask);
                     }
                 }
             }
@@ -199,7 +202,7 @@ public class TasksFragment extends Fragment {
         });
     }
 
-    private void showDialogPart2() {
+    private void showDialogPart2(final Task createdTask) {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -211,6 +214,15 @@ public class TasksFragment extends Fragment {
         final Button buttonConfirm = (Button) dialogView.findViewById(R.id.dialogConfirmAndNext);
         final Button buttonCancel = (Button) dialogView.findViewById(R.id.dialogCancel);
 
+        //Getting LIstView and populating
+        final List<Tool> toolList = ((MainActivity)getActivity()).getFamilyToolList();
+        final ListView list = (ListView) dialogView.findViewById(R.id.toolListView);
+        String[] toolArray = this.getToolArray(toolList);
+
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_multiple_choice, toolArray);
+        list.setAdapter(adapter);
+        //End of listView code
+
         final AlertDialog dialog = dialogBuilder.create();
         dialog.show();
 
@@ -218,7 +230,21 @@ public class TasksFragment extends Fragment {
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //logic here
+
+                SparseBooleanArray checked = list.getCheckedItemPositions();
+
+                for (int i = 0; i < list.getAdapter().getCount(); i++) {
+                    if (checked.get(i)) {
+
+                        //TODO review strategie for adding tool
+                        // To add tool, we will add them to the tool object given in argument to onclick
+                        // and call Family method update User
+                        boolean added = createdTask.addTool(toolList.get(i));
+                    }
+                }
+
+                //once all added, we call for update
+                ((MainActivity)getActivity()).requestTaskUpdate(createdTask);
                 dialog.cancel(); //TODO remove when functionality added
             }
         });
@@ -231,12 +257,6 @@ public class TasksFragment extends Fragment {
             }
         });
 
-        List<Tool> toolList = ((MainActivity)getActivity()).getFamilyToolList();
-        ListView list = (ListView) dialogView.findViewById(R.id.toolListView);
-        String[] toolArray = this.getToolArray(toolList);
-
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_multiple_choice, toolArray);
-        list.setAdapter(adapter);
     }
 
     /**

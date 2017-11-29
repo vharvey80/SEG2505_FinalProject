@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity
 
         //TODO: 2017-11-27 Remove this Toast at some point, just here to know when onCreate is called
         Toast.makeText(this, "MainActivity's onCreate called", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity
 
         //Start code for Tab Menu
 
-        //Delay needed because of asynchonous DB
+        //Delay needed because of asynchronous DB
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
 
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity
                 tbl_pages.setupWithViewPager(vp_pages);
             }
 
-        }, 500);
+        }, 750);
 
         //End code for Tab Menu
     }
@@ -249,6 +250,15 @@ public class MainActivity extends AppCompatActivity
 
         return created;
 
+    }
+
+    /**
+     * Ask Family to update the task given in argument
+     * @param atask
+     * @return
+     */
+    public boolean requestTaskUpdate(Task atask) {
+        return family.updateTask(atask);
     }
 
 }

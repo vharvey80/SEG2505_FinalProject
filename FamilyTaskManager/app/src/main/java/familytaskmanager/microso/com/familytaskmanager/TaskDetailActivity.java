@@ -5,12 +5,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -36,14 +38,354 @@ public class TaskDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
 
-        //Provding up navigation
-
-
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
         presentTask = (Task) intent.getSerializableExtra("task");
         familyToolList = (List<Tool>) intent.getSerializableExtra("toolList");
 
+        this.updateActivityView();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.task_detail_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_changeTaskName:
+                Toast.makeText(this, "Can't chane yet, but should be easy", Toast.LENGTH_SHORT).show();
+
+                showDialogPart1();
+
+                return true;
+            case R.id.action_deletaTask:
+                Toast.makeText(this, "Can't delete yet, might get complicated", Toast.LENGTH_SHORT).show();
+            default:
+                return super.onOptionsItemSelected(item); //Simply copied this line from official Android Tutorials
+        }
+    }
+
+    private void showDialogPart1() {
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View dialogView = inflater.inflate(R.layout.dialog_change_or_create_task_1, null);
+        MainActivity.setNumberPickersDialog(dialogView);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setTitle("Task Info (1/2)");
+
+        //get buttons to set onClick
+        final Button buttonConfirm = (Button) dialogView.findViewById(R.id.dialogConfirmAndNext);
+        final Button buttonCancel = (Button) dialogView.findViewById(R.id.dialogCancel);
+
+        final AlertDialog dialog = dialogBuilder.create();
+        this.populateChangeInfoDialog(dialogView);
+        dialog.show();
+
+        //setting function of the confirm button
+        buttonConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Setting boolean to stop advancement if needed
+                boolean allGood = true;
+
+                //Here we get all the info entered on the first dialog
+                EditText nameInput = (EditText) dialogView.findViewById(R.id.dialogTaskNameField);
+                String taskName = nameInput.getText().toString();
+
+                EditText timeInput = (EditText) dialogView.findViewById(R.id.dialogTimeField);
+                String taskTime = timeInput.getText().toString();
+
+                NumberPicker yearInput = (NumberPicker) dialogView.findViewById(R.id.dialogYearPicker);
+                int year = yearInput.getValue();
+
+                NumberPicker monthInput = (NumberPicker) dialogView.findViewById(R.id.dialogMonthPicker);
+                int month = monthInput.getValue();
+
+                NumberPicker dayInput = (NumberPicker) dialogView.findViewById(R.id.dialogDayPicker);
+                int day = dayInput.getValue();
+
+                EditText rewardInput = (EditText) dialogView.findViewById(R.id.dialogRewardField);
+                String taskReward = rewardInput.getText().toString();
+
+                EditText noteInput = (EditText) dialogView.findViewById(R.id.dialogNoteField);
+                String taskNote = noteInput.getText().toString();
+                //End of getting the info
+
+                //Checking if any field is empty
+                boolean allFilled = checkAllFilled(taskName, taskTime, taskReward, taskNote);
+                if (!allFilled) {
+                    Toast.makeText(getApplicationContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    allGood = false;
+                }
+
+                //validating the rest. Only show message if all is good up to validation.
+                // Avoiding to many messages to user
+                double validTime = validateTime(taskTime); //validating input
+                if (validTime == -1 && allGood) {
+                    Toast.makeText(getApplicationContext(), "Wrong Time input. Make sure its a number over 0.", Toast.LENGTH_LONG).show();
+                    allGood = false;
+                }
+
+                boolean validDate = validateDate(year, month, day); //Validating date
+                if (!validDate && allGood) {
+                    Toast.makeText(getApplicationContext(), "Wrong Date input. Make sure to respect the number of days per month.", Toast.LENGTH_LONG).show();
+                    allGood = false;
+                }
+
+                //TODO make sure if not parent, reward = 0 pts
+                int validReward = validateReward(taskReward); //validating input
+                if (validReward == -1 && allGood) {
+                    Toast.makeText(getApplicationContext(), "Wrong Reward input. Make sure its an integer over 0.", Toast.LENGTH_LONG).show();
+                    allGood = false;
+                }
+                //End of validating fields
+
+                if (allGood) {
+                    dialog.cancel();
+
+                    //TODO finish implementation
+                    //Since all good, we update all info
+                    updateTaskTask(taskName, validTime, year, month, day, validReward, taskNote);
+                    updateActivityView();
+                    showDialogPart2();
+
+                }
+            }
+        });
+
+        //cancel button function
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+    }
+
+    private void showDialogPart2() {
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View dialogView = inflater.inflate(R.layout.dialog_change_or_create_task_2, null);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setTitle("Task Info (2/2)");
+
+        //get buttons to set onClick
+        final Button buttonConfirm = (Button) dialogView.findViewById(R.id.dialogConfirmAndNext);
+        final Button buttonCancel = (Button) dialogView.findViewById(R.id.dialogCancel);
+
+        //Getting LIstView and populating
+        final ListView listView = (ListView) dialogView.findViewById(R.id.toolListView);
+        String[] toolArray = this.getToolArray(familyToolList);
+
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, toolArray);
+        listView.setAdapter(adapter);
+        //End of listView code
+
+        //Setting all tools of the task as checked already
+        for (Tool t : presentTask.getTools()) {
+            int index = taskToolIsInFamilyList(t);
+            if (index != -1) {
+                listView.setItemChecked(index, true);
+            }
+        }
+
+        final AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+
+        //setting function of the confirm button
+        buttonConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SparseBooleanArray checked = listView.getCheckedItemPositions();
+
+                for (int i = 0; i < listView.getAdapter().getCount(); i++) {
+                    if (checked.get(i)) {
+
+                        //TODO review strategie for adding tool
+                        // To add tool, we will add them to the tool object given in argument to onclick
+                        // and call Family method update User
+                        boolean added = presentTask.addTool(familyToolList.get(i));
+                    }
+                }
+
+                //once all added, we call for update
+                dialog.cancel(); //TODO finish logic
+            }
+        });
+
+        //cancel button function
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+    }
+
+    private void populateChangeInfoDialog(View dialogView) {
+
+        //Locating all the fields
+        EditText taskName = (EditText)dialogView.findViewById(R.id.dialogTaskNameField);
+        EditText taskTime = (EditText)dialogView.findViewById(R.id.dialogTimeField);
+        NumberPicker yearPicker = (NumberPicker) dialogView.findViewById(R.id.dialogYearPicker);
+        NumberPicker monthPicker = (NumberPicker) dialogView.findViewById(R.id.dialogMonthPicker);
+        NumberPicker dayPicker = (NumberPicker) dialogView.findViewById(R.id.dialogDayPicker);
+        EditText taskPoints = (EditText)dialogView.findViewById(R.id.dialogRewardField);
+        EditText taskNote = (EditText)dialogView.findViewById(R.id.dialogNoteField);
+
+        //Populating the fields with current info
+        taskName.setText(presentTask.getTitle());
+        taskTime.setText(Double.toString(presentTask.getEstimatedTime()));
+
+        //Setting up Calendar to get date in a proper manner
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(presentTask.getDueDate()));
+
+        yearPicker.setValue(calendar.get(Calendar.YEAR));
+        monthPicker.setValue(calendar.get(Calendar.MONTH));
+        dayPicker.setValue(calendar.get(Calendar.DAY_OF_MONTH));
+
+        taskPoints.setText(Integer.toString(presentTask.getRewardPts()));
+        taskNote.setText(presentTask.getNote());
+
+    }
+
+    /**
+     * REMOVE METHOD, JUST FOR TEST.
+     * @param list
+     * @return
+     */
+    private String[] getToolArray(List<Tool> list) {
+        String[] out = new String[list.size()];
+        for (int i = 0; i < out.length; i++) {
+            out[i] = list.get(i).getName();
+        }
+        return out;
+    }
+
+    /**
+     * Helper method. Return double if time given is valid. Else, returns -1.
+     * TODO: Add description for arguments
+     * @param time
+     * @return
+     */
+    private double validateTime(String time) {
+
+        double output;
+
+        try {
+            output = Double.parseDouble(time);
+        }catch (Exception ex) {
+            output = -1;
+        }
+
+        if (output <= 0) {
+            output = -1;
+        }
+
+        return output;
+
+    }
+
+    /**
+     * Helper method. Return true if date given is valid. Else, returns false.
+     * TODO: Add description for arguments
+     * @param month
+     * @param day
+     * @return
+     */
+    private boolean validateDate(int year, int month, int day) {
+
+        boolean valid = true;
+
+        //Test February with 28 days
+        if (month == 2) {
+            boolean leapYear = ((year % 4) == 0);
+            if ((day > 28 && !leapYear) || (day > 29 && leapYear)) {
+                valid = false;
+            }
+        }
+
+        //test 30 day month
+        if (month == 4 || month == 6 || month == 9 || month == 11) {
+            if (day > 30) {
+                valid = false;
+            }
+        }
+
+        return valid;
+
+    }
+
+    /**
+     * Helper method. Return int if points given is valid. Else, returns -1.
+     * TODO: Add description for arguments
+     * @param pts
+     * @return
+     */
+    private int validateReward(String pts) {
+
+        int output;
+
+        try {
+            output = Integer.parseInt(pts);
+        }catch (Exception ex) {
+            output = -1;
+        }
+
+        if (output <= 0) {
+            output = -1;
+        }
+
+        return output;
+
+    }
+
+    /**
+     * Helper method that updates all fields
+     * @param taskName
+     * @param taskTime
+     * @param taskReward
+     * @param taskNote
+     * @return
+     */
+    private boolean checkAllFilled(String taskName, String taskTime, String taskReward, String taskNote) {
+
+        boolean valid = true;
+
+        if (taskName.isEmpty() || taskTime.isEmpty() || taskReward.isEmpty() || taskNote.isEmpty()) {
+            valid = false;
+        }
+
+        return valid;
+
+    }
+
+    private void updateTaskTask(String taskName, double validTime, int year, int month, int day, int validReward, String taskNote) {
+        presentTask.setTitle(taskName);
+        presentTask.setEstimatedTime(validTime);
+
+        Calendar c = Calendar.getInstance();
+        c.set(year, month-1, day); //months are 0-11
+        presentTask.setDueDate(c.getTimeInMillis());
+
+        presentTask.setRewardPts(validReward);
+        presentTask.setNote(taskNote);
+    }
+
+    /**
+     * Helper method, updates/initializes all fields in Activity
+     */
+    private void updateActivityView() {
         //Setting the title to the task from which the activity was called
         if (presentTask != null) {
             getSupportActionBar().setTitle(presentTask.getTitle());
@@ -101,115 +443,18 @@ public class TaskDetailActivity extends AppCompatActivity {
         //Setting the note
         TextView noteText = (TextView) findViewById(R.id.noteText);
         noteText.setText(presentTask.getNote());
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.task_detail_menu, menu);
-        return true;
-    }
+    private int taskToolIsInFamilyList(Tool tool) {
+        int index = -1;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_changeTaskName:
-                Toast.makeText(this, "Can't chane yet, but should be easy", Toast.LENGTH_SHORT).show();
-
-                showDialogPart1();
-
-                return true;
-            case R.id.action_deletaTask:
-                Toast.makeText(this, "Can't delete yet, might get complicated", Toast.LENGTH_SHORT).show();
-            default:
-                return super.onOptionsItemSelected(item); //Simply copied this line from official Android Tutorials
+        for (int i = 0; i < familyToolList.size() && index == -1; i++) {
+            if (familyToolList.get(i).getId().equals(tool.getId())) {
+                index = i;
+            }
         }
-    }
 
-    private void showDialogPart1() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        final View dialogView = inflater.inflate(R.layout.dialog_change_or_create_task_1, null);
-        MainActivity.setNumberPickersDialog(dialogView);
-
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Task Info (1/2)")
-                .setView(dialogView)
-                .setPositiveButton("Confirm and Next", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //Here would be logic after entering info
-                        showDialogPart2();
-                    }
-                })
-                .setNegativeButton("Cancel", null).create();
-        dialog.show();
-
-        //Poplating the dialog to make it easier for user
-        this.populateChangeInfoDialog(dialogView);
-    }
-
-    private void showDialogPart2() {
-
-        LayoutInflater inflater = LayoutInflater.from(this);
-        final View dialogView = inflater.inflate(R.layout.dialog_change_or_create_task_2, null);
-
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Task Info (2/2)")
-                .setView(dialogView)
-                .setPositiveButton("Finish", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //Here would be logic after choosing tools
-                    }
-                })
-                .setNegativeButton("Cancel", null).create();
-        dialog.show();
-
-        ListView list = (ListView) dialogView.findViewById(R.id.toolListView);
-        String[] toolArray = this.getToolArray(familyToolList);
-
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, toolArray);
-        list.setAdapter(adapter);
-    }
-
-    private void populateChangeInfoDialog(View dialogView) {
-
-        //Locating all the fields
-        EditText taskName = (EditText)dialogView.findViewById(R.id.dialogTaskNameField);
-        EditText taskTime = (EditText)dialogView.findViewById(R.id.dialogTimeField);
-        NumberPicker yearPicker = (NumberPicker) dialogView.findViewById(R.id.dialogYearPicker);
-        NumberPicker monthPicker = (NumberPicker) dialogView.findViewById(R.id.dialogMonthPicker);
-        NumberPicker dayPicker = (NumberPicker) dialogView.findViewById(R.id.dialogDayPicker);
-        EditText taskPoints = (EditText)dialogView.findViewById(R.id.dialogRewardField);
-        EditText taskNote = (EditText)dialogView.findViewById(R.id.dialogNoteField);
-
-        //Populating the fields with current info
-        taskName.setText(presentTask.getTitle());
-        taskTime.setText(Double.toString(presentTask.getEstimatedTime()));
-
-        //Setting up Calendar to get date in a proper manner
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date(presentTask.getDueDate()));
-
-        yearPicker.setValue(calendar.get(Calendar.YEAR));
-        monthPicker.setValue(calendar.get(Calendar.MONTH));
-        dayPicker.setValue(calendar.get(Calendar.DAY_OF_MONTH));
-
-        taskPoints.setText(Integer.toString(presentTask.getRewardPts()));
-        taskNote.setText(presentTask.getNote());
-
-    }
-
-    /**
-     * REMOVE METHOD, JUST FOR TEST.
-     * @param list
-     * @return
-     */
-    private String[] getToolArray(List<Tool> list) {
-        String[] out = new String[list.size()];
-        for (int i = 0; i < out.length; i++) {
-            out[i] = list.get(i).getName();
-        }
-        return out;
+        return index;
     }
 
 }
