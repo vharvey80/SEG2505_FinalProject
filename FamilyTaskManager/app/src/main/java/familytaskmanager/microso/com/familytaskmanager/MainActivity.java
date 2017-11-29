@@ -25,6 +25,7 @@ import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 // TODO: 2017-11-26  For some reason import below gives error. Investigate if time.
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     Family family;
     Family familyDB;
     public ArrayList<User> users;
+    public static final int REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +178,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_tools) {
             Intent intent = new Intent(getApplicationContext(), ToolActivity.class);
-            startActivity(intent);
+            intent.putExtra("tools", (Serializable) getFamilyToolList());
+            startActivityForResult(intent, REQUEST_CODE);
         } else  if (id == R.id.nav_settings) {
             Toast.makeText(this, "Settings is not implemented", Toast.LENGTH_SHORT).show();
         }
@@ -184,6 +187,19 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) { // doesn't detect the return of my tool Activity TODO
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            if (data.hasExtra("addedTools")) { // for my specific tool treatment.
+                List<Tool> newTools = (List<Tool>) data.getSerializableExtra("addedTools");
+                for (Tool t : newTools) {
+                    requestToolCreation(t);
+                }
+            }
+        }
     }
 
     public void switchDrawerItem(int item) {
@@ -249,6 +265,10 @@ public class MainActivity extends AppCompatActivity
 
         return created;
 
+    }
+
+    public boolean requestToolCreation(Tool newTool) {
+        return family.requestToolCreation(newTool);
     }
 
 }
