@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     Family familyDB;
     public ArrayList<User> users;
     public static final int REQUEST_CODE = 1;
+    public static final int TASK_ACTIVITY_REQ_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity
 
         //TODO: 2017-11-27 Remove this Toast at some point, just here to know when onCreate is called
         Toast.makeText(this, "MainActivity's onCreate called", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity
 
         //Start code for Tab Menu
 
-        //Delay needed because of asynchonous DB
+        //Delay needed because of asynchronous DB
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
 
@@ -128,7 +130,7 @@ public class MainActivity extends AppCompatActivity
                 tbl_pages.setupWithViewPager(vp_pages);
             }
 
-        }, 500);
+        }, 750);
 
         //End code for Tab Menu
     }
@@ -192,6 +194,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) { // doesn't detect the return of my tool Activity TODO
         super.onActivityResult(requestCode, resultCode, data);
+        //TODO a switch statement might be better
         if (requestCode == REQUEST_CODE) {
             if (data.hasExtra("addedTools")) { // for my specific tool treatment.
                 List<Tool> newTools = (List<Tool>) data.getSerializableExtra("addedTools");
@@ -199,6 +202,8 @@ public class MainActivity extends AppCompatActivity
                     requestToolCreation(t);
                 }
             }
+        } else if (requestCode == TASK_ACTIVITY_REQ_CODE) { //TODO finsish
+
         }
     }
 
@@ -267,6 +272,14 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Ask Family to update the task given in argument
+     * @param atask
+     * @return
+     */
+    public boolean requestTaskUpdate(Task atask) {
+        return family.updateTask(atask);
+    }
     public boolean requestToolCreation(Tool newTool) {
         return family.requestToolCreation(newTool);
     }

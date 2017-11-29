@@ -86,8 +86,7 @@ public class Tool implements Serializable {
     }
 
     public List<Task> getTasks() {
-        List<Task> newTasks = Collections.unmodifiableList(tasks);
-        return newTasks;
+        return tasks;
     }
 
     public int numberOfTasks() {

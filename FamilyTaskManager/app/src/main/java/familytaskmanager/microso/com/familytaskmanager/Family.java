@@ -365,6 +365,19 @@ public class Family {
         return wasAdded;
     }
 
+    public boolean updateTask(Task aTask) {
+        //TODO fix this method. Either have some kind of check to return true or false, or remove return of boolean
+        boolean wasUpdated = false;
+        DatabaseReference task_update_ref;
+
+        /** DATABASE CODE **/
+            task_update_ref = activeTasksReference.child(aTask.getId());
+            task_update_ref.setValue(aTask);
+        /** END **/
+        wasUpdated = true;
+        return wasUpdated;
+    }
+
     public boolean removeTask(Task aTask) {
         boolean wasRemoved = false;
         if (activeTasks.contains(aTask)) {
@@ -670,7 +683,7 @@ public class Family {
 
         //Creating some tools for the tasks
         Tool bucket = new Tool("1", "Bucket", 5);
-        Tool mop = new Tool("2", "mop", 4);
+        Tool mop = new Tool("2", "Mop", 4);
         Tool sponge = new Tool("3", "Sponge", 3);
         Tool wrench = new Tool("4", "Wrench", 2);
         Tool broom = new Tool("5", "Broom", 1);

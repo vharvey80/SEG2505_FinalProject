@@ -245,19 +245,20 @@ public class Task implements Serializable {
     }
 
     public boolean addTool(Tool aTool) {
-        boolean wasAdded = false;
+        boolean wasAdded = true;
         if (tools.contains(aTool)) {
             return false;
         }
         tools.add(aTool);
-        if (aTool.indexOfTask(this) != -1) {
+        //TODO clean
+        /*if (aTool.indexOfTask(this) != -1) {
             wasAdded = true;
         } else {
             wasAdded = aTool.addTask(this);
             if (!wasAdded) {
                 tools.remove(aTool);
             }
-        }
+        }*/
         return wasAdded;
     }
 
