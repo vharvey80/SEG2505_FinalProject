@@ -16,6 +16,7 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Vince-PC on 2017-11-22.
@@ -23,10 +24,10 @@ import java.util.ArrayList;
 
 public class ToolListAdapter extends ArrayAdapter<Tool> {
     private final Context context;
-    private final ArrayList<Tool> tools;
+    private final List<Tool> tools;
     private Tool selected_tool;
 
-    public ToolListAdapter(Context context, ArrayList<Tool> values) {
+    public ToolListAdapter(Context context, List<Tool> values) {
         super(context, R.layout.tool_list_item, values);
         this.context = context;
         this.tools = values;

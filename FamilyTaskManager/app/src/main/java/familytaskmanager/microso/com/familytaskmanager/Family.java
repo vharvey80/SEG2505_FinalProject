@@ -589,6 +589,13 @@ public class Family {
 
     }
 
+    public boolean requestToolCreation(Tool newTool) {
+        try {
+            this.addTool(newTool);
+            return true;
+        } catch (Error e) { return false; }
+    }
+
     public Task requestTaskCreation(User creator, String name, double time, int year, int month,
                                     int day, int reward, String note) {
 

@@ -21,6 +21,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -204,6 +205,9 @@ public class TaskDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //clearing list before populating
+                presentTask.getTools().clear();
+
                 SparseBooleanArray checked = listView.getCheckedItemPositions();
 
                 for (int i = 0; i < listView.getAdapter().getCount(); i++) {
@@ -211,12 +215,13 @@ public class TaskDetailActivity extends AppCompatActivity {
 
                         //TODO review strategie for adding tool
                         // To add tool, we will add them to the tool object given in argument to onclick
-                        // and call Family method update User
+                        // and will update DB when going back to MainActivity (startActivityForResult).
                         boolean added = presentTask.addTool(familyToolList.get(i));
                     }
                 }
 
                 //once all added, we call for update
+                updateActivityView();
                 dialog.cancel(); //TODO finish logic
             }
         });
@@ -456,5 +461,14 @@ public class TaskDetailActivity extends AppCompatActivity {
 
         return index;
     }
+
+    /*@Override
+    public void finish() {
+        Toast.makeText(this, "Finishing TaskDetail", Toast.LENGTH_SHORT).show();
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("updatedTask",presentTask);
+        setResult(MainActivity.TASK_ACTIVITY_REQ_CODE, returnIntent);;
+        super.finish();
+    }*/
 
 }

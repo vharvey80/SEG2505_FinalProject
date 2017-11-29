@@ -1,9 +1,11 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,27 +14,34 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ToolActivity extends AppCompatActivity {
 
-    public ArrayList<Tool> tools = new ArrayList<Tool>();
+    public List<Tool> tools;
+    public List<Tool> addedTools, deletedTools;
+    ToolListAdapter toolListAdapter;
+    Intent returnedIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tool);
 
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        returnedIntent = new Intent(getBaseContext(), MainActivity.class);
+
         ListView listView = (ListView) findViewById(R.id.list_tools);
 
-        tools.add(new Tool("1", "Bucket", 5));
-        tools.add(new Tool("2", "Broom", 1));
-        tools.add(new Tool("3", "Sponge", 12));
-        tools.add(new Tool("4", "Wrench", 2));
-        tools.add(new Tool("5", "Bicycle", 1));
+        Intent intent = getIntent();
+        tools = (List<Tool>) intent.getSerializableExtra("tools");
+        addedTools = deletedTools = new ArrayList<Tool>();
 
-        ToolListAdapter adapter = new ToolListAdapter(this, tools);
-        listView.setAdapter(adapter);
+        toolListAdapter = new ToolListAdapter(this, tools);
+        listView.setAdapter(toolListAdapter);
 
         FloatingActionButton add_tool = (FloatingActionButton) findViewById(R.id.tool_add_btn);
         add_tool.setOnClickListener(new View.OnClickListener() {
@@ -67,8 +76,12 @@ public class ToolActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if(!name_edit.getText().toString().isEmpty() && !supply_edit.getText().toString().isEmpty()) {
-                            Toast.makeText(ToolActivity.this, name_edit.getText() + " has been added to your tools.", Toast.LENGTH_SHORT).show();
+                            Tool createdTool = new Tool("1", name_edit.getText().toString(), Integer.parseInt(supply_edit.getText().toString()));
+                            tools.add(createdTool);
+                            addedTools.add(createdTool);
+                            toolListAdapter.notifyDataSetChanged();
                             dialog.dismiss();
+                            Toast.makeText(ToolActivity.this, name_edit.getText() + " has been added to your tools.", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(ToolActivity.this, "You need to fill both fields..", Toast.LENGTH_SHORT).show();
                         }
@@ -77,5 +90,24 @@ public class ToolActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        Toast.makeText(this, "I've returned", Toast.LENGTH_SHORT).show();
+        returnedIntent.putExtra("addedTools", (Serializable) addedTools);
+        returnedIntent.putExtra("deletedTool", (Serializable) deletedTools);
+        setResult(1, returnedIntent);
+        super.finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
