@@ -1,5 +1,7 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import android.widget.Toast;
+
 import java.util.*;
 import java.sql.Date;
 
@@ -590,9 +592,17 @@ public class Family {
 
     }
 
-    public boolean requestToolCreation(Tool newTool) {
+    public boolean requestToolCreation(Tool newTool) { // Method that allows us to add a new tool to the DB.
         try {
             this.addTool(newTool);
+            return true;
+        } catch (Error e) { return false; }
+    }
+
+    public boolean requestToolDelete(Tool deletedTool) {
+        //ArrayList<Task> task_to_update = deletedTool.delete();
+        try {
+            this.removeTool(deletedTool);
             return true;
         } catch (Error e) { return false; }
     }

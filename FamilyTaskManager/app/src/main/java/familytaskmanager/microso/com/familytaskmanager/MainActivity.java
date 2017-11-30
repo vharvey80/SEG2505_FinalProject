@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
     Family family;
     Family familyDB;
     public ArrayList<User> users;
-    public static final int REQUEST_CODE = 1;
+    public static final int TOOL_REQUEST_CODE = 1;
     public static final int TASK_ACTIVITY_REQ_CODE = 2;
 
     @Override
@@ -130,7 +130,6 @@ public class MainActivity extends AppCompatActivity
                 tbl_pages.setupWithViewPager(vp_pages);
                 System.out.println("RUN DONE In MainAct....123456");
             }
-
         }, 1000);
 
         //End code for Tab Menu
@@ -182,7 +181,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_tools) {
             Intent intent = new Intent(getApplicationContext(), ToolActivity.class);
             intent.putExtra("tools", (Serializable) getFamilyToolList());
-            startActivityForResult(intent, REQUEST_CODE);
+            startActivityForResult(intent, TOOL_REQUEST_CODE);
         } else  if (id == R.id.nav_settings) {
             Toast.makeText(this, "Settings is not implemented", Toast.LENGTH_SHORT).show();
         }
@@ -196,12 +195,18 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) { // doesn't detect the return of my tool Activity TODO
         super.onActivityResult(requestCode, resultCode, data);
         //TODO a switch statement might be better
-        System.out.println("In onActivityResult xyz, requestCode = " + requestCode); //TODO remove
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == TOOL_REQUEST_CODE) {
             if (data.hasExtra("addedTools")) { // for my specific tool treatment.
                 List<Tool> newTools = (List<Tool>) data.getSerializableExtra("addedTools");
                 for (Tool t : newTools) {
                     requestToolCreation(t);
+                }
+            }
+            if (data.hasExtra("deletedTools")) {
+                List<Tool> oldTools = (List<Tool>) data.getSerializableExtra("deletedTools");
+                for (Tool t : oldTools) {
+                    Toast.makeText(this, t.getId(), Toast.LENGTH_SHORT).show();
+                    requestToolDeletion(t);
                 }
             }
         } else if (requestCode == TASK_ACTIVITY_REQ_CODE) {
@@ -290,5 +295,6 @@ public class MainActivity extends AppCompatActivity
     public boolean requestToolCreation(Tool newTool) {
         return family.requestToolCreation(newTool);
     }
+    public boolean requestToolDeletion(Tool oldTool) { return family.requestToolDelete(oldTool); }
 
 }
