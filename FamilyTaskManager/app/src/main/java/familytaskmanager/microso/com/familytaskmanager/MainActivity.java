@@ -128,9 +128,10 @@ public class MainActivity extends AppCompatActivity
 
                 tbl_pages= (TabLayout) findViewById(R.id.tbl_pages);
                 tbl_pages.setupWithViewPager(vp_pages);
+                System.out.println("RUN DONE In MainAct....123456");
             }
 
-        }, 750);
+        }, 1000);
 
         //End code for Tab Menu
     }
@@ -195,6 +196,7 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) { // doesn't detect the return of my tool Activity TODO
         super.onActivityResult(requestCode, resultCode, data);
         //TODO a switch statement might be better
+        System.out.println("In onActivityResult xyz, requestCode = " + requestCode); //TODO remove
         if (requestCode == REQUEST_CODE) {
             if (data.hasExtra("addedTools")) { // for my specific tool treatment.
                 List<Tool> newTools = (List<Tool>) data.getSerializableExtra("addedTools");
@@ -202,8 +204,13 @@ public class MainActivity extends AppCompatActivity
                     requestToolCreation(t);
                 }
             }
-        } else if (requestCode == TASK_ACTIVITY_REQ_CODE) { //TODO finsish
-
+        } else if (requestCode == TASK_ACTIVITY_REQ_CODE) {
+            System.out.println("Passed the else if xyz"); //TODO remove
+            if(data.hasExtra("updatedTask")) {
+                System.out.println("passed the hasExtra xyz"); //TODO remove
+                Task updatedTask = (Task) data.getSerializableExtra("updatedTask");
+                family.updateTask(updatedTask);
+            }
         }
     }
 
