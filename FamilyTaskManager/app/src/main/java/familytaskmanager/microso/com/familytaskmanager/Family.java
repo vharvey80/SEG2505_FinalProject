@@ -658,7 +658,7 @@ public class Family {
         //Creation of 4 more users for testing
         User thomas = new User("2", "Thomas", "C", true, R.drawable.menu_people, 0);
         User vincent = new User("3", "Vincent", "H", true, R.drawable.menu_people, 0);
-        User oliver = new User("4", "oliver", "B", false, R.drawable.menu_people, 0);
+        User oliver = new User("4", "Oliver", "B", false, R.drawable.menu_people, 0);
         User jeanGab = new User("5", "Jean-Gabriel", "G", true, R.drawable.menu_people, 0);
         family.addUser(mainUser);
         family.addUser(thomas);
