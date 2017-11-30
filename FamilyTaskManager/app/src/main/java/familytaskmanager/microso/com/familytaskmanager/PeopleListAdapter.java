@@ -1,6 +1,7 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,13 @@ public class PeopleListAdapter extends ArrayAdapter{
         peopleName.setText(s);
         //s = "Allocated tasks: "+ people.getTasks().size();   /********* LOOK OUT FOR THE NULL POINTER EXCEPTION *********/
         peopleNumTasks.setText(s);
-        peopleIcon.setImageResource(people.getProfilePicId());
+        //TODO review how we get picture ID
+        //Getting profile pic
+        String resourceName = people.getProfilePicResourceName();
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier(resourceName, "drawable", "familytaskmanager.microso.com.familytaskmanager");
+        peopleIcon.setImageResource(resourceId);
+        //end of getting picture
         return rowView;
     }
 }

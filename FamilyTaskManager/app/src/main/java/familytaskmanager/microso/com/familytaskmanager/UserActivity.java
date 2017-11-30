@@ -1,6 +1,7 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -44,7 +45,12 @@ public class UserActivity extends AppCompatActivity {
         //Set user info into the views
         String s = selectedUser.getFname()+" "+selectedUser.getLname();
         userName.setText(s);
-        userIcon.setImageResource(selectedUser.getProfilePicId());
+        //Getting profile pic
+        String resourceName = selectedUser.getProfilePicResourceName();
+        Resources resources = getResources();
+        int resourceId = resources.getIdentifier(resourceName, "drawable", "familytaskmanager.microso.com.familytaskmanager");
+        userIcon.setImageResource(resourceId);
+        //end of getting picture
 
         //Set tasks list view
         ListView listView = (ListView) findViewById(R.id.currentTasksListView);

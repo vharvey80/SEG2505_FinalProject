@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         /* CODE FOR USER CHANGE SPINNER */
         ArrayList<User> users = new ArrayList<User>();
         for (int i = 0; i < 5; i++) {
-            users.add(new User(Integer.toString(i + 1), "Fname_" + i, "Lname_" + i, true, 1, (1 + i)));
+            users.add(new User(Integer.toString(i + 1), "Fname_" + i, "Lname_" + i, true, "menu_people", (1 + i)));
         }
 
         UserChangeAdapter user_adapter = new UserChangeAdapter(this, users);
@@ -96,6 +96,13 @@ public class MainActivity extends AppCompatActivity
 
         //TODO: 2017-11-27 Remove this Toast at some point, just here to know when onCreate is called
         Toast.makeText(this, "MainActivity's onCreate called", Toast.LENGTH_SHORT).show();
+
+        User thomas = new User("2", "Thomas", "C", true, "menu_people", 0);
+        User vincent = new User("3", "Vincent", "H", true, "menu_people", 0);
+        User oliver = new User("4", "Oliver", "B", false, "menu_people", 0);
+        family.addUser(thomas);
+        family.addUser(vincent);
+        family.addUser(oliver);
 
     }
 
@@ -270,7 +277,7 @@ public class MainActivity extends AppCompatActivity
                                     int day, int validReward, String taskNote) {
 
         //TODO Remove this dummy user and replace by currentUser
-        User creator = new User("1", "C.U.", "Creator Dummy", true, R.drawable.menu_people, 0);
+        User creator = new User("1", "C.U.", "Creator Dummy", true, "menu_people", 0);
 
         Task created = family.requestTaskCreation(creator, taskName, validTime, year, month, day,
                 validReward, taskNote);

@@ -463,7 +463,7 @@ public class Family {
                 //We always want at least one user in App
                 if (users.isEmpty()) {
                     String user_id = usersReference.push().getKey();
-                    User defaultUser = new User(user_id, "Default", "User", true, R.drawable.menu_people, 0);
+                    User defaultUser = new User(user_id, "Default", "User", true, "menu_people", 0);
                     usersReference.child(user_id).setValue(defaultUser);
                     users.add(defaultUser);
                 }
@@ -649,7 +649,7 @@ public class Family {
         toolsReference.child(tool_id).setValue(new Tool(tool_id, "Walid", 2));
     }
 
-    public static Family createDummyFamily() {
+    /*public static Family createDummyFamily() {
 
         User mainUser = new User("1", "Walid", "B", true, R.drawable.menu_people, 0);
 
@@ -664,7 +664,7 @@ public class Family {
         family.addUser(thomas);
         family.addUser(vincent);
         family.addUser(oliver);
-        /*List<User> users = new ArrayList<>();
+        List<User> users = new ArrayList<>();
         users.add(mainUser);
         users.add(thomas);
         users.add(vincent);
@@ -672,7 +672,7 @@ public class Family {
         users.add(jeanGab);
         family.users = users;*/
 
-        //Creating some tools for the tasks
+        /*Creating some tools for the tasks
         Tool bucket = new Tool("1", "Bucket", 5);
         Tool mop = new Tool("2", "Mop", 4);
         Tool sponge = new Tool("3", "Sponge", 3);
@@ -682,10 +682,10 @@ public class Family {
         family.tools.add(mop);
         family.tools.add(sponge);
         family.tools.add(wrench);
-        family.tools.add(broom);
+        family.tools.add(broom);*/
 
         //Creation of 5 tasks for testing
-        Task dishes = new Task("1", "Dishes", "Dishes note", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
+        /*Task dishes = new Task("1", "Dishes", "Dishes note", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
         dishes.setUser(mainUser);
         dishes.addTool(sponge);
         Task sweep = new Task("2", "Sweep", "Sweep noooooooote", 1511880133, false, 1, 10, Task.TaskState.Created, mainUser);
@@ -709,5 +709,5 @@ public class Family {
         family.activeTasks = tasks;
 
         return family;
-    }
+    }*/
 }

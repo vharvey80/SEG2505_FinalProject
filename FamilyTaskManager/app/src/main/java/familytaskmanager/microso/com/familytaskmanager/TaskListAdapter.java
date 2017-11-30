@@ -6,6 +6,7 @@ import android.app.VoiceInteractor;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +62,12 @@ public class TaskListAdapter extends ArrayAdapter {
         }
 
         if (task.hasUser()) {
-            taskIcon.setImageResource(task.getUser().getProfilePicId());
+            //Getting profile pic
+            String resourceName = task.getUser().getProfilePicResourceName();
+            Resources resources = context.getResources();
+            int resourceId = resources.getIdentifier(resourceName, "drawable", "familytaskmanager.microso.com.familytaskmanager");
+            taskIcon.setImageResource(resourceId);
+            //end of getting picture
         } else {
             taskIcon.setImageResource(android.R.drawable.ic_menu_add);
         }

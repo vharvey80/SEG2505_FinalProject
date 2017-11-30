@@ -3,6 +3,7 @@ package familytaskmanager.microso.com.familytaskmanager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
@@ -412,7 +413,12 @@ public class TaskDetailActivity extends AppCompatActivity {
         TextView assignOrReleaseText = (TextView) findViewById(R.id.assignOrReleaseText);
         ImageView assignOrReleaseIcon = (ImageView) findViewById(R.id.assignOrReleaseIcon);
         if (presentTask.hasUser()) {
-            assignedUserIcon.setImageResource(presentTask.getUser().getProfilePicId());
+            //Getting profile pic
+            String resourceName = presentTask.getUser().getProfilePicResourceName();
+            Resources resources = getResources();
+            int resourceId = resources.getIdentifier(resourceName, "drawable", "familytaskmanager.microso.com.familytaskmanager");
+            assignedUserIcon.setImageResource(resourceId);
+            //end of getting picture
             assignedUserName.setText(presentTask.getUser().getFname());
             taskAssignedText.setText("Assigned");
             assignOrReleaseText.setText("Release");
