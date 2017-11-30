@@ -97,13 +97,6 @@ public class MainActivity extends AppCompatActivity
         //TODO: 2017-11-27 Remove this Toast at some point, just here to know when onCreate is called
         Toast.makeText(this, "MainActivity's onCreate called", Toast.LENGTH_SHORT).show();
 
-        User thomas = new User("2", "Thomas", "C", true, "menu_people", 0);
-        User vincent = new User("3", "Vincent", "H", true, "menu_people", 0);
-        User oliver = new User("4", "Oliver", "B", false, "menu_people", 0);
-        family.addUser(thomas);
-        family.addUser(vincent);
-        family.addUser(oliver);
-
     }
 
     @Override
