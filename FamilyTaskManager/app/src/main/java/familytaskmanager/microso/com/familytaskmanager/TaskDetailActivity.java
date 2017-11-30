@@ -60,12 +60,15 @@ public class TaskDetailActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_changeTaskName:
                 Toast.makeText(this, "Can't chane yet, but should be easy", Toast.LENGTH_SHORT).show();
-
                 showDialogPart1();
-
                 return true;
             case R.id.action_deletaTask:
                 Toast.makeText(this, "Can't delete yet, might get complicated", Toast.LENGTH_SHORT).show();
+                return true;
+            case android.R.id.home:
+                System.out.println("Clicked home, xyz");
+                this.finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item); //Simply copied this line from official Android Tutorials
         }
@@ -462,13 +465,12 @@ public class TaskDetailActivity extends AppCompatActivity {
         return index;
     }
 
-    /*@Override
+    @Override
     public void finish() {
-        Toast.makeText(this, "Finishing TaskDetail", Toast.LENGTH_SHORT).show();
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("updatedTask",presentTask);
+        returnIntent.putExtra("updatedTask", (Serializable) presentTask);
         setResult(MainActivity.TASK_ACTIVITY_REQ_CODE, returnIntent);;
         super.finish();
-    }*/
+    }
 
 }

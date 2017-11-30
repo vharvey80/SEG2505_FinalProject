@@ -77,8 +77,8 @@ public class Family {
     }
 
     public List<Tool> getTools() {
-        List<Tool> newTools = Collections.unmodifiableList(tools);
-        return newTools;
+        // TODO REMOVE List<Tool> newTools = Collections.unmodifiableList(tools);
+        return tools;
     }
 
     public int numberOfTools() {
@@ -102,8 +102,8 @@ public class Family {
     }
 
     public List<User> getUsers() {
-        List<User> newUsers = Collections.unmodifiableList(users);
-        return newUsers;
+        //TODO remove List<User> newUsers = Collections.unmodifiableList(users);
+        return users;
     }
 
     public int numberOfUsers() {
@@ -127,8 +127,8 @@ public class Family {
     }
 
     public List<ShoppingItem> getShoppingItems() {
-        List<ShoppingItem> newShoppingItems = Collections.unmodifiableList(shoppingItems);
-        return newShoppingItems;
+        //TODO remove List<ShoppingItem> newShoppingItems = Collections.unmodifiableList(shoppingItems);
+        return shoppingItems;
     }
 
     public int numberOfShoppingItems() {
@@ -157,13 +157,13 @@ public class Family {
     }
 
     public List<Task> getActiveTasks() {
-        List<Task> newTasks = Collections.unmodifiableList(activeTasks);
-        return newTasks;
+        //TODO REMOVE List<Task> newTasks = Collections.unmodifiableList(activeTasks);
+        return activeTasks;
     }
 
     public List<Task> getInactiveTasks() {
-        List<Task> newTasks = Collections.unmodifiableList(inactiveTasks);
-        return newTasks;
+        //TODO REMOVE List<Task> newTasks = Collections.unmodifiableList(inactiveTasks);
+        return inactiveTasks;
     }
 
     public int numberOfTasks() {
@@ -532,6 +532,7 @@ public class Family {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Clearing the list
+                System.out.println("starting call to get data.......123456");
                 activeTasks.clear();
 
                 // Iterating through all the nodes
@@ -553,7 +554,7 @@ public class Family {
                     // Add item getted in the list
                     activeTasks.add(activeTask);
                 }
-
+                System.out.println("Finished onDataChange of Family.......123456");
                 // Might be problems with the adapters... ?
             }
 
@@ -667,7 +668,7 @@ public class Family {
         //Creation of 4 more users for testing
         User thomas = new User("2", "Thomas", "C", true, R.drawable.menu_people, 0);
         User vincent = new User("3", "Vincent", "H", true, R.drawable.menu_people, 0);
-        User oliver = new User("4", "oliver", "B", false, R.drawable.menu_people, 0);
+        User oliver = new User("4", "Oliver", "B", false, R.drawable.menu_people, 0);
         User jeanGab = new User("5", "Jean-Gabriel", "G", true, R.drawable.menu_people, 0);
         family.addUser(mainUser);
         family.addUser(thomas);

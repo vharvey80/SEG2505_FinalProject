@@ -68,11 +68,10 @@ public class TasksFragment extends Fragment {
 
                 final Task clickedTask = (Task) parent.getItemAtPosition(position);
 
-
                 Intent intent = new Intent(getActivity().getApplicationContext(), TaskDetailActivity.class);
                 intent.putExtra("task", (Serializable) clickedTask);
                 intent.putExtra("toolList", (Serializable) ((MainActivity)getActivity()).getFamilyToolList());
-                startActivityForResult(intent, 0);
+                getActivity().startActivityForResult(intent, MainActivity.TASK_ACTIVITY_REQ_CODE);
 
             }
         });
@@ -357,5 +356,20 @@ public class TasksFragment extends Fragment {
         return valid;
 
     }
+
+    /*@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) { // doesn't detect the return of my tool Activity TODO
+        super.onActivityResult(requestCode, resultCode, data);
+        //TODO a switch statement might be better
+        System.out.println("In onActivityResult xyz, requestCode = " + requestCode); //TODO remove
+        if (requestCode == MainActivity.TASK_ACTIVITY_REQ_CODE) {
+            System.out.println("Passed the else if xyz"); //TODO remove
+            if(data.hasExtra("updatedTask")) {
+                System.out.println("passed the hasExtra xyz"); //TODO remove
+                Task updatedTask = (Task) data.getSerializableExtra("updatedTask");
+                family.updateTask(updatedTask);
+            }
+        }
+    }*/
 
 }

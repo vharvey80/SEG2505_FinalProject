@@ -128,9 +128,9 @@ public class MainActivity extends AppCompatActivity
 
                 tbl_pages= (TabLayout) findViewById(R.id.tbl_pages);
                 tbl_pages.setupWithViewPager(vp_pages);
+                System.out.println("RUN DONE In MainAct....123456");
             }
-
-        }, 2000);
+        }, 1000);
 
         //End code for Tab Menu
     }
@@ -209,8 +209,13 @@ public class MainActivity extends AppCompatActivity
                     requestToolDeletion(t);
                 }
             }
-        } else if (requestCode == TASK_ACTIVITY_REQ_CODE) { //TODO finsish
-
+        } else if (requestCode == TASK_ACTIVITY_REQ_CODE) {
+            System.out.println("Passed the else if xyz"); //TODO remove
+            if(data.hasExtra("updatedTask")) {
+                System.out.println("passed the hasExtra xyz"); //TODO remove
+                Task updatedTask = (Task) data.getSerializableExtra("updatedTask");
+                family.updateTask(updatedTask);
+            }
         }
     }
 

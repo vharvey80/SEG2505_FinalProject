@@ -120,8 +120,8 @@ public class User implements Serializable {
     }
 
     public List<Task> getAssignedTo() {
-        List<Task> newAssignedTo = Collections.unmodifiableList(assignedTo);
-        return newAssignedTo;
+        //TODO REMOVE List<Task> newAssignedTo = Collections.unmodifiableList(assignedTo);
+        return assignedTo;
     }
 
     public int numberOfAssignedTo() {
@@ -145,7 +145,7 @@ public class User implements Serializable {
     }
 
     public List<Task> getTasks() {
-        //List<Task> newTasks = Collections.unmodifiableList(tasks);
+        //TODO REMOVE List<Task> newTasks = Collections.unmodifiableList(tasks);
         return this.tasks;
     }
 

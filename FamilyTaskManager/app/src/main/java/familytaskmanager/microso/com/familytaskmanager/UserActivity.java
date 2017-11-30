@@ -15,6 +15,7 @@ import static android.app.PendingIntent.getActivity;
 public class UserActivity extends AppCompatActivity {
 
     private User selectedUser;
+    private List<Task> taskList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +27,7 @@ public class UserActivity extends AppCompatActivity {
         selectedUser = (User) intent.getSerializableExtra("user");
 
         //Get the user list of tasks
-        //List<Task> taskList= (List<Task>)( intent.getBundleExtra("list").getSerializable("list"));
-        List<Task> taskList = selectedUser.getTasks();
+         taskList = selectedUser.getTasks();
 
         //Setting the title to the task from which the activity was called
         if (selectedUser != null) {
