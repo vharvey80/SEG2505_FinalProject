@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity
                 tbl_pages.setupWithViewPager(vp_pages);
             }
 
-        }, 750);
+        }, 2000);
 
         //End code for Tab Menu
     }
