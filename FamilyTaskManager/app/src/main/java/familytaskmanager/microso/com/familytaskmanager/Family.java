@@ -26,6 +26,7 @@ public class Family {
     private List<ShoppingItem> shoppingItems;
     private List<Task> activeTasks;
     private List<Task> inactiveTasks;
+    private String currentUserID;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -34,6 +35,7 @@ public class Family {
     private DatabaseReference shoppingItemsReference;
     private DatabaseReference activeTasksReference;
     private DatabaseReference inactiveTasksReference;
+    private DatabaseReference currentUserReference;
 
     //------------------------
     // CONSTRUCTOR
@@ -53,6 +55,7 @@ public class Family {
         shoppingItemsReference = database.getReference("ShoppingItems");
         activeTasksReference = database.getReference("ActiveTasks");
         inactiveTasksReference = database.getReference("InactiveTasks");
+        currentUserReference = database.getReference();
 
     }
 

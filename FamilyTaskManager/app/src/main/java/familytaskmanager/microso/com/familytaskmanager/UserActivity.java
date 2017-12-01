@@ -28,7 +28,7 @@ public class UserActivity extends AppCompatActivity {
         selectedUser = (User) intent.getSerializableExtra("user");
 
         //Get the user list of tasks
-         taskList = selectedUser.getTasks();
+         taskList = selectedUser.getAssignedTo();
 
         //Setting the title to the task from which the activity was called
         if (selectedUser != null) {
