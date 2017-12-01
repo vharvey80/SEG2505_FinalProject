@@ -312,6 +312,10 @@ public class User implements Serializable {
         this.tasks = tasks;
     }
 
+    public void setAssignedTo(List<Task> assigned) {
+        this.assignedTo = assigned;
+    }
+
 
     public String toString() {
         /*return super.toString() + "[" +

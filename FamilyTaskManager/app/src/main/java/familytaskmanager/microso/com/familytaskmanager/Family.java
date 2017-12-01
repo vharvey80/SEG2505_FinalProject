@@ -473,6 +473,10 @@ public class Family {
                         List<Task> tasks = new ArrayList<Task>();
                         user.setTasks(tasks);
                     }
+                    if(user.getAssignedTo() == null) {
+                        List<Task> assigned = new ArrayList<Task>();
+                        user.setAssignedTo(assigned);
+                    }
 
                     // Add user getted in the list
                     users.add(user);
