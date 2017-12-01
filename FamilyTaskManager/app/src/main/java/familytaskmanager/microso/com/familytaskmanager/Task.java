@@ -59,7 +59,6 @@ public class Task implements Serializable {
 
         users = new HashMap<>();
         users.put("creator", aCreator);
-        aCreator.addTask(this);
         creatorID = aCreator.getId();
 
         //boolean didAddCreator = setCreator(aCreator);

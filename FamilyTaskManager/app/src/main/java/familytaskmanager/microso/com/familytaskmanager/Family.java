@@ -624,6 +624,8 @@ public class Family {
 
         boolean createTask = this.lookForTask(name);
 
+        System.out.println("Before creation Task in Family xyz, arg creator is " + creator.getFname() + " Boolean is " + createTask);
+
         Task newTask = null;
 
         //if task does not exist, we create it.
@@ -639,9 +641,13 @@ public class Family {
             newTask = new Task(null, name, note, c.getTimeInMillis(), false, time, reward,
                     Task.TaskState.Created, creator);
 
+            System.out.println("Before added Task in Family xyz, task creator -->  " + newTask.getCreator().getFname());
             this.addTask(newTask);
+            System.out.println("After added Task in Family xyz, task creator -->  " + newTask.getCreator().getFname());
 
         }
+
+        System.out.println("After creation Task in Family xyz, task creator -->  " + newTask.getCreator().getFname());
 
         return newTask;
 
@@ -685,10 +691,11 @@ public class Family {
 
     /**
      * Returns the user who's id is given. Returns null if such User does not exist
+     * TODO make private, public for cheap break fix
      * @param id
      * @return
      */
-    private User getUserWithID(String id) {
+    public User getUserWithID(String id) {
         User user = null;
         for (User u : users) {
             if(u.getId().equals(id)) {
