@@ -198,13 +198,17 @@ public class MainActivity extends AppCompatActivity
             if (data.hasExtra("addedTools")) { // for my specific tool treatment.
                 List<Tool> newTools = (List<Tool>) data.getSerializableExtra("addedTools");
                 for (Tool t : newTools) {
-                    requestToolCreation(t);
+                    if (requestToolCreation(t)) {
+                        Toast.makeText(this, t.getName() + " has been added to your tools.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
             if (data.hasExtra("deletedTools")) {
                 List<String> oldTools = (List<String>) data.getSerializableExtra("deletedTools");
                 for (String tID : oldTools) {
-                    requestToolDeletion(tID);
+                    if (requestToolDeletion(tID)) {
+                        Toast.makeText(this, "This tool has been deleted.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         } else if (requestCode == TASK_ACTIVITY_REQ_CODE) {
