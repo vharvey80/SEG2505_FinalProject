@@ -121,6 +121,8 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void run() {
+                family.populateTaskUsers();
+
                 vp_pages= (ViewPager) findViewById(R.id.vp_pages);
                 pagerAdapter = new FragmentAdapter(getSupportFragmentManager());
                 vp_pages.setAdapter(pagerAdapter);
@@ -273,10 +275,14 @@ public class MainActivity extends AppCompatActivity
                                     int day, int validReward, String taskNote) {
 
         //TODO Remove this dummy user and replace by currentUser
-        User creator = new User("1", "C.U.", "Creator Dummy", true, "menu_people", 0);
+        //User creator = new User("1", "C.U.", "Creator Dummy", true, "menu_people", 0);
+        User creator = getFamilyPeopleList().get(0);
 
+        System.out.println("Before creating task in MainActivity xyz, the creator is " + creator.getFname());
         Task created = family.requestTaskCreation(creator, taskName, validTime, year, month, day,
                 validReward, taskNote);
+
+        System.out.println("After creating task in MainActivity xyz, task creator name --> " + created.getCreator().getFname());
 
         return created;
 
@@ -292,5 +298,8 @@ public class MainActivity extends AppCompatActivity
     }
     public boolean requestToolCreation(Tool newTool) { return family.requestToolCreation(newTool); }
     public boolean requestToolDeletion(String oldTool) { return family.requestToolDelete(oldTool); }
+
+    //TODO cheap method for a cheap breakfix, I need to fix this - walid
+    public User getUserWithID(String id) { return family.getUserWithID(id); }
 
 }
