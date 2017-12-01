@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         /* CODE FOR USER CHANGE SPINNER */
         ArrayList<User> users = new ArrayList<User>();
         for (int i = 0; i < 5; i++) {
-            users.add(new User(Integer.toString(i + 1), "Fname_" + i, "Lname_" + i, true, 1, (1 + i)));
+            users.add(new User(Integer.toString(i + 1), "Fname_" + i, "Lname_" + i, true, "menu_people", (1 + i)));
         }
 
         UserChangeAdapter user_adapter = new UserChangeAdapter(this, users);
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity
                                     int day, int validReward, String taskNote) {
 
         //TODO Remove this dummy user and replace by currentUser
-        User creator = new User("1", "C.U.", "Creator Dummy", true, R.drawable.menu_people, 0);
+        User creator = new User("1", "C.U.", "Creator Dummy", true, "menu_people", 0);
 
         Task created = family.requestTaskCreation(creator, taskName, validTime, year, month, day,
                 validReward, taskNote);

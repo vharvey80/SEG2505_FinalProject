@@ -15,7 +15,7 @@ public class User implements Serializable {
     private String fname;
     private String lname;
     private boolean isParent;
-    private int profilePicId;
+    private String profilePicResourceName;
     private int accumulatedPts;
 
     //User Associations
@@ -29,12 +29,12 @@ public class User implements Serializable {
         // For Firebase
     }
 
-    public User(String aId, String aFname, String aLname, boolean aIsParent, int aProfilePicId, int aAccumulatedPts) {
+    public User(String aId, String aFname, String aLname, boolean aIsParent, String aProfilePicResourceName, int aAccumulatedPts) {
         id = aId;
         fname = aFname;
         lname = aLname;
         isParent = aIsParent;
-        profilePicId = aProfilePicId;
+        profilePicResourceName = aProfilePicResourceName;
         accumulatedPts = aAccumulatedPts;
         assignedTo = new ArrayList<Task>();
         tasks = new ArrayList<Task>();
@@ -72,9 +72,9 @@ public class User implements Serializable {
         return wasSet;
     }
 
-    public boolean setProfilePicId(int aProfilePicId) {
+    public boolean setProfilePicResourceName(String aProfilePicResourceName) {
         boolean wasSet = false;
-        profilePicId = aProfilePicId;
+        profilePicResourceName = aProfilePicResourceName;
         wasSet = true;
         return wasSet;
     }
@@ -102,8 +102,8 @@ public class User implements Serializable {
         return isParent;
     }
 
-    public int getProfilePicId() {
-        return profilePicId;
+    public String getProfilePicResourceName() {
+        return profilePicResourceName;
     }
 
     public int getAccumulatedPts() {

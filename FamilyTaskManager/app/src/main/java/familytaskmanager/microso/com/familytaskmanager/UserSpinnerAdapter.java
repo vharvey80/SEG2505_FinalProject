@@ -1,6 +1,7 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,12 @@ public class UserSpinnerAdapter extends BaseAdapter {
         User user = values.get(position);
 
         userName.setText(user.getFname());
-        userIcon.setImageResource(user.getProfilePicId());
+        //Getting profile pic
+        String resourceName = user.getProfilePicResourceName();
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier(resourceName, "drawable", "familytaskmanager.microso.com.familytaskmanager");
+        userIcon.setImageResource(resourceId);
+        //end of getting picture
 
         return rowView;
     }
