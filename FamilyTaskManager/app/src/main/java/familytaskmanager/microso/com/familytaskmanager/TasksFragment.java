@@ -68,6 +68,17 @@ public class TasksFragment extends Fragment {
 
                 final Task clickedTask = (Task) parent.getItemAtPosition(position);
 
+                //TODO this is just a cheap breakfix, I need to find cause of problem
+                if((clickedTask.getCreator() == null) && (clickedTask.getCreatorID() != null)) {
+                    System.out.println("IN THE IFFFFFFFFFFFFFFFF xyz");
+                    User creator = ((MainActivity)getActivity()).getUserWithID(clickedTask.getCreatorID());
+                    clickedTask.setCreator(creator);
+                }
+
+                System.out.println("xyz clicked task has creator --> " + (clickedTask.getCreator() != null)
+                        + ", Task ID " + clickedTask.getId() + ", Task creator id" + clickedTask.getCreatorID());
+
+
                 Intent intent = new Intent(getActivity().getApplicationContext(), TaskDetailActivity.class);
                 intent.putExtra("task", (Serializable) clickedTask);
                 intent.putExtra("toolList", (Serializable) ((MainActivity)getActivity()).getFamilyToolList());
@@ -178,8 +189,11 @@ public class TasksFragment extends Fragment {
 
                 if (allGood) {
                     dialog.cancel();
+                    System.out.println("Before creting task in Fragemnt xyz");
                     Task createdTask = ((MainActivity)getActivity()).requestTaskCreation(taskName,
                             validTime, year, month, day, validReward, taskNote);
+
+                    System.out.println("After creating task in Fragment xyz --> " + createdTask.getCreator().getFname());
 
                     if (createdTask == null) {
                         Toast.makeText(getActivity(), "A task of the same name exists already", Toast.LENGTH_LONG).show();

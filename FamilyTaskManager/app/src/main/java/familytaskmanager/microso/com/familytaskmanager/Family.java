@@ -1,5 +1,6 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import android.view.SoundEffectConstants;
 import android.widget.Toast;
 
 import java.util.*;
@@ -455,6 +456,7 @@ public class Family {
      * @return
      */
     public void onStartFamily() {
+
         // Creating all the reference we need for the database.
         usersReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -554,22 +556,22 @@ public class Family {
                     // getting each item
                     Task activeTask = postSnapshot.getValue(Task.class);
 
+                    //We have a map for the users in Task class.
+                    //So we create the map here and will fill it at end of DB loading
+
                     //Collections sometimes come back null from DB, which should not be case
-                    //So here we check and corret
-                    if (activeTask.getUsers() == null) {
-                        Map<String, User> users = new HashMap<String, User>();
-                        activeTask.setUsers(users);
-                    }
+                    //So here we check and correct
                     if (activeTask.getTools() == null) {
                         List<Tool> tools = new ArrayList<Tool>();
                         activeTask.setTools(tools);
                     }
+                    //Also we need to make sur the map containing users is not null
+                    activeTask.setUsers(new HashMap<String, User>());
 
                     // Add item getted in the list
                     activeTasks.add(activeTask);
                 }
-                System.out.println("Finished onDataChange of Family.......123456");
-                // Might be problems with the adapters... ?
+
             }
 
             @Override
@@ -625,6 +627,8 @@ public class Family {
 
         boolean createTask = this.lookForTask(name);
 
+        System.out.println("Before creation Task in Family xyz, arg creator is " + creator.getFname() + " Boolean is " + createTask);
+
         Task newTask = null;
 
         //if task does not exist, we create it.
@@ -640,9 +644,13 @@ public class Family {
             newTask = new Task(null, name, note, c.getTimeInMillis(), false, time, reward,
                     Task.TaskState.Created, creator);
 
+            System.out.println("Before added Task in Family xyz, task creator -->  " + newTask.getCreator().getFname());
             this.addTask(newTask);
+            System.out.println("After added Task in Family xyz, task creator -->  " + newTask.getCreator().getFname());
 
         }
+
+        System.out.println("After creation Task in Family xyz, task creator -->  " + newTask.getCreator().getFname());
 
         return newTask;
 
@@ -665,6 +673,39 @@ public class Family {
         }
 
         return exists;
+    }
+
+    /**
+     * Method that populates the users of all tasks. Will be called by MainActivy at right moment.
+     */
+    public void populateTaskUsers() {
+        System.out.println("Active task is of size xyz" + activeTasks.size());
+        for (Task t :  activeTasks) {
+            if (t.getAssignedUserID() != null) {
+                User assignedUser = getUserWithID(t.getAssignedUserID());
+                t.setUser(assignedUser);
+            }
+            if (t.getCreatorID() != null) {
+                User creator = getUserWithID(t.getCreatorID());
+                t.setCreator(creator);
+            }
+        }
+    }
+
+    /**
+     * Returns the user who's id is given. Returns null if such User does not exist
+     * TODO make private, public for cheap break fix
+     * @param id
+     * @return
+     */
+    public User getUserWithID(String id) {
+        User user = null;
+        for (User u : users) {
+            if(u.getId().equals(id)) {
+                return u;
+            }
+        }
+        return user;
     }
 
     public void initializeDummyDB() {
