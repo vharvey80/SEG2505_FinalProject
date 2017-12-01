@@ -270,14 +270,7 @@ public class Task implements Serializable {
 
         int oldIndex = tools.indexOf(aTool);
         tools.remove(oldIndex);
-        if (aTool.indexOfTask(this) == -1) {
-            wasRemoved = true;
-        } else {
-            wasRemoved = aTool.removeTask(this);
-            if (!wasRemoved) {
-                tools.add(oldIndex, aTool);
-            }
-        }
+        wasRemoved = true; // TODO Deleted all link with tasks in tools.
         return wasRemoved;
     }
 
@@ -328,9 +321,6 @@ public class Task implements Serializable {
         placeholderCreator.removeTask(this);
         ArrayList<Tool> copyOfTools = new ArrayList<Tool>(tools);
         tools.clear();
-        for (Tool aTool : copyOfTools) {
-            aTool.removeTask(this);
-        }
     }
 
 
