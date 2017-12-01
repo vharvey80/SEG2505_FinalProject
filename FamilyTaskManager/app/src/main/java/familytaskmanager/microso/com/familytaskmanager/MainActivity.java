@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity
     PagerAdapter pagerAdapter;
     TabLayout tbl_pages;
     Family family;
-    Family familyDB;
     public ArrayList<User> users;
     public static final int TOOL_REQUEST_CODE = 1;
     public static final int TASK_ACTIVITY_REQ_CODE = 2;
@@ -205,7 +204,6 @@ public class MainActivity extends AppCompatActivity
             if (data.hasExtra("deletedTools")) {
                 List<Tool> oldTools = (List<Tool>) data.getSerializableExtra("deletedTools");
                 for (Tool t : oldTools) {
-                    Toast.makeText(this, t.getId(), Toast.LENGTH_SHORT).show();
                     requestToolDeletion(t);
                 }
             }

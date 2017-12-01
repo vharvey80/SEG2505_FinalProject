@@ -21,8 +21,7 @@ import java.util.List;
 
 public class ToolActivity extends AppCompatActivity {
 
-    public List<Tool> tools;
-    public List<Tool> addedTools, deletedTools;
+    public List<Tool> tools, addedTools, deletedTools;
     ToolListAdapter toolListAdapter;
     Intent returnedIntent;
 
@@ -39,7 +38,8 @@ public class ToolActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         tools = (List<Tool>) intent.getSerializableExtra("tools");
-        addedTools = deletedTools = new ArrayList<Tool>();
+        addedTools =  new ArrayList<Tool>();
+        deletedTools = new ArrayList<Tool>();
 
         toolListAdapter = new ToolListAdapter(this, tools);
         listView.setAdapter(toolListAdapter);
@@ -94,13 +94,6 @@ public class ToolActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        addedTools.clear();
-        deletedTools.clear();
-    }
-
-    @Override
     public void finish() {
         Toast.makeText(this, "I've returned", Toast.LENGTH_SHORT).show();
         returnedIntent.putExtra("addedTools", (Serializable) addedTools);
@@ -131,9 +124,11 @@ public class ToolActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 //TODO
                 tools.remove(toolToDelete);
-                deletedTools.add(toolToDelete);
-                /*if (!addedTools.contains(toolToDelete)) { deletedTools.add(toolToDelete); }
-                else { addedTools.remove(toolToDelete); }*/
+                if (!addedTools.contains(toolToDelete)) {
+                    deletedTools.add(toolToDelete);
+                } else {
+                    addedTools.remove(toolToDelete);
+                }
                 toolListAdapter.notifyDataSetChanged();
                 Toast.makeText(ToolActivity.this, toolToDelete.getName() + " has been deleted.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();

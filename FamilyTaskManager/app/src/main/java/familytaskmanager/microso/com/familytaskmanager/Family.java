@@ -216,6 +216,11 @@ public class Family {
         return wasRemoved;
     }
 
+    public String getTool(Tool t) {
+        DatabaseReference tool = toolsReference.child(t.getId());
+        return tool.getKey();
+    }
+
     public static int minimumNumberOfUsers() {
         return 1;
     }
@@ -600,7 +605,6 @@ public class Family {
     }
 
     public boolean requestToolDelete(Tool deletedTool) {
-        //ArrayList<Task> task_to_update = deletedTool.delete();
         try {
             this.removeTool(deletedTool);
             return true;
