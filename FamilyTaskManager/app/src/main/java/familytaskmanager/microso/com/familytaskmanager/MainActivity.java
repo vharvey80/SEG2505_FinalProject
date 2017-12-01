@@ -122,6 +122,8 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void run() {
+                family.populateTaskUsers();
+
                 vp_pages= (ViewPager) findViewById(R.id.vp_pages);
                 pagerAdapter = new FragmentAdapter(getSupportFragmentManager());
                 vp_pages.setAdapter(pagerAdapter);
@@ -275,7 +277,8 @@ public class MainActivity extends AppCompatActivity
                                     int day, int validReward, String taskNote) {
 
         //TODO Remove this dummy user and replace by currentUser
-        User creator = new User("1", "C.U.", "Creator Dummy", true, "menu_people", 0);
+        //User creator = new User("1", "C.U.", "Creator Dummy", true, "menu_people", 0);
+        User creator = getFamilyPeopleList().get(0);
 
         Task created = family.requestTaskCreation(creator, taskName, validTime, year, month, day,
                 validReward, taskNote);

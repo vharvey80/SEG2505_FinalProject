@@ -2,6 +2,8 @@ package familytaskmanager.microso.com.familytaskmanager;
 
 import android.widget.Toast;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.*;
@@ -30,9 +32,12 @@ public class Task implements Serializable {
     private TaskState state;
 
     //Task Associations
-    //key "user" is assigned user. Key "creator" is creator
-    //Need to use map to make firebase work
-    private Map<String, User> users;
+    //To avoid too many relations, which cauuses problems with Firebase,
+    //we have two String for creator and assigned user ID. The map is kept to now change
+    //functionality of class, but weill not be saved in DB
+    private String creatorID;
+    private String assignedUserID;
+    private Map<String, User> users; //will contain two elements. Keys are creator and user
     private List<Tool> tools;
 
     //------------------------
@@ -51,8 +56,12 @@ public class Task implements Serializable {
         estimatedTime = aEstimatedTime;
         rewardPts = aRewardPts;
         state = aState;
+
         users = new HashMap<>();
         users.put("creator", aCreator);
+        aCreator.addTask(this);
+        creatorID = aCreator.getId();
+
         //boolean didAddCreator = setCreator(aCreator);
         //TODO uncomment the bellow check
         /*if (!didAddCreator) {
@@ -159,9 +168,12 @@ public class Task implements Serializable {
         return state;
     }
 
+    @Exclude
     public User getUser() {
         return users.get("user");
     }
+
+    public String getAssignedUserID() {return assignedUserID; }
 
     public boolean hasUser() {
         boolean has = users.get("user") != null;
@@ -177,9 +189,12 @@ public class Task implements Serializable {
         return has;
     }
 
+    @Exclude
     public User getCreator() {
         return users.get("creator");
     }
+
+    public String getCreatorID() { return creatorID; }
 
     public Tool getTool(int index) {
         Tool aTool = tools.get(index);
@@ -208,10 +223,12 @@ public class Task implements Serializable {
     }
 
 
+    @Exclude
     public boolean setUser(User aUser) {
         boolean wasSet = false;
         User existingUser = users.get("user");
         users.put("user", aUser);
+        assignedUserID = aUser.getId();
         //user = aUser;
         if (existingUser != null && !existingUser.equals(aUser)) {
             existingUser.removeAssignedTo(this);
@@ -223,6 +240,9 @@ public class Task implements Serializable {
         return wasSet;
     }
 
+    public void setAssignedUserID(String anAssignedUserID) { anAssignedUserID = anAssignedUserID; }
+
+    @Exclude
     public boolean setCreator(User aCreator) {
         boolean wasSet = false;
         if (aCreator == null) {
@@ -231,14 +251,18 @@ public class Task implements Serializable {
 
         User existingCreator = users.get("creator");
         users.put("creator", aCreator);
+        creatorID = aCreator.getId();
         //creator = aCreator;
         if (existingCreator != null && !existingCreator.equals(aCreator)) {
             existingCreator.removeTask(this);
         }
+        //TODO we might want to remove association between creator and his created tasks
         users.get("creator").addTask(this);
         wasSet = true;
         return wasSet;
     }
+
+    public void setCreatorID(String aCreatorID) { creatorID = aCreatorID; }
 
     public static int minimumNumberOfTools() {
         return 0;
@@ -322,12 +346,13 @@ public class Task implements Serializable {
             //this.user = null;
             placeholderUser.removeAssignedTo(this);
         }
-        User placeholderCreator = users.get("cretor");
+        User placeholderCreator = users.get("creator");
         this.users.put("creator", null);
         //this.creator = null;
         placeholderCreator.removeTask(this);
         ArrayList<Tool> copyOfTools = new ArrayList<Tool>(tools);
         tools.clear();
+        //TODO remove this once association between tool --> task is removed
         for (Tool aTool : copyOfTools) {
             aTool.removeTask(this);
         }
@@ -348,10 +373,12 @@ public class Task implements Serializable {
                 "  " + "creator = " + (getCreator() != null ? Integer.toHexString(System.identityHashCode(getCreator())) : "null");
     }
 
-    //TODO maybe remove these methods if map test not work.
+    @Exclude
     public Map<String, User> getUsers() { return users; }
 
+    @Exclude
     public void setUsers(Map<String, User> users) { this. users = users; }
 
     public void setTools(List<Tool> tools) { this.tools = tools; }
+
 }
