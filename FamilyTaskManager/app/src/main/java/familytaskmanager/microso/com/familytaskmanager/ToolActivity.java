@@ -21,7 +21,8 @@ import java.util.List;
 
 public class ToolActivity extends AppCompatActivity {
 
-    public List<Tool> tools, addedTools, deletedTools;
+    public List<Tool> tools, addedTools;
+    public List<String> deletedTools;
     ToolListAdapter toolListAdapter;
     Intent returnedIntent;
 
@@ -39,7 +40,7 @@ public class ToolActivity extends AppCompatActivity {
         Intent intent = getIntent();
         tools = (List<Tool>) intent.getSerializableExtra("tools");
         addedTools =  new ArrayList<Tool>();
-        deletedTools = new ArrayList<Tool>();
+        deletedTools = new ArrayList<String>();
 
         toolListAdapter = new ToolListAdapter(this, tools);
         listView.setAdapter(toolListAdapter);
@@ -124,10 +125,17 @@ public class ToolActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 //TODO
                 tools.remove(toolToDelete);
-                if (!addedTools.contains(toolToDelete)) {
-                    deletedTools.add(toolToDelete);
+                if (addedTools.size() <= 0) {
+                    deletedTools.add(toolToDelete.getId());
                 } else {
-                    addedTools.remove(toolToDelete);
+                    for (Tool t : addedTools) {
+                        if (!t.getId().equals(toolToDelete.getId())) {
+                            Toast.makeText(ToolActivity.this, "OMG", Toast.LENGTH_SHORT).show();
+                            deletedTools.add(toolToDelete.getId());
+                        } else {
+                            addedTools.remove(toolToDelete);
+                        }
+                    }
                 }
                 toolListAdapter.notifyDataSetChanged();
                 Toast.makeText(ToolActivity.this, toolToDelete.getName() + " has been deleted.", Toast.LENGTH_SHORT).show();

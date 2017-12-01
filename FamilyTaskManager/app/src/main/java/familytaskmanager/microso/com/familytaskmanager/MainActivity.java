@@ -202,9 +202,9 @@ public class MainActivity extends AppCompatActivity
                 }
             }
             if (data.hasExtra("deletedTools")) {
-                List<Tool> oldTools = (List<Tool>) data.getSerializableExtra("deletedTools");
-                for (Tool t : oldTools) {
-                    requestToolDeletion(t);
+                List<String> oldTools = (List<String>) data.getSerializableExtra("deletedTools");
+                for (String tID : oldTools) {
+                    requestToolDeletion(tID);
                 }
             }
         } else if (requestCode == TASK_ACTIVITY_REQ_CODE) {
@@ -290,9 +290,7 @@ public class MainActivity extends AppCompatActivity
     public boolean requestTaskUpdate(Task atask) {
         return family.updateTask(atask);
     }
-    public boolean requestToolCreation(Tool newTool) {
-        return family.requestToolCreation(newTool);
-    }
-    public boolean requestToolDeletion(Tool oldTool) { return family.requestToolDelete(oldTool); }
+    public boolean requestToolCreation(Tool newTool) { return family.requestToolCreation(newTool); }
+    public boolean requestToolDeletion(String oldTool) { return family.requestToolDelete(oldTool); }
 
 }
