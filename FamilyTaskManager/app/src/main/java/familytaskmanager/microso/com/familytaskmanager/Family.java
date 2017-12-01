@@ -189,8 +189,8 @@ public class Family {
     // Modified for the database.
     public boolean addTool(Tool aTool) {
         boolean wasAdded = false;
-        if (tools.contains(aTool)) {
-            return false;
+        for (Tool t : tools) {
+            if (t.getId().equals(aTool.getId())) { return false; }
         }
         /** DATABASE CODE **/
             String tool_id = toolsReference.push().getKey();
@@ -203,18 +203,29 @@ public class Family {
     }
 
     // Modified for the database.
-    public boolean removeTool(Tool aTool) {
+    public boolean removeTool(String aTool) {
         boolean wasRemoved = false;
+        Tool toolToRemove = null;
         DatabaseReference tool_del_ref; // temporary reference
-        if (tools.contains(aTool)) {
-            /** DATABASE CODE **/
-                tool_del_ref = toolsReference.child(aTool.getId()); // get reference
+        for (Tool t : tools) {
+            if (t.getId().equals(aTool)) {
+                /** DATABASE CODE **/
+                tool_del_ref = toolsReference.child(aTool); // get reference
                 tool_del_ref.removeValue(); // delete the tool
-            /** END **/
-            tools.remove(aTool);
-            wasRemoved = true;
+                /** END **/
+                wasRemoved = true;
+                toolToRemove = t;
+            }
         }
+        if (toolToRemove != null) { tools.remove(toolToRemove); } else { throw new IllegalArgumentException("Impossible de deleter un tool null."); }
         return wasRemoved;
+    }
+    public List<String> getToolsID() {
+        List<String> ids = new ArrayList<String>();
+        for (Tool t : tools) {
+            ids.add(t.getId());
+        }
+        return ids;
     }
 
     public static int minimumNumberOfUsers() {
@@ -601,8 +612,7 @@ public class Family {
         } catch (Error e) { return false; }
     }
 
-    public boolean requestToolDelete(Tool deletedTool) {
-        //ArrayList<Task> task_to_update = deletedTool.delete();
+    public boolean requestToolDelete(String deletedTool) {
         try {
             this.removeTool(deletedTool);
             return true;
