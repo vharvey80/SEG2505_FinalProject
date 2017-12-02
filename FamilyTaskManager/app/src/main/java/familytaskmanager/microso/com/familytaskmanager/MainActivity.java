@@ -137,6 +137,10 @@ public class MainActivity extends AppCompatActivity
                 tbl_pages= (TabLayout) findViewById(R.id.tbl_pages);
                 tbl_pages.setupWithViewPager(vp_pages);
                 System.out.println("RUN DONE In MainAct....123456");
+                for(User u : family.getUsers()) {
+                    System.out.println("WASDF - Printing the assniged tasks of " + u.getFname());
+                    u.printAssggnedTasks();
+                }
             }
         }, 1000);
 
@@ -229,6 +233,10 @@ public class MainActivity extends AppCompatActivity
             }
             if(data.hasExtra("updatedUser")) {
                 User updatedUser = (User) data.getSerializableExtra("updatedUser");
+                family.updateUser(updatedUser);
+            }
+            if(data.hasExtra("oldUser")) {
+                User updatedUser = (User) data.getSerializableExtra("oldUser");
                 family.updateUser(updatedUser);
             }
             if (data.hasExtra("deletedTask")) {

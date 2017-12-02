@@ -150,6 +150,8 @@ public class TaskListAdapter extends ArrayAdapter {
                         ((MainActivity)activity).requestTaskUpdate(clickedTask);
                         ((MainActivity)activity).requestUserUpdate(userToAssign);
                         notifyDataSetChanged();
+                        //TODO this is a quick fix. Finding more elegant solution would be nice
+                        ((MainActivity)activity).onStart();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
