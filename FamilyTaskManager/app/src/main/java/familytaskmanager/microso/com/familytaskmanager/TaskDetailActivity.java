@@ -101,6 +101,11 @@ public class TaskDetailActivity extends AppCompatActivity {
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //TODO
+                //My code remove
+                oldUser = presentTask.getUser();
+                presentTask.removeAssignedUser();
+                userChange = true;
+                //end of my code remove
                 deleteThisTask = true;
                 dialog.dismiss();
                 finish();
@@ -510,6 +515,9 @@ public class TaskDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //Setting the onClick for completedButton
+
     }
 
     private int taskToolIsInFamilyList(Tool tool) {
