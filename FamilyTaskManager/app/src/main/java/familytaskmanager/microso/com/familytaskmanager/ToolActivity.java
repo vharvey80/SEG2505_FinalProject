@@ -49,54 +49,52 @@ public class ToolActivity extends AppCompatActivity {
         add_tool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(ToolActivity.this);
-                View mView = getLayoutInflater().inflate(R.layout.tool_add_dialog, null);
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(ToolActivity.this);
+            View mView = getLayoutInflater().inflate(R.layout.tool_add_dialog, null);
+            mBuilder.setView(mView);
+            final AlertDialog dialog = mBuilder.create();
 
-                /* PERSONALIZATION OF THE DIALOG (REUSABILITY) */
-                final EditText name_edit = (EditText) mView.findViewById(R.id.tool_name);
-                name_edit.setHint("Tool name"); // personalize the hint in the edittext
-                final EditText supply_edit = (EditText) mView.findViewById(R.id.tool_supply);
-                supply_edit.setHint("Tool supply"); // personalize the hint in the edittext
-                final ImageView image = (ImageView) mView.findViewById(R.id.add_pic);
-                image.setImageResource(R.drawable.toolsadd_bg); // personalize the picture at the top
-                final TextView add_title = (TextView) mView.findViewById(R.id.add_title);
-                add_title.setText("ADD TOOL MANAGER"); // personalize the title of your dialog
-                /* END OF PERSONALIZATION */
+            /* PERSONALIZATION OF THE DIALOG (REUSABILITY) */
+            final EditText name_edit = (EditText) mView.findViewById(R.id.tool_name);
+            name_edit.setHint("Tool name"); // personalize the hint in the edittext
+            final EditText supply_edit = (EditText) mView.findViewById(R.id.tool_supply);
+            supply_edit.setHint("Tool supply"); // personalize the hint in the edittext
+            final ImageView image = (ImageView) mView.findViewById(R.id.add_pic);
+            image.setImageResource(R.drawable.toolsadd_bg); // personalize the picture at the top
+            final TextView add_title = (TextView) mView.findViewById(R.id.add_title);
+            add_title.setText("ADD TOOL MANAGER"); // personalize the title of your dialog
+            /* END OF PERSONALIZATION */
 
-                Button cancel_btn = (Button) mView.findViewById(R.id.cancel_btn);
-                cancel_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(ToolActivity.this, "Adding is cancelled.", Toast.LENGTH_SHORT).show();
+            Button cancel_btn = (Button) mView.findViewById(R.id.cancel_btn);
+            cancel_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(ToolActivity.this, "Adding is cancelled.", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+            Button add_btn = (Button) mView.findViewById(R.id.add_btn);
+            add_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!name_edit.getText().toString().isEmpty() && !supply_edit.getText().toString().isEmpty()) {
+                        Tool createdTool = new Tool("1", name_edit.getText().toString(), Integer.parseInt(supply_edit.getText().toString()));
+                        tools.add(createdTool);
+                        addedTools.add(createdTool);
+                        toolListAdapter.notifyDataSetChanged();
                         dialog.dismiss();
+                    } else {
+                        Toast.makeText(ToolActivity.this, "You need to fill both fields..", Toast.LENGTH_SHORT).show();
                     }
-                });
-                Button add_btn = (Button) mView.findViewById(R.id.add_btn);
-                add_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(!name_edit.getText().toString().isEmpty() && !supply_edit.getText().toString().isEmpty()) {
-                            Tool createdTool = new Tool("1", name_edit.getText().toString(), Integer.parseInt(supply_edit.getText().toString()));
-                            tools.add(createdTool);
-                            addedTools.add(createdTool);
-                            toolListAdapter.notifyDataSetChanged();
-                            dialog.dismiss();
-                            Toast.makeText(ToolActivity.this, name_edit.getText() + " has been added to your tools.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(ToolActivity.this, "You need to fill both fields..", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                dialog.show();
+                }
+            });
+            dialog.show();
             }
         });
     }
 
     @Override
     public void finish() {
-        Toast.makeText(this, "I've returned", Toast.LENGTH_SHORT).show();
         returnedIntent.putExtra("addedTools", (Serializable) addedTools);
         returnedIntent.putExtra("deletedTools", (Serializable) deletedTools);
         setResult(1, returnedIntent);
@@ -123,29 +121,26 @@ public class ToolActivity extends AppCompatActivity {
         builder.setTitle("Are you sure you want to delete this tool ? ");
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //TODO
-                tools.remove(toolToDelete);
-                if (addedTools.size() <= 0) {
-                    deletedTools.add(toolToDelete.getId());
-                } else {
-                    for (Tool t : addedTools) {
-                        if (!t.getId().equals(toolToDelete.getId())) {
-                            Toast.makeText(ToolActivity.this, "OMG", Toast.LENGTH_SHORT).show();
-                            deletedTools.add(toolToDelete.getId());
-                        } else {
-                            addedTools.remove(toolToDelete);
-                        }
+            tools.remove(toolToDelete);
+            if (addedTools.size() <= 0) {
+                deletedTools.add(toolToDelete.getId());
+            } else {
+                for (Tool t : addedTools) {
+                    if (!t.getId().equals(toolToDelete.getId())) {
+                        deletedTools.add(toolToDelete.getId());
+                    } else {
+                        addedTools.remove(toolToDelete);
                     }
                 }
-                toolListAdapter.notifyDataSetChanged();
-                Toast.makeText(ToolActivity.this, toolToDelete.getName() + " has been deleted.", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+            }
+            toolListAdapter.notifyDataSetChanged();
+            dialog.dismiss();
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //TODO
-                dialog.dismiss();
+            //TODO
+            dialog.dismiss();
             }
         });
         AlertDialog dialog = builder.create();

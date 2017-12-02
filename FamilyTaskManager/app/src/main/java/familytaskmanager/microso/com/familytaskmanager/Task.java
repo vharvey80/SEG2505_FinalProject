@@ -2,6 +2,7 @@ package familytaskmanager.microso.com.familytaskmanager;
 
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.RuntimeExecutionException;
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
@@ -179,6 +180,12 @@ public class Task implements Serializable {
         return has;
     }
 
+    //TODO test method, remove
+    public boolean hasCreator() {
+        boolean has = users.get("creator") != null;
+        return has;
+    }
+
     /**
      * Checks if the task includes a note.
      * @return true if the task includes a note.
@@ -229,6 +236,7 @@ public class Task implements Serializable {
         users.put("user", aUser);
         assignedUserID = aUser.getId();
         //user = aUser;
+        //This 'if' should never be executed in our system, kept as security
         if (existingUser != null && !existingUser.equals(aUser)) {
             existingUser.removeAssignedTo(this);
         }
@@ -239,7 +247,24 @@ public class Task implements Serializable {
         return wasSet;
     }
 
-    public void setAssignedUserID(String anAssignedUserID) { anAssignedUserID = anAssignedUserID; }
+    public boolean removeAssignedUser() {
+        boolean wasRemoved = false;
+        if(hasUser()) {
+            User currentlyAssigned = users.get("user");
+
+            users.put("user", null);
+            assignedUserID = null;
+
+            //Removing from the user. If already done, there is security in User method
+            currentlyAssigned.removeAssignedTo(this);
+
+            wasRemoved = true;
+
+        }
+        return wasRemoved;
+    }
+
+    public void setAssignedUserID(String anAssignedUserID) { this.assignedUserID = anAssignedUserID; }
 
     @Exclude
     public boolean setCreator(User aCreator) {
@@ -365,7 +390,7 @@ public class Task implements Serializable {
     public Map<String, User> getUsers() { return users; }
 
     @Exclude
-    public void setUsers(Map<String, User> users) { this. users = users; }
+    public void setUsers(Map<String, User> users) { this.users = users; }
 
     public void setTools(List<Tool> tools) { this.tools = tools; }
 

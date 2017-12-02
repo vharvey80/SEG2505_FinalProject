@@ -47,11 +47,9 @@ public class ToolListAdapter extends ArrayAdapter<Tool> {
         supplyView.setText(Integer.toString(selected_tool.getSupply()));
         btnDelete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (getContext() instanceof ToolActivity) {
-                    ((ToolActivity)getContext()).deleteTools((Tool) v.getTag());
-                }
-                // Tool s_tool = tools.get((v.getId() - 1)); // Va chercher le tool correspondant dans la liste de tools. (à améliorer?)
-                //areYouSure(s_tool); // Selected tool is not the one we're looking for.
+            if (getContext() instanceof ToolActivity) {
+                ((ToolActivity)getContext()).deleteTools((Tool) v.getTag());
+            }
             }
         });
         return rowView;

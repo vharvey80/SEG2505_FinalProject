@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.support.annotation.BoolRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +36,15 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     private Task presentTask;
     private List<Tool> familyToolList;
+    private List<User> userList;
+
+    //flag to be set when we change the user (assign or un-assign)
+    private boolean userChange;
+    private boolean deleteThisTask = false;
+
+    //This variable are used in case the Task is unassigned, causing us to not be able to get
+    //user with presentTask.getUser();
+    private User oldUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +55,9 @@ public class TaskDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         presentTask = (Task) intent.getSerializableExtra("task");
         familyToolList = (List<Tool>) intent.getSerializableExtra("toolList");
+        userList = (List<User>) intent.getSerializableExtra("userList");
+
+        userChange = false; //default no change
 
         this.updateActivityView();
 
@@ -64,7 +78,7 @@ public class TaskDetailActivity extends AppCompatActivity {
                 showDialogPart1();
                 return true;
             case R.id.action_deletaTask:
-                Toast.makeText(this, "Can't delete yet, might get complicated", Toast.LENGTH_SHORT).show();
+                areYouSure();
                 return true;
             case android.R.id.home:
                 System.out.println("Clicked home, xyz");
@@ -73,6 +87,33 @@ public class TaskDetailActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item); //Simply copied this line from official Android Tutorials
         }
+    }
+
+    private void areYouSure() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(TaskDetailActivity.this);
+        builder.setTitle("Are you sure you want to delete this task ?");
+        if(presentTask.getAssignedUserID() != null) {
+            builder.setMessage("This task is currently assigned to a user and deleting " +
+                    "it would remove this task for this user.");
+        } else {
+            builder.setMessage("This task isn't assigned to a user.");
+        }
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO
+                deleteThisTask = true;
+                dialog.dismiss();
+                finish();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO
+                dialog.dismiss();
+            }
+        });
+        android.support.v7.app.AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void showDialogPart1() {
@@ -457,6 +498,18 @@ public class TaskDetailActivity extends AppCompatActivity {
         //Setting the note
         TextView noteText = (TextView) findViewById(R.id.noteText);
         noteText.setText(presentTask.getNote());
+
+        //setting onClick for AssignOrReleaseIcon
+        assignOrReleaseIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (presentTask.hasUser()) {
+                    showReleaseDialog();
+                } else {
+                    assignTask();
+                }
+            }
+        });
     }
 
     private int taskToolIsInFamilyList(Tool tool) {
@@ -471,11 +524,113 @@ public class TaskDetailActivity extends AppCompatActivity {
         return index;
     }
 
+    private void assignTask() {
+        //Dialog code
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View dialogView = inflater.inflate(R.layout.dialog_choose_user, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Choose User To Assign");
+        alertDialogBuilder.setView(dialogView);
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        //end dialog code
+
+        //List view code
+        ListView listView = (ListView) dialogView.findViewById(R.id.dialogUserList);
+
+        PeopleListAdapter peopleListAdapter = new PeopleListAdapter(getApplicationContext(), userList);
+        listView.setAdapter(peopleListAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+
+                alertDialog.dismiss();
+                final User clickedUser = (User) parent.getItemAtPosition(position);
+
+                //TODO Make diffrence between current parent user and current kid
+                if(true) {
+                    askAssignmentConfirmation(clickedUser);
+                }
+
+            }
+        });
+        //End of List view code
+    }
+
+    /**
+     * Method called when user chose who to assign task to.
+     */
+    private void askAssignmentConfirmation(final User userToAssign) {
+
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("Confirm allocation")
+                .setMessage("Task will be assigned to " + userToAssign.getFname() + "\n"
+                        + "Note: \n - " + presentTask.getNote())
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        presentTask.setUser(userToAssign); //Should also assign task to user
+                        userChange = true;
+                        updateActivityView();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
+
+    private void showReleaseDialog() {
+
+        //TODO check that the present user is assigned assigned user or is a Parent
+        if (true) {
+
+            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            dialogBuilder.setTitle("Confirm release")
+                    .setMessage("Are you certain you want to release this Task.")
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            oldUser = presentTask.getUser();
+                            presentTask.removeAssignedUser();
+                            userChange = true;
+                            updateActivityView();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
+
+        }
+
+    }
+
     @Override
     public void finish() {
         Intent returnIntent = new Intent();
+        //Always give back Task
         returnIntent.putExtra("updatedTask", (Serializable) presentTask);
-        setResult(MainActivity.TASK_ACTIVITY_REQ_CODE, returnIntent);;
+        //If there was an asisgnement at some point, we return this user
+        if(presentTask.hasUser() && userChange) {
+            returnIntent.putExtra("updatedUser", (Serializable) presentTask.getUser());
+        }
+        //If there was an unassignment at some point, we return old user
+        if(oldUser != null && userChange) {
+            returnIntent.putExtra("oldUser", (Serializable) oldUser);
+        }
+        if (deleteThisTask) {
+            returnIntent.putExtra("deletedTask", (Serializable) presentTask);
+        }
+        setResult(MainActivity.TASK_ACTIVITY_REQ_CODE, returnIntent);
         super.finish();
     }
 
