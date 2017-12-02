@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity
         /*for (int i = 0; i < family.getUsers().size(); i++) {
             users.add(family.getUser(i));
         }*/
-        UserChangeAdapter user_adapter = new UserChangeAdapter(this, family.getUsers());
+        UserChangeAdapter user_adapter = new UserChangeAdapter(this, family.getUsers(), this);
         user_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
         View v = navigationView.getHeaderView(0);
@@ -332,6 +332,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
     /**
      * Ask Family to update the task given in argument
      * @param atask
@@ -346,6 +347,10 @@ public class MainActivity extends AppCompatActivity
     public boolean requestToolCreation(Tool newTool) { return family.requestToolCreation(newTool); }
     public boolean requestToolDeletion(String oldTool) { return family.requestToolDelete(oldTool); }
     public boolean requestTaskDeletion(String oldTask) { return family.requestTaskDelete(oldTask); }
+    public boolean requestSetCurrentUser(int userIndex){
+        //Toast.makeText(this,userIndex,Toast.LENGTH_LONG);
+        return family.setCurrentUser(userIndex);
+    }
 
     //TODO cheap method for a cheap breakfix, I need to fix this - walid
     public User getUserWithID(String id) { return family.getUserWithID(id); }

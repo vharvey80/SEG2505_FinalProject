@@ -106,7 +106,8 @@ public class Family {
         return currentUser;
     }
 
-    public boolean setCurrentUser(User user) {
+    public boolean setCurrentUser(int userIndex) {
+        User user = users.get(userIndex);
         boolean wasUpdated = false;
         DatabaseReference currentUser_del_ref;
         currentUser_del_ref = currentUserReference.child(currentUser.getId()); // get reference
