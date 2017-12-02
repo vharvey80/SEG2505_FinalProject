@@ -8,6 +8,7 @@ import java.sql.Date;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -671,7 +672,7 @@ public class Family {
                 this.removeTask(deletedTask);
             }
             return true;
-        } catch (Error e) { return false; }
+        } catch (Error e) { throw new DatabaseException("Impossible to delete this item."); }
     }
 
     public Task requestTaskCreation(User creator, String name, double time, int year, int month,
