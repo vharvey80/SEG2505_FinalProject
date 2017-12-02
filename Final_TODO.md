@@ -1,7 +1,7 @@
 Priority List for functionnality:
 
-- [] MAKE SURE OUR CODE COMPILES (-20%)
-    - Not actually a task, just a reminder
+- [ ] MAKE SURE OUR CODE COMPILES (-20%)
+        - `Not actually a task, just a reminder`
 
 - [x] Add task with name and description (8%) **(DONE)**
                                                                 
@@ -10,7 +10,7 @@ Priority List for functionnality:
 - [x] Delete task (5%) **(DONE)**
 
 - Can see obtained points (5%) **(DONE)** \n
-        `Right now, we can see the user points in the userDetail and also on the spinner-change-user.`
+        - `Right now, we can see the user points in the userDetail and also on the spinner-change-user.`
 
 - Can list all task assigned to a user (7%) <b>***** RIGHT NOW' WE HAVE SOME BUGS WITH THAT *****</b>
     
