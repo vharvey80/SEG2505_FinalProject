@@ -16,7 +16,7 @@ Priority List for functionnality:
     
 - [x] Can list all tasks associated to a group (7%) **(DONE)**  
 
-- [x] Change the state of a task (5%) **(DONE)**
+- [x] Change the state of a task (5%) **(DONE)**  
                   `Right now, we change the pseudo-state (un/assigned) by un/assigning a user and also by deleting (cancelled),
                    cancelling (cancelled) and completing (completed).`
 
