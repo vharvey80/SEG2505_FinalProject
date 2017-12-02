@@ -16,7 +16,6 @@ public class ShoppingItem {
     //ShoppingItem Attributes
     private String id;
     private String name;
-    private int quantity;
     private boolean needToBuy;
     private Category category;
 
@@ -27,10 +26,9 @@ public class ShoppingItem {
         // For Firebase.
     }
 
-    public ShoppingItem(String aId, String aName, int aQuantity, boolean aNeedToBuy, Category aCategory) {
+    public ShoppingItem(String aId, String aName, boolean aNeedToBuy, Category aCategory) {
         id = aId;
         name = aName;
-        quantity = aQuantity;
         needToBuy = aNeedToBuy;
         category = aCategory;
     }
@@ -55,7 +53,6 @@ public class ShoppingItem {
 
     public boolean setQuantity(int aQuantity) {
         boolean wasSet = false;
-        quantity = aQuantity;
         wasSet = true;
         return wasSet;
     }
@@ -82,10 +79,6 @@ public class ShoppingItem {
         return name;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
     public boolean getNeedToBuy() {
         return needToBuy;
     }
@@ -94,9 +87,9 @@ public class ShoppingItem {
         return category;
     }
 
-    public boolean isNeedToBuy() {
-        return needToBuy;
-    }
+//    public boolean isNeedToBuy() {
+//        return needToBuy;
+//    }
 
     public void delete() {
     }
@@ -106,7 +99,6 @@ public class ShoppingItem {
         return super.toString() + "[" +
                 "id" + ":" + getId() + "," +
                 "name" + ":" + getName() + "," +
-                "quantity" + ":" + getQuantity() + "," +
                 "needToBuy" + ":" + getNeedToBuy() + "]" + System.getProperties().getProperty("line.separator") +
                 "  " + "category" + "=" + (getCategory() != null ? !getCategory().equals(this) ? getCategory().toString().replaceAll("  ", "    ") : "this" : "null");
     }

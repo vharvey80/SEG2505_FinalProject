@@ -223,6 +223,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public List<ShoppingItem> getFamilyShoppingItems() { return family.getShoppingItems(); }
+
     public List<Task> getFamilyActiveTaskList() {
         return family.getActiveTasks();
     }
@@ -287,6 +289,9 @@ public class MainActivity extends AppCompatActivity
         return created;
 
     }
+
+    public boolean requestShoppingItemCreation(ShoppingItem aShoppingItem) { return family.requestShoppingItemCreation(aShoppingItem); }
+    public boolean requestShoppingItemDeletion(ShoppingItem aShoppingItem) { return family.requestShoppingItemDelete(aShoppingItem); }
 
     /**
      * Ask Family to update the task given in argument
