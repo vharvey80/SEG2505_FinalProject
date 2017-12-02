@@ -510,6 +510,10 @@ public class Family {
                         List<Task> tasks = new ArrayList<Task>();
                         user.setTasks(tasks);
                     }
+                    if(user.getAssignedTo() == null) {
+                        List<Task> assignedToTasks = new ArrayList<Task>();
+                        user.setAssignedToList(assignedToTasks);
+                    }
 
                     // Add user getted in the list
                     users.add(user);
@@ -717,10 +721,12 @@ public class Family {
      * Method that populates the users of all tasks. Will be called by MainActivy at right moment.
      */
     public void populateTaskUsers() {
-        System.out.println("Active task is of size xyz" + activeTasks.size());
+        System.out.println("WASD Active task is of size " + activeTasks.size());
         for (Task t :  activeTasks) {
             if (t.getAssignedUserID() != null) {
+                System.out.println("WASD t.getAssignedUserID est pas null");
                 User assignedUser = getUserWithID(t.getAssignedUserID());
+                System.out.println("WASD on a retrieve le user " + assignedUser.getFname() + " - " + assignedUser.getId());
                 t.setUser(assignedUser);
             }
             if (t.getCreatorID() != null) {
