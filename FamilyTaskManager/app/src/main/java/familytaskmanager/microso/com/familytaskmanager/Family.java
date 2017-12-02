@@ -597,7 +597,8 @@ public class Family {
             }
         });
 
-        shoppingItemsReference.addValueEventListener(new ValueEventListener() {
+        //TODO, uncoment. I commented out because was crashing app
+        /*shoppingItemsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Clearing the list
@@ -619,7 +620,7 @@ public class Family {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
         activeTasksReference.addValueEventListener(new ValueEventListener() {
             @Override

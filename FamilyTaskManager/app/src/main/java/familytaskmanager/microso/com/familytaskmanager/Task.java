@@ -2,6 +2,7 @@ package familytaskmanager.microso.com.familytaskmanager;
 
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.RuntimeExecutionException;
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
@@ -235,7 +236,7 @@ public class Task implements Serializable {
         users.put("user", aUser);
         assignedUserID = aUser.getId();
         //user = aUser;
-        //This id should never be executed in our system, kept as security
+        //This 'if' should never be executed in our system, kept as security
         if (existingUser != null && !existingUser.equals(aUser)) {
             existingUser.removeAssignedTo(this);
         }
@@ -244,6 +245,23 @@ public class Task implements Serializable {
         }
         wasSet = true;
         return wasSet;
+    }
+
+    public boolean removeAssignedUser() {
+        boolean wasRemoved = false;
+        if(hasUser()) {
+            User currentlyAssigned = users.get("user");
+
+            users.put("user", null);
+            assignedUserID = null;
+
+            //Removing from the user. If already done, there is security in User method
+            currentlyAssigned.removeAssignedTo(this);
+
+            wasRemoved = true;
+
+        }
+        return wasRemoved;
     }
 
     public void setAssignedUserID(String anAssignedUserID) { this.assignedUserID = anAssignedUserID; }
@@ -372,7 +390,7 @@ public class Task implements Serializable {
     public Map<String, User> getUsers() { return users; }
 
     @Exclude
-    public void setUsers(Map<String, User> users) { this. users = users; }
+    public void setUsers(Map<String, User> users) { this.users = users; }
 
     public void setTools(List<Tool> tools) { this.tools = tools; }
 
