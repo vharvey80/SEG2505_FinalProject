@@ -42,6 +42,10 @@ public class TaskDetailActivity extends AppCompatActivity {
     private boolean userChange;
     private boolean deleteThisTask = false;
 
+    //This variable are used in case the Task is unassigned, causing us to not be able to get
+    //user with presentTask.getUser();
+    private User oldUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +101,11 @@ public class TaskDetailActivity extends AppCompatActivity {
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //TODO
+                //My code remove
+                oldUser = presentTask.getUser();
+                presentTask.removeAssignedUser();
+                userChange = true;
+                //end of my code remove
                 deleteThisTask = true;
                 dialog.dismiss();
                 finish();
@@ -506,6 +515,9 @@ public class TaskDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //Setting the onClick for completedButton
+
     }
 
     private int taskToolIsInFamilyList(Tool tool) {
@@ -583,16 +595,45 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     private void showReleaseDialog() {
 
-        //TODO check that the present user is assigned
+        //TODO check that the present user is assigned assigned user or is a Parent
+        if (true) {
+
+            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            dialogBuilder.setTitle("Confirm release")
+                    .setMessage("Are you certain you want to release this Task.")
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            oldUser = presentTask.getUser();
+                            presentTask.removeAssignedUser();
+                            userChange = true;
+                            updateActivityView();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
+
+        }
 
     }
 
     @Override
     public void finish() {
         Intent returnIntent = new Intent();
+        //Always give back Task
         returnIntent.putExtra("updatedTask", (Serializable) presentTask);
+        //If there was an asisgnement at some point, we return this user
         if(presentTask.hasUser() && userChange) {
             returnIntent.putExtra("updatedUser", (Serializable) presentTask.getUser());
+        }
+        //If there was an unassignment at some point, we return old user
+        if(oldUser != null && userChange) {
+            returnIntent.putExtra("oldUser", (Serializable) oldUser);
         }
         if (deleteThisTask) {
             returnIntent.putExtra("deletedTask", (Serializable) presentTask);

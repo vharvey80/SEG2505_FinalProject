@@ -87,17 +87,20 @@ public class User implements Serializable {
     }
 
     public boolean removeAssignedTask(String taskID){  // TODO WALID, je sais que tu travaillais avec les assign, mais regarde ça et fais ce que tu veux avec, mais
-                                                       // TODO c'est la méthode que j'utilise dans la famille pour remove les tasks d'un user.
+                                                       // c'est la méthode que j'utilise dans la famille pour remove les tasks d'un user.
+        System.out.println("WASDF - removeAssignedTask called for " + fname + " on task " + taskID);
+        printAssggnedTasks();
+        Task toRemove = null; //Need this to avoid concurent exception
         boolean removed = false;
         for (Task a_t : assignedTo) {
             if (a_t.getId().equals(taskID)) {
-                tasks.remove(a_t);
+                toRemove = a_t;
                 removed = true;
-            }
-            else {
-                removed = false;
+                break;
             }
         }
+        assignedTo.remove(toRemove);
+        printAssggnedTasks();
         return removed;
     }
 
@@ -149,10 +152,10 @@ public class User implements Serializable {
         return has;
     }
 
-    public int indexOfAssignedTo(Task aAssignedTo) {
+    /*public int indexOfAssignedTo(Task aAssignedTo) {
         int index = assignedTo.indexOf(aAssignedTo);
         return index;
-    }
+    }*/
 
     public Task getTask(int index) {
         Task aTask = tasks.get(index);
@@ -174,18 +177,19 @@ public class User implements Serializable {
         return has;
     }
 
-    public int indexOfTask(Task aTask) {
+    /*public int indexOfTask(Task aTask) {
         int index = tasks.indexOf(aTask);
         return index;
-    }
+    }*/
 
     public static int minimumNumberOfAssignedTo() {
         return 0;
     }
 
     public boolean addAssignedTo(Task aAssignedTo) {
+        System.out.println("WASDF - addAssignedTo called for " + fname);
         boolean wasAdded = false;
-        if (assignedTo.contains(aAssignedTo)) {
+        if (alreadyAssignedTo(aAssignedTo)) {
             return false;
         }
         User existingUser = aAssignedTo.getUser();
@@ -201,17 +205,23 @@ public class User implements Serializable {
         return wasAdded;
     }
 
-    public boolean removeAssignedTo(Task aAssignedTo) {
+    public boolean removeAssignedTo(Task task) {
+        System.out.println("WASDF - removeAssignedTo called for " + fname);
         boolean wasRemoved = false;
-        if (assignedTo.contains(aAssignedTo)) {
-            assignedTo.remove(aAssignedTo);
-            aAssignedTo.setUser(null);
+        if (alreadyAssignedTo(task)) {
+            System.out.println("WASD - entered contains");
+            removeAssignedTask(task.getId());
+            //assignedTo.remove(task);
+
+            //There is security in task class in case the User was already removed from Task
+            task.removeAssignedUser();
+
             wasRemoved = true;
         }
         return wasRemoved;
     }
 
-    public boolean addAssignedToAt(Task aAssignedTo, int index) {
+    /*public boolean addAssignedToAt(Task aAssignedTo, int index) {
         boolean wasAdded = false;
         if (addAssignedTo(aAssignedTo)) {
             if (index < 0) {
@@ -225,9 +235,9 @@ public class User implements Serializable {
             wasAdded = true;
         }
         return wasAdded;
-    }
+    }*/
 
-    public boolean addOrMoveAssignedToAt(Task aAssignedTo, int index) {
+    /*public boolean addOrMoveAssignedToAt(Task aAssignedTo, int index) {
         boolean wasAdded = false;
         if (assignedTo.contains(aAssignedTo)) {
             if (index < 0) {
@@ -243,7 +253,7 @@ public class User implements Serializable {
             wasAdded = addAssignedToAt(aAssignedTo, index);
         }
         return wasAdded;
-    }
+    }*/
 
     public static int minimumNumberOfTasks() {
         return 0;
@@ -254,6 +264,7 @@ public class User implements Serializable {
     }
 
     public boolean addTask(Task aTask) {
+        System.out.println("WASDF - addTask called for " + fname);
         boolean wasAdded = false;
         if (tasks.contains(aTask)) {
             return false;
@@ -270,6 +281,7 @@ public class User implements Serializable {
     }
 
     public boolean removeTask(Task aTask) {
+        System.out.println("WASDF - removeTask called for " + fname);
         boolean wasRemoved = false;
         //Unable to remove aTask, as it must always have a creator
         if (!this.equals(aTask.getCreator())) {
@@ -279,7 +291,7 @@ public class User implements Serializable {
         return wasRemoved;
     }
 
-    public boolean addTaskAt(Task aTask, int index) {
+    /*public boolean addTaskAt(Task aTask, int index) {
         boolean wasAdded = false;
         if (addTask(aTask)) {
             if (index < 0) {
@@ -293,9 +305,9 @@ public class User implements Serializable {
             wasAdded = true;
         }
         return wasAdded;
-    }
+    }*/
 
-    public boolean addOrMoveTaskAt(Task aTask, int index) {
+    /*public boolean addOrMoveTaskAt(Task aTask, int index) {
         boolean wasAdded = false;
         if (tasks.contains(aTask)) {
             if (index < 0) {
@@ -311,7 +323,7 @@ public class User implements Serializable {
             wasAdded = addTaskAt(aTask, index);
         }
         return wasAdded;
-    }
+    }*/
 
     public void delete() {
         while (!assignedTo.isEmpty()) {
@@ -331,8 +343,27 @@ public class User implements Serializable {
         this.assignedTo = assignedToList;
     }
 
+    private boolean alreadyAssignedTo(Task aTask){
+        boolean contains = false;
+
+        for(Task t : assignedTo) {
+            if (t.getId().equals(aTask.getId())){
+                contains = true;
+            }
+        }
+
+        return contains;
+    }
+
 
     public String toString() {
         return (fname+" "+lname);
+    }
+
+    //TODO remove, testing method
+    public void printAssggnedTasks() {
+        for (Task t : assignedTo) {
+            System.out.print("WASDF - " + t.getTitle());
+        }
     }
 }
