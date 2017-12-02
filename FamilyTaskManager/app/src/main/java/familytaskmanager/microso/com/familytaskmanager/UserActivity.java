@@ -39,12 +39,15 @@ public class UserActivity extends AppCompatActivity {
 
         //Get the views from the layout
         TextView userName = (TextView) findViewById(R.id.userName);
+        TextView rewardValue = (TextView) findViewById(R.id.rewardValue);
         ImageView userIcon = (ImageView) findViewById(R.id.userIcon);
 
 
         //Set user info into the views
         String s = selectedUser.getFname()+" "+selectedUser.getLname();
         userName.setText(s);
+        s = selectedUser.getAccumulatedPts()+" pts";
+        rewardValue.setText(s);
         //Getting profile pic
         String resourceName = selectedUser.getProfilePicResourceName();
         Resources resources = getResources();

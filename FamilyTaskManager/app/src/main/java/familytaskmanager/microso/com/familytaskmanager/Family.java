@@ -27,7 +27,7 @@ public class Family {
     private List<ShoppingItem> shoppingItems;
     private List<Task> activeTasks;
     private List<Task> inactiveTasks;
-    private String currentUserID;
+    private User currentUser;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -46,6 +46,8 @@ public class Family {
         id = aId;
         tools = new ArrayList<Tool>();
         users = new ArrayList<User>();
+        //this user will always be replaced
+        currentUser = new User("0", "Default", "User", true, "menu_people", 0);
 
         shoppingItems = new ArrayList<ShoppingItem>();
         activeTasks = new ArrayList<Task>();
@@ -56,8 +58,7 @@ public class Family {
         shoppingItemsReference = database.getReference("ShoppingItems");
         activeTasksReference = database.getReference("ActiveTasks");
         inactiveTasksReference = database.getReference("InactiveTasks");
-        currentUserReference = database.getReference();
-
+        currentUserReference = database.getReference("CurrentUser");
     }
 
     //------------------------
@@ -456,6 +457,27 @@ public class Family {
      * @return
      */
     public void onStartFamily() {
+
+        currentUserReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Clearing the list
+                currentUser = null;
+                // Iterating through all the nodes
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    // getting each user
+                    currentUser = postSnapshot.getValue(User.class);
+                }
+                //We always want at least one user in App
+                if (currentUser == null) {
+                    currentUser = new User("0", "Default", "User", true, "menu_people", 0);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         // Creating all the reference we need for the database.
         usersReference.addValueEventListener(new ValueEventListener() {
