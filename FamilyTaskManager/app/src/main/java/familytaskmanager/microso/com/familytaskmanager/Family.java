@@ -259,7 +259,7 @@ public class Family {
                 toolToRemove = t;
             }
         }
-        if (toolToRemove != null) { tools.remove(toolToRemove); } else { throw new IllegalArgumentException("Impossible de deleter un tool null."); }
+        if (toolToRemove != null) { tools.remove(toolToRemove); } else { throw new IllegalArgumentException("Impossible de deleter un tool inexistant."); }
         return wasRemoved;
     }
     public List<String> getToolsID() {
@@ -311,11 +311,12 @@ public class Family {
     }
 
     public boolean updateUser(User aUser) {
+        System.out.println("WASD - Update user called with " + aUser.getFname() + " - " + aUser.hasAssignedTo());
         boolean wasUpdated = false;
         DatabaseReference user_update_ref;
-        if (users.contains(aUser)) {
+        /*if (users.contains(aUser)) {
             return false;
-        }
+        }*/
         /** DATABASE CODE **/
             user_update_ref = usersReference.child(aUser.getId());
             user_update_ref.setValue(aUser);
@@ -421,6 +422,25 @@ public class Family {
         return wasAdded;
     }
 
+    public boolean addInactiveTask(Task aTask) {
+        boolean wasAdded = false;
+
+        for (Task t : inactiveTasks) {
+            if (t.getId().equals(aTask.getId())) {
+                return false;
+            }
+        }
+        /** DATABASE CODE **/
+        String task_id = inactiveTasksReference.push().getKey();
+        aTask.setId(task_id);
+        aTask.setState(Task.TaskState.Cancelled);
+        inactiveTasksReference.child(task_id).setValue(aTask);
+        /** END **/
+        inactiveTasks.add(aTask);
+        wasAdded = true;
+        return wasAdded;
+    }
+
     public boolean updateTask(Task aTask) {
         //TODO fix this method. Either have some kind of check to return true or false, or remove return of boolean
         boolean wasUpdated = false;
@@ -434,11 +454,26 @@ public class Family {
         return wasUpdated;
     }
 
-    public boolean removeTask(Task aTask) {
+    public boolean removeTask(String aTask) {
         boolean wasRemoved = false;
-        if (activeTasks.contains(aTask)) {
-            activeTasks.remove(aTask);
-            wasRemoved = true;
+        Task taskToRemove = null;
+        DatabaseReference task_del_ref; // temporary reference
+        for (Task t : activeTasks) {
+            if (t.getId().equals(aTask)) {
+                /** DATABASE CODE **/
+                task_del_ref = activeTasksReference.child(aTask); // get reference
+                task_del_ref.removeValue(); // delete the tool
+                /** END **/
+                wasRemoved = true;
+                taskToRemove = t;
+            }
+        }
+        if (taskToRemove != null) {
+            if (activeTasks.remove(taskToRemove)) {
+                this.addInactiveTask(taskToRemove);
+            }
+        } else {
+            throw new IllegalArgumentException("Impossible de deleter une task inexistante.");
         }
         return wasRemoved;
     }
@@ -534,8 +569,8 @@ public class Family {
                         user.setTasks(tasks);
                     }
                     if(user.getAssignedTo() == null) {
-                        List<Task> assigned = new ArrayList<Task>();
-                        user.setAssignedTo(assigned);
+                        List<Task> assignedToTasks = new ArrayList<Task>();
+                        user.setAssignedToList(assignedToTasks);
                     }
 
                     // Add user getted in the list
@@ -687,6 +722,27 @@ public class Family {
         } catch (Error e) { return false; }
     }
 
+    public boolean requestTaskDelete(String deletedTask) {
+        boolean removedDependency = true;
+        try {
+            // TODO TASK SUPRESSION : Be sure that the removeAssignedTask I've created is working when a user has some tasks to do.
+            for (User u : users) {
+                if (u.getAssignedTo() != null) {
+                    for (Task t : u.getAssignedTo()) {
+                        if (t.getId().equals(deletedTask)) {
+                            removedDependency = u.removeAssignedTask(deletedTask);
+                            break;
+                        }
+                    }
+                }
+            }
+            if(removedDependency) {
+                this.removeTask(deletedTask);
+            }
+            return true;
+        } catch (Error e) { return false; }
+    }
+
     public Task requestTaskCreation(User creator, String name, double time, int year, int month,
                                     int day, int reward, String note) {
 
@@ -744,10 +800,12 @@ public class Family {
      * Method that populates the users of all tasks. Will be called by MainActivy at right moment.
      */
     public void populateTaskUsers() {
-        System.out.println("Active task is of size xyz" + activeTasks.size());
+        System.out.println("WASD Active task is of size " + activeTasks.size());
         for (Task t :  activeTasks) {
             if (t.getAssignedUserID() != null) {
+                System.out.println("WASD t.getAssignedUserID est pas null");
                 User assignedUser = getUserWithID(t.getAssignedUserID());
+                System.out.println("WASD on a retrieve le user " + assignedUser.getFname() + " - " + assignedUser.getId());
                 t.setUser(assignedUser);
             }
             if (t.getCreatorID() != null) {

@@ -86,6 +86,21 @@ public class User implements Serializable {
         return wasSet;
     }
 
+    public boolean removeAssignedTask(String taskID){  // TODO WALID, je sais que tu travaillais avec les assign, mais regarde ça et fais ce que tu veux avec, mais
+                                                       // TODO c'est la méthode que j'utilise dans la famille pour remove les tasks d'un user.
+        boolean removed = false;
+        for (Task a_t : assignedTo) {
+            if (a_t.getId().equals(taskID)) {
+                tasks.remove(a_t);
+                removed = true;
+            }
+            else {
+                removed = false;
+            }
+        }
+        return removed;
+    }
+
     public String getId() {
         return id;
     }
@@ -312,8 +327,8 @@ public class User implements Serializable {
         this.tasks = tasks;
     }
 
-    public void setAssignedTo(List<Task> assigned) {
-        this.assignedTo = assigned;
+    public void setAssignedToList(List<Task> assignedToList) {
+        this.assignedTo = assignedToList;
     }
 
 
