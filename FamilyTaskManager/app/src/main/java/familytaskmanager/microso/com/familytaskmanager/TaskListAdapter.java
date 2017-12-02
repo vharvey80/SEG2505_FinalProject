@@ -92,7 +92,7 @@ public class TaskListAdapter extends ArrayAdapter {
 
     private void imageIconClicked(int position) {
 
-        Task clickedTask = values.get(position);
+        final Task clickedTask = values.get(position);
 
         if (clickedTask.hasUser()) {
             Toast.makeText(context, "Already Assigned", Toast.LENGTH_SHORT).show();
@@ -112,19 +112,53 @@ public class TaskListAdapter extends ArrayAdapter {
         //end dialog code
 
         //List view code
-        ListView listView = (ListView) dialogView.findViewById(R.id.dialogUserList);
+        ListView userListView = (ListView) dialogView.findViewById(R.id.dialogUserList);
 
         PeopleListAdapter peopleListAdapter = new PeopleListAdapter(context, userList);
-        listView.setAdapter(peopleListAdapter);
+        userListView.setAdapter(peopleListAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+
                 alertDialog.dismiss();
+                final User clickedUser = (User) parent.getItemAtPosition(position);
+
+                //TODO Make diffrence between current parent user and current kid
+                if(true) {
+                    askAssignmentConfirmation(clickedUser, clickedTask);
+                }
             }
         });
         //End of List view code
 
+    }
+
+    /**
+     * Method called when user chose who to assign task to.
+     */
+    private void askAssignmentConfirmation(final User userToAssign, final Task clickedTask) {
+
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
+        dialogBuilder.setTitle("Confirm allocation")
+                .setMessage("Task will be assigned to " + userToAssign.getFname() + "\n"
+                        + "Note: \n - " + clickedTask.getNote())
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        clickedTask.setUser(userToAssign); //Should also assign task to user
+                        ((MainActivity)activity).requestTaskUpdate(clickedTask);
+                        ((MainActivity)activity).requestUserUpdate(userToAssign);
+                        notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
 }
