@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 // TODO: 2017-11-26  For some reason import below gives error. Investigate if time.
@@ -121,7 +122,13 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void run() {
+
                 family.populateTaskUsers();
+
+                System.out.println("WASD - after having populated the Task");
+                for (Task t : family.getActiveTasks()) {
+                    System.out.println("WASD - Name : " + t.getTitle() + " - hasUser() " + t.hasUser() + " - hasCreator()" + t.hasCreator());
+                }
 
                 vp_pages= (ViewPager) findViewById(R.id.vp_pages);
                 pagerAdapter = new FragmentAdapter(getSupportFragmentManager());
@@ -217,10 +224,16 @@ public class MainActivity extends AppCompatActivity
             if(data.hasExtra("updatedTask")) {
                 System.out.println("passed the hasExtra xyz"); //TODO remove
                 Task updatedTask = (Task) data.getSerializableExtra("updatedTask");
+                System.out.println("WASD - When coming back from TaskDetail, hasUser = " + updatedTask.hasUser());
                 family.updateTask(updatedTask);
             }
+            if(data.hasExtra("updatedUser")) {
+                User updatedUser = (User) data.getSerializableExtra("updatedUser");
+                family.updateUser(updatedUser);
+            }
             if (data.hasExtra("deletedTask")) {
-                // TODO maybe implements a if that check if family.getCurrentUser().itIsParent() pourrait nous permettre de controller la suppression de task si on
+                // TODO maybe implements a if that check if family.getCurrentUser().itIsParent() pourrait
+                // nous permettre de controller la suppression de task si on
                 // TODO est un enfant. (Puisqu'on peut juste supprimer une task si le current user est un parent.
                 Task deletedTask = (Task) data.getSerializableExtra("deletedTask");
                 if (requestTaskDeletion(deletedTask.getId())){

@@ -82,11 +82,12 @@ public class TasksFragment extends Fragment {
                 Intent intent = new Intent(getActivity().getApplicationContext(), TaskDetailActivity.class);
                 intent.putExtra("task", (Serializable) clickedTask);
                 intent.putExtra("toolList", (Serializable) ((MainActivity)getActivity()).getFamilyToolList());
+                intent.putExtra("userList", (Serializable) ((MainActivity)getActivity()).getFamilyPeopleList());
                 getActivity().startActivityForResult(intent, MainActivity.TASK_ACTIVITY_REQ_CODE);
 
             }
         });
-        //End of List view code
+        //End of List view codz
 
 
         return view;

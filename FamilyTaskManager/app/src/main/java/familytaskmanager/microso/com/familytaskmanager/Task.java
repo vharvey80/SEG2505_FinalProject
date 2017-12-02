@@ -179,6 +179,12 @@ public class Task implements Serializable {
         return has;
     }
 
+    //TODO test method, remove
+    public boolean hasCreator() {
+        boolean has = users.get("creator") != null;
+        return has;
+    }
+
     /**
      * Checks if the task includes a note.
      * @return true if the task includes a note.
@@ -229,6 +235,7 @@ public class Task implements Serializable {
         users.put("user", aUser);
         assignedUserID = aUser.getId();
         //user = aUser;
+        //This id should never be executed in our system, kept as security
         if (existingUser != null && !existingUser.equals(aUser)) {
             existingUser.removeAssignedTo(this);
         }
@@ -239,7 +246,7 @@ public class Task implements Serializable {
         return wasSet;
     }
 
-    public void setAssignedUserID(String anAssignedUserID) { anAssignedUserID = anAssignedUserID; }
+    public void setAssignedUserID(String anAssignedUserID) { this.assignedUserID = anAssignedUserID; }
 
     @Exclude
     public boolean setCreator(User aCreator) {
