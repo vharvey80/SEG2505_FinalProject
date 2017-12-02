@@ -5,12 +5,12 @@ Priority List for functionnality:
 
 - Add task with name and description (8%) **(DONE)**
                                                                 
-- Modify a task (5%) <b>***** (DONE) *****</b>
+- Modify a task (5%) **(DONE)**
 
-- Delete task (5%) <b>***** (DONE) *****</b>
+- Delete task (5%) **(DONE)**
 
-- Can see obtained points (5%) <b>***** (DONE) *****</b>
-        <b>- Right now, we can see the user points in the userDetail and also on the spinner-change-user.</b>
+- Can see obtained points (5%) **(DONE)**
+        > Right now, we can see the user points in the userDetail and also on the spinner-change-user.
 
 - Can list all task assigned to a user (7%) <b>***** RIGHT NOW' WE HAVE SOME BUGS WITH THAT *****</b>
     
