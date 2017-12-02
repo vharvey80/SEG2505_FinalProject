@@ -67,6 +67,14 @@ public class TaskDetailActivity extends AppCompatActivity {
             }
         });
 
+        Button completeTaskButton = (Button) findViewById(R.id.taskCompleteButton);
+        completeTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                areYouSure("complete");
+            }
+        });
+
 
         this.updateActivityView();
 
@@ -98,7 +106,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void areYouSure(String action) {
+    private void areYouSure(final String action) {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(TaskDetailActivity.this);
         builder.setTitle("Are you sure you want to "+ action +" this task ?");
         if(presentTask.getAssignedUserID() != null) {
@@ -110,14 +118,16 @@ public class TaskDetailActivity extends AppCompatActivity {
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //TODO
-                //My code remove
-                oldUser = presentTask.getUser();
-                presentTask.removeAssignedUser();
-                userChange = true;
-                //end of my code remove
-                deleteThisTask = true;
-                dialog.dismiss();
-                finish();
+                if (action != "complete") { // TODO WALID !!!!!
+                    //My code remove
+                    oldUser = presentTask.getUser();
+                    presentTask.removeAssignedUser();
+                    userChange = true;
+                    //end of my code remove
+                    deleteThisTask = true;
+                    dialog.dismiss();
+                    finish();
+                }
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
