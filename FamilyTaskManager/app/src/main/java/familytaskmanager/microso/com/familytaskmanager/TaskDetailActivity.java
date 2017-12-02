@@ -34,6 +34,7 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     private Task presentTask;
     private List<Tool> familyToolList;
+    private boolean deleteThisTask = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class TaskDetailActivity extends AppCompatActivity {
                 showDialogPart1();
                 return true;
             case R.id.action_deletaTask:
-                Toast.makeText(this, "Can't delete yet, might get complicated", Toast.LENGTH_SHORT).show();
+                areYouSure();
                 return true;
             case android.R.id.home:
                 System.out.println("Clicked home, xyz");
@@ -73,6 +74,33 @@ public class TaskDetailActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item); //Simply copied this line from official Android Tutorials
         }
+    }
+
+    private void areYouSure() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(TaskDetailActivity.this);
+        builder.setTitle("Are you sure you want to delete this task ?");
+        if(presentTask.getAssignedUserID() != null) {
+            builder.setMessage("This task is currently assigned to a user and deleting " +
+                    "it would remove this task for this user.");
+        } else {
+            builder.setMessage("This task isn't assigned to a user.");
+        }
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO
+                deleteThisTask = true;
+                dialog.dismiss();
+                finish();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO
+                dialog.dismiss();
+            }
+        });
+        android.support.v7.app.AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void showDialogPart1() {
@@ -475,7 +503,8 @@ public class TaskDetailActivity extends AppCompatActivity {
     public void finish() {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("updatedTask", (Serializable) presentTask);
-        setResult(MainActivity.TASK_ACTIVITY_REQ_CODE, returnIntent);;
+        if (deleteThisTask) { returnIntent.putExtra("deletedTask", (Serializable) presentTask); }
+        setResult(MainActivity.TASK_ACTIVITY_REQ_CODE, returnIntent);
         super.finish();
     }
 
