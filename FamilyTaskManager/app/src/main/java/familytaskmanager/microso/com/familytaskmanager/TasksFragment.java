@@ -56,7 +56,7 @@ public class TasksFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.tasksListView);
 
         taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(),
-                ((MainActivity)getActivity()).getFamilyActiveTaskList() ,((MainActivity)getActivity()).getFamilyUserList(),
+                ((MainActivity)getActivity()).getFamilyActiveTaskList() ,((MainActivity)getActivity()).getFamilyPeopleList(),
                 getActivity());
 
         listView.setAdapter(taskListAdapter);
