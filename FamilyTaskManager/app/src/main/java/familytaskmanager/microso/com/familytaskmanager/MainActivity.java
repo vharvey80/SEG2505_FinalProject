@@ -320,6 +320,9 @@ public class MainActivity extends AppCompatActivity
     public boolean requestTaskUpdate(Task atask) {
         return family.updateTask(atask);
     }
+    public boolean requestUserUpdate(User aUser) {
+        return family.updateUser(aUser);
+    }
     public boolean requestToolCreation(Tool newTool) { return family.requestToolCreation(newTool); }
     public boolean requestToolDeletion(String oldTool) { return family.requestToolDelete(oldTool); }
     public boolean requestTaskDeletion(String oldTask) { return family.requestTaskDelete(oldTask); }

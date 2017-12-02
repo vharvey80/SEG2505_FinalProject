@@ -310,11 +310,12 @@ public class Family {
     }
 
     public boolean updateUser(User aUser) {
+        System.out.println("WASD - Update user called with " + aUser.getFname() + " - " + aUser.hasAssignedTo());
         boolean wasUpdated = false;
         DatabaseReference user_update_ref;
-        if (users.contains(aUser)) {
+        /*if (users.contains(aUser)) {
             return false;
-        }
+        }*/
         /** DATABASE CODE **/
             user_update_ref = usersReference.child(aUser.getId());
             user_update_ref.setValue(aUser);
