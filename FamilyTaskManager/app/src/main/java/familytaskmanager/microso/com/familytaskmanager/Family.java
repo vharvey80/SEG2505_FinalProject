@@ -257,7 +257,7 @@ public class Family {
                 toolToRemove = t;
             }
         }
-        if (toolToRemove != null) { tools.remove(toolToRemove); } else { throw new IllegalArgumentException("Impossible de deleter un tool null."); }
+        if (toolToRemove != null) { tools.remove(toolToRemove); } else { throw new IllegalArgumentException("Impossible de deleter un tool inexistant."); }
         return wasRemoved;
     }
     public List<String> getToolsID() {
@@ -419,6 +419,25 @@ public class Family {
         return wasAdded;
     }
 
+    public boolean addInactiveTask(Task aTask) {
+        boolean wasAdded = false;
+
+        for (Task t : inactiveTasks) {
+            if (t.getId().equals(aTask.getId())) {
+                return false;
+            }
+        }
+        /** DATABASE CODE **/
+        String task_id = inactiveTasksReference.push().getKey();
+        aTask.setId(task_id);
+        aTask.setState(Task.TaskState.Cancelled);
+        inactiveTasksReference.child(task_id).setValue(aTask);
+        /** END **/
+        inactiveTasks.add(aTask);
+        wasAdded = true;
+        return wasAdded;
+    }
+
     public boolean updateTask(Task aTask) {
         //TODO fix this method. Either have some kind of check to return true or false, or remove return of boolean
         boolean wasUpdated = false;
@@ -432,11 +451,26 @@ public class Family {
         return wasUpdated;
     }
 
-    public boolean removeTask(Task aTask) {
+    public boolean removeTask(String aTask) {
         boolean wasRemoved = false;
-        if (activeTasks.contains(aTask)) {
-            activeTasks.remove(aTask);
-            wasRemoved = true;
+        Task taskToRemove = null;
+        DatabaseReference task_del_ref; // temporary reference
+        for (Task t : activeTasks) {
+            if (t.getId().equals(aTask)) {
+                /** DATABASE CODE **/
+                task_del_ref = activeTasksReference.child(aTask); // get reference
+                task_del_ref.removeValue(); // delete the tool
+                /** END **/
+                wasRemoved = true;
+                taskToRemove = t;
+            }
+        }
+        if (taskToRemove != null) {
+            if (activeTasks.remove(taskToRemove)) {
+                this.addInactiveTask(taskToRemove);
+            }
+        } else {
+            throw new IllegalArgumentException("Impossible de deleter une task inexistante.");
         }
         return wasRemoved;
     }
@@ -660,6 +694,27 @@ public class Family {
     public boolean requestToolDelete(String deletedTool) {
         try {
             this.removeTool(deletedTool);
+            return true;
+        } catch (Error e) { return false; }
+    }
+
+    public boolean requestTaskDelete(String deletedTask) {
+        boolean removedDependency = true;
+        try {
+            // TODO TASK SUPRESSION : Be sure that the removeAssignedTask I've created is working when a user has some tasks to do.
+            for (User u : users) {
+                if (u.getAssignedTo() != null) {
+                    for (Task t : u.getAssignedTo()) {
+                        if (t.getId().equals(deletedTask)) {
+                            removedDependency = u.removeAssignedTask(deletedTask);
+                            break;
+                        }
+                    }
+                }
+            }
+            if(removedDependency) {
+                this.removeTask(deletedTask);
+            }
             return true;
         } catch (Error e) { return false; }
     }
