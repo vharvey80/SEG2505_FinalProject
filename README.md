@@ -27,7 +27,7 @@ Priority List for functionnality:
 - [x] Affect ressources (tools) to a Task (6%)  
                   `Right now, only on the onCreate of a task.`
 
-- [x] Remove ressources (tools) from Task (6%)
+- [x] Remove ressources (tools) from Task (6%)  
                   `Right now, only on the onUpdate of a task.`
     
 - [x] See all tools necessary for all tasks of a group (family) (6%)
