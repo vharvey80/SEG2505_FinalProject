@@ -126,10 +126,23 @@ public class MainActivity extends AppCompatActivity
             }
         }, 1000);
         //End code for Tab Menu
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initSpinner();
+            }
+        }, 3000);
+    }
+
+    public void initSpinner() {
         /* CODE FOR USER CHANGE SPINNER */
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //ArrayList<User> users = new ArrayList<User>();
+        /*for (int i = 0; i < family.getUsers().size(); i++) {
+            users.add(family.getUser(i));
+        }*/
         UserChangeAdapter user_adapter = new UserChangeAdapter(this, family.getUsers());
         user_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 

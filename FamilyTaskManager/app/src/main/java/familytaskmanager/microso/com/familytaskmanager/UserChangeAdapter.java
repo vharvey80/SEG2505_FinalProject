@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,6 @@ import java.util.List;
 
 public class UserChangeAdapter extends ArrayAdapter<User> {
     private final Context context;
-    //private final ArrayList<User> users;
     private final List<User> users;
     private User selected_user;
 
@@ -44,11 +44,12 @@ public class UserChangeAdapter extends ArrayAdapter<User> {
         nameView.setText(selected_user.getFname());
         ptsView.setText(Integer.toString(selected_user.getAccumulatedPts()));
 
-        String resourceName = selected_user.getProfilePicResourceName();
+        Toast.makeText(context, selected_user.getFname(), Toast.LENGTH_SHORT).show();
+        //String resourceName = selected_user.getProfilePicResourceName();
+        String resourceName = "menu_people";
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier(resourceName, "drawable", "familytaskmanager.microso.com.familytaskmanager");
         pic.setImageResource(resourceId);
         return rowView;
     }
-
 }
