@@ -9,7 +9,7 @@ Priority List for functionnality:
 
 - Delete task (5%) **(DONE)**
 
-- Can see obtained points (5%) **(DONE)**
+- Can see obtained points (5%) **(DONE)** \n
         `Right now, we can see the user points in the userDetail and also on the spinner-change-user.`
 
 - Can list all task assigned to a user (7%) <b>***** RIGHT NOW' WE HAVE SOME BUGS WITH THAT *****</b>
