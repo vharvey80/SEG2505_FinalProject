@@ -554,7 +554,9 @@ public class TaskDetailActivity extends AppCompatActivity {
     }
 
     private void showReleaseDialog() {
-        //TODO complete this method
+
+        //TODO check that the present user is assigned
+
     }
 
     @Override
