@@ -196,6 +196,7 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) { // doesn't detect the return of my tool Activity TODO
         super.onActivityResult(requestCode, resultCode, data);
         //TODO a switch statement might be better
+        Toast.makeText(this, "Hello ?", Toast.LENGTH_SHORT).show();
         if (requestCode == TOOL_REQUEST_CODE) {
             if (data.hasExtra("addedTools")) { // for my specific tool treatment.
                 List<Tool> newTools = (List<Tool>) data.getSerializableExtra("addedTools");
@@ -214,11 +215,19 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         } else if (requestCode == TASK_ACTIVITY_REQ_CODE) {
-            System.out.println("Passed the else if xyz"); //TODO remove
             if(data.hasExtra("updatedTask")) {
                 System.out.println("passed the hasExtra xyz"); //TODO remove
                 Task updatedTask = (Task) data.getSerializableExtra("updatedTask");
                 family.updateTask(updatedTask);
+            }
+            if (data.hasExtra("deletedTask")) {
+                // TODO maybe implements a if that check if family.getCurrentUser().itIsParent() pourrait nous permettre de controller la suppression de task si on
+                // TODO est un enfant. (Puisqu'on peut juste supprimer une task si le current user est un parent.
+                Task deletedTask = (Task) data.getSerializableExtra("deletedTask");
+                Toast.makeText(this, "Deleting task..." + deletedTask.getTitle(), Toast.LENGTH_SHORT).show();
+                if (requestTaskDeletion(deletedTask.getId())){
+                    Toast.makeText(this, "This task has been deleted.", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
@@ -302,6 +311,7 @@ public class MainActivity extends AppCompatActivity
     }
     public boolean requestToolCreation(Tool newTool) { return family.requestToolCreation(newTool); }
     public boolean requestToolDeletion(String oldTool) { return family.requestToolDelete(oldTool); }
+    public boolean requestTaskDeletion(String oldTask) { return family.requestTaskDelete(oldTask); }
 
     //TODO cheap method for a cheap breakfix, I need to fix this - walid
     public User getUserWithID(String id) { return family.getUserWithID(id); }
