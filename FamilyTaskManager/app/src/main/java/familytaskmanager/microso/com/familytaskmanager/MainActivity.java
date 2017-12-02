@@ -243,9 +243,12 @@ public class MainActivity extends AppCompatActivity
                 // TODO maybe implements a if that check if family.getCurrentUser().itIsParent() pourrait
                 // nous permettre de controller la suppression de task si on
                 // TODO est un enfant. (Puisqu'on peut juste supprimer une task si le current user est un parent.
+
                 Task deletedTask = (Task) data.getSerializableExtra("deletedTask");
-                if (requestTaskDeletion(deletedTask.getId())){
-                    Toast.makeText(this, "This task has been deleted.", Toast.LENGTH_SHORT).show();
+                boolean completeThisTask = (boolean) data.getBooleanExtra("completeTask", false);
+                String actionOnTask = (String) data.getStringExtra("action");
+                if (requestTaskDeletion(deletedTask.getId(), completeThisTask)){
+                    Toast.makeText(this, "This task has been "+ actionOnTask +".", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -338,7 +341,7 @@ public class MainActivity extends AppCompatActivity
     }
     public boolean requestToolCreation(Tool newTool) { return family.requestToolCreation(newTool); }
     public boolean requestToolDeletion(String oldTool) { return family.requestToolDelete(oldTool); }
-    public boolean requestTaskDeletion(String oldTask) { return family.requestTaskDelete(oldTask); }
+    public boolean requestTaskDeletion(String oldTask, boolean completed) { return family.requestTaskDelete(oldTask, completed); }
 
     //TODO cheap method for a cheap breakfix, I need to fix this - walid
     public User getUserWithID(String id) { return family.getUserWithID(id); }
