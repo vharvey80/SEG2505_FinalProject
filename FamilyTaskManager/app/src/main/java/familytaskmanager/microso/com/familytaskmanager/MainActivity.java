@@ -150,6 +150,14 @@ public class MainActivity extends AppCompatActivity
         Spinner user_spinner_list_view = (Spinner) v.findViewById(R.id.userMenuList);
 
         user_spinner_list_view.setAdapter(user_adapter);
+
+        //Set the spinner selection to currentUser
+        for(int i=0; i<family.getUsers().size(); i++){
+            if(family.getCurrentUser().getId().equals(family.getUser(i).getId())){
+                user_spinner_list_view.setSelection(i);
+                break;
+            }
+        }
         /* END USER CHANGE */
     }
 

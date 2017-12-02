@@ -102,6 +102,21 @@ public class Family {
     //------------------------
     // INTERFACE
     //------------------------
+    public User getCurrentUser(){
+        return currentUser;
+    }
+
+    public boolean setCurrentUser(User user) {
+        boolean wasUpdated = false;
+        DatabaseReference currentUser_del_ref;
+        currentUser_del_ref = currentUserReference.child(currentUser.getId()); // get reference
+        currentUser_del_ref.removeValue(); // delete the user
+        currentUserReference.child(user.getId()).setValue(user); //write the new current user in database
+
+        currentUser = user; //modify the attribute in family
+        wasUpdated = true;
+        return wasUpdated;
+    }
 
     public boolean setId(int aId) {
         boolean wasSet = false;
@@ -620,7 +635,7 @@ public class Family {
             }
         });
 
-        shoppingItemsReference.addValueEventListener(new ValueEventListener() {
+        /*shoppingItemsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Clearing the list
@@ -642,7 +657,7 @@ public class Family {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
         activeTasksReference.addValueEventListener(new ValueEventListener() {
             @Override
