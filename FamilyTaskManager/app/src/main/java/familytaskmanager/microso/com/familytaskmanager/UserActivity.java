@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,5 +63,22 @@ public class UserActivity extends AppCompatActivity {
         //This will need to be fixed (need to find best solution).
         TaskListAdapter taskListAdapter = new TaskListAdapter(this.getApplicationContext(), taskList, null, this);
         listView.setAdapter(taskListAdapter);
+    }
+
+    @Override
+    public void finish() {
+        //returnedIntent.putExtra("addedTools", (Serializable) selectedUser);
+        //setResult(1, returnedIntent);
+        super.finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
