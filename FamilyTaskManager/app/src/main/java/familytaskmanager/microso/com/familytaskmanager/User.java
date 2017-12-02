@@ -357,14 +357,7 @@ public class User implements Serializable {
 
 
     public String toString() {
-        /*return super.toString() + "[" +
-                "id" + ":" + getId() + "," +
-                "fname" + ":" + getFname() + "," +
-                "lname" + ":" + getLname() + "," +
-                "isParent" + ":" + getIsParent() + "," +
-                "profilePicId" + ":" + getProfilePicId() + "," +
-                "accumulatedPts" + ":" + getAccumulatedPts() + "]";*/
-        return (lname + " " + fname + " " + id);
+        return (fname+" "+lname);
     }
 
     //TODO remove, testing method
