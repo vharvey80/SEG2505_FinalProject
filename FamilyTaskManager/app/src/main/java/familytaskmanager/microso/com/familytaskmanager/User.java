@@ -321,6 +321,6 @@ public class User implements Serializable {
                 "isParent" + ":" + getIsParent() + "," +
                 "profilePicId" + ":" + getProfilePicId() + "," +
                 "accumulatedPts" + ":" + getAccumulatedPts() + "]";*/
-        return (lname + " " + fname);
+        return (lname + " " + fname + " " + id);
     }
 }

@@ -35,6 +35,9 @@ public class Family {
     private DatabaseReference shoppingItemsReference;
     private DatabaseReference activeTasksReference;
     private DatabaseReference inactiveTasksReference;
+    private DatabaseReference currentUserReference;
+
+    private User currentUser;
 
     //------------------------
     // CONSTRUCTOR
@@ -54,7 +57,44 @@ public class Family {
         shoppingItemsReference = database.getReference("ShoppingItems");
         activeTasksReference = database.getReference("ActiveTasks");
         inactiveTasksReference = database.getReference("InactiveTasks");
+        currentUserReference = database.getReference("currentUser");
 
+        //we need to get the current user from DB only once
+        currentUserReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currentUser = dataSnapshot.getValue(User.class);
+
+                //if there was no last user, i.e. on first install
+                if (currentUser == null) {
+                    User defaultCurrent = new User(null, "Current", "User", true, "menu_people", 10);
+                    addCurrentUser(defaultCurrent);
+                    currentUser = defaultCurrent;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private boolean addCurrentUser(User user) {
+        boolean wasAdded = true;
+        if (currentUser != null && user.getId() != null) {
+            if(currentUser.getId().equals(user.getId())) {
+                return  false;
+            }
+        }
+        /** DATABASE CODE **/
+            String user_id = currentUserReference.push().getKey();
+            user.setId(user_id);
+            currentUserReference.child(user_id).setValue(user);
+            usersReference.child(user_id).setValue(user);
+        /** END **/
+        return wasAdded;
     }
 
     //------------------------
@@ -477,6 +517,7 @@ public class Family {
 
                 //We always want at least one user in App
                 if (users.isEmpty()) {
+                    System.out.println("users empty xyz"); //TODO remove
                     String user_id = usersReference.push().getKey();
                     User defaultUser = new User(user_id, "Default", "User", true, "menu_people", 0);
                     usersReference.child(user_id).setValue(defaultUser);
