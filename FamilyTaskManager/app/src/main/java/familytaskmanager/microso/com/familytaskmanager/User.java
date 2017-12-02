@@ -327,6 +327,10 @@ public class User implements Serializable {
         this.tasks = tasks;
     }
 
+    public void setAssignedToList(List<Task> assignedToList) {
+        this.assignedTo = assignedToList;
+    }
+
 
     public String toString() {
         /*return super.toString() + "[" +
@@ -336,6 +340,6 @@ public class User implements Serializable {
                 "isParent" + ":" + getIsParent() + "," +
                 "profilePicId" + ":" + getProfilePicId() + "," +
                 "accumulatedPts" + ":" + getAccumulatedPts() + "]";*/
-        return (lname + " " + fname);
+        return (lname + " " + fname + " " + id);
     }
 }
