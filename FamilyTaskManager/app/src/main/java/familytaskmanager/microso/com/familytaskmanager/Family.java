@@ -8,6 +8,7 @@ import java.sql.Date;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -450,7 +451,7 @@ public class Family {
         return wasAdded;
     }
 
-    public boolean addInactiveTask(Task aTask) {
+    public boolean addInactiveTask(Task aTask, boolean completeTask) {
         boolean wasAdded = false;
 
         for (Task t : inactiveTasks) {
@@ -461,7 +462,10 @@ public class Family {
         /** DATABASE CODE **/
         String task_id = inactiveTasksReference.push().getKey();
         aTask.setId(task_id);
-        aTask.setState(Task.TaskState.Cancelled);
+        if (!completeTask)
+            aTask.setState(Task.TaskState.Cancelled);
+        else
+            aTask.setState(Task.TaskState.Completed);
         inactiveTasksReference.child(task_id).setValue(aTask);
         /** END **/
         inactiveTasks.add(aTask);
@@ -482,7 +486,7 @@ public class Family {
         return wasUpdated;
     }
 
-    public boolean removeTask(String aTask) {
+    public boolean removeTask(String aTask, boolean completeTask) {
         boolean wasRemoved = false;
         Task taskToRemove = null;
         DatabaseReference task_del_ref; // temporary reference
@@ -498,7 +502,7 @@ public class Family {
         }
         if (taskToRemove != null) {
             if (activeTasks.remove(taskToRemove)) {
-                this.addInactiveTask(taskToRemove);
+                this.addInactiveTask(taskToRemove, completeTask);
             }
         } else {
             throw new IllegalArgumentException("Impossible de deleter une task inexistante.");
@@ -766,7 +770,7 @@ public class Family {
         } catch (Error e) { return false; }
     }
 
-    public boolean requestTaskDelete(String deletedTask) {
+    public boolean requestTaskDelete(String deletedTask, boolean completeTask) {
         boolean removedDependency = true;
         try {
             // TODO TASK SUPRESSION : Be sure that the removeAssignedTask I've created is working when a user has some tasks to do.
@@ -781,10 +785,10 @@ public class Family {
                 }
             }
             if(removedDependency) {
-                this.removeTask(deletedTask);
+                this.removeTask(deletedTask, completeTask);
             }
             return true;
-        } catch (Error e) { return false; }
+        } catch (Error e) { throw new DatabaseException("Impossible to delete this item."); }
     }
 
     public Task requestTaskCreation(User creator, String name, double time, int year, int month,

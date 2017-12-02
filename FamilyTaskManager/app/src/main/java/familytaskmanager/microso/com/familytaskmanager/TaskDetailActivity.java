@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.support.annotation.BoolRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,8 +40,8 @@ public class TaskDetailActivity extends AppCompatActivity {
     private List<User> userList;
 
     //flag to be set when we change the user (assign or un-assign)
-    private boolean userChange;
-    private boolean deleteThisTask = false;
+    private boolean userChange, deleteThisTask, completeThisTask = false;
+    private String actionOnTask;
 
     //This variable are used in case the Task is unassigned, causing us to not be able to get
     //user with presentTask.getUser();
@@ -58,6 +59,25 @@ public class TaskDetailActivity extends AppCompatActivity {
         userList = (List<User>) intent.getSerializableExtra("userList");
 
         userChange = false; //default no change
+
+        Button cancelTaskButton = (Button) findViewById(R.id.taskCancelButton);
+        cancelTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionOnTask = "cancel";
+                areYouSure();
+            }
+        });
+
+        Button completeTaskButton = (Button) findViewById(R.id.taskCompleteButton);
+        completeTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionOnTask = "complete";
+                areYouSure();
+            }
+        });
+
 
         this.updateActivityView();
 
@@ -78,6 +98,7 @@ public class TaskDetailActivity extends AppCompatActivity {
                 showDialogPart1();
                 return true;
             case R.id.action_deletaTask:
+                actionOnTask = "delete";
                 areYouSure();
                 return true;
             case android.R.id.home:
@@ -91,24 +112,42 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     private void areYouSure() {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(TaskDetailActivity.this);
-        builder.setTitle("Are you sure you want to delete this task ?");
+        builder.setTitle("Are you sure you want to "+ actionOnTask +" this task ?");
         if(presentTask.getAssignedUserID() != null) {
-            builder.setMessage("This task is currently assigned to a user and deleting " +
-                    "it would remove this task for this user.");
+            if (actionOnTask != "complete") {
+                builder.setMessage(Html.fromHtml("This task is currently assigned to </b>"+ presentTask.getUser().getFname() +"</b> and " + actionOnTask + " " +
+                        "it would <b>remove</b> this task for this user."));
+            } else {
+                builder.setMessage(Html.fromHtml("This task is currently assigned to <b>"+ presentTask.getUser().getFname() +"</b> and " + actionOnTask + " " +
+                        "it would <b>remove</b> this task for this user as well as <b>adding</b> "+ presentTask.getRewardPts() +" points to his current point(s)."));
+            }
         } else {
             builder.setMessage("This task isn't assigned to a user.");
         }
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //TODO
-                //My code remove
-                oldUser = presentTask.getUser();
-                presentTask.removeAssignedUser();
-                userChange = true;
-                //end of my code remove
-                deleteThisTask = true;
-                dialog.dismiss();
-                finish();
+                if (actionOnTask != "complete") { // TODO WALID !!!!!
+                    //My code remove
+                    oldUser = presentTask.getUser();
+                    presentTask.removeAssignedUser();
+                    userChange = true;
+                    //end of my code remove
+                    deleteThisTask = true;
+                    dialog.dismiss();
+                    finish();
+                } else {
+                    Toast.makeText(TaskDetailActivity.this, "Complete task...?", Toast.LENGTH_SHORT).show();
+                    oldUser = presentTask.getUser();
+                    if (oldUser != null)
+                        oldUser.setAccumulatedPts(oldUser.getAccumulatedPts() + presentTask.getRewardPts());
+                    presentTask.removeAssignedUser();
+                    userChange = true;
+                    deleteThisTask = true;
+                    completeThisTask = true;
+                    dialog.dismiss();
+                    finish();
+                }
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -637,6 +676,8 @@ public class TaskDetailActivity extends AppCompatActivity {
         }
         if (deleteThisTask) {
             returnIntent.putExtra("deletedTask", (Serializable) presentTask);
+            returnIntent.putExtra("completeTask", completeThisTask);
+            returnIntent.putExtra("action", actionOnTask);
         }
         setResult(MainActivity.TASK_ACTIVITY_REQ_CODE, returnIntent);
         super.finish();

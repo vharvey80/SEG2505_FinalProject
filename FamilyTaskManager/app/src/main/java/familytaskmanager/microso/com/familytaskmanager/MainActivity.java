@@ -225,7 +225,6 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) { // doesn't detect the return of my tool Activity TODO
         super.onActivityResult(requestCode, resultCode, data);
         //TODO a switch statement might be better
-        Toast.makeText(this, "Hello ?", Toast.LENGTH_SHORT).show();
         if (requestCode == TOOL_REQUEST_CODE) {
             if (data.hasExtra("addedTools")) { // for my specific tool treatment.
                 List<Tool> newTools = (List<Tool>) data.getSerializableExtra("addedTools");
@@ -262,10 +261,12 @@ public class MainActivity extends AppCompatActivity
                 // TODO maybe implements a if that check if family.getCurrentUser().itIsParent() pourrait
                 // nous permettre de controller la suppression de task si on
                 // TODO est un enfant. (Puisqu'on peut juste supprimer une task si le current user est un parent.
+
                 Task deletedTask = (Task) data.getSerializableExtra("deletedTask");
-                Toast.makeText(this, "Deleting task..." + deletedTask.getTitle(), Toast.LENGTH_SHORT).show();
-                if (requestTaskDeletion(deletedTask.getId())){
-                    Toast.makeText(this, "This task has been deleted.", Toast.LENGTH_SHORT).show();
+                boolean completeThisTask = (boolean) data.getBooleanExtra("completeTask", false);
+                String actionOnTask = (String) data.getStringExtra("action");
+                if (requestTaskDeletion(deletedTask.getId(), completeThisTask)){
+                    Toast.makeText(this, "This task has been "+ actionOnTask +".", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -357,7 +358,9 @@ public class MainActivity extends AppCompatActivity
     }
     public boolean requestToolCreation(Tool newTool) { return family.requestToolCreation(newTool); }
     public boolean requestToolDeletion(String oldTool) { return family.requestToolDelete(oldTool); }
-    public boolean requestTaskDeletion(String oldTask) { return family.requestTaskDelete(oldTask); }
+
+    public boolean requestTaskDeletion(String oldTask, boolean completed) { return family.requestTaskDelete(oldTask, completed); }
+
     public boolean requestSetCurrentUser(int userIndex){
         //Toast.makeText(this,userIndex,Toast.LENGTH_LONG);
         return family.setCurrentUser(userIndex);
