@@ -59,6 +59,15 @@ public class TaskDetailActivity extends AppCompatActivity {
 
         userChange = false; //default no change
 
+        Button cancelTaskButton = (Button) findViewById(R.id.taskCancelButton);
+        cancelTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                areYouSure("cancel");
+            }
+        });
+
+
         this.updateActivityView();
 
     }
@@ -78,7 +87,7 @@ public class TaskDetailActivity extends AppCompatActivity {
                 showDialogPart1();
                 return true;
             case R.id.action_deletaTask:
-                areYouSure();
+                areYouSure("delete");
                 return true;
             case android.R.id.home:
                 System.out.println("Clicked home, xyz");
@@ -89,9 +98,9 @@ public class TaskDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void areYouSure() {
+    private void areYouSure(String action) {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(TaskDetailActivity.this);
-        builder.setTitle("Are you sure you want to delete this task ?");
+        builder.setTitle("Are you sure you want to "+ action +" this task ?");
         if(presentTask.getAssignedUserID() != null) {
             builder.setMessage("This task is currently assigned to a user and deleting " +
                     "it would remove this task for this user.");
