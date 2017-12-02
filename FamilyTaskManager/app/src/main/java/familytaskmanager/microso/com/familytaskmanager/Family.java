@@ -47,6 +47,8 @@ public class Family {
         id = aId;
         tools = new ArrayList<Tool>();
         users = new ArrayList<User>();
+        //this user will always be replaced
+        currentUser = new User("0", "Default", "User", true, "menu_people", 0);
 
         shoppingItems = new ArrayList<ShoppingItem>();
         activeTasks = new ArrayList<Task>();
@@ -100,6 +102,22 @@ public class Family {
     //------------------------
     // INTERFACE
     //------------------------
+    public User getCurrentUser(){
+        return currentUser;
+    }
+
+    public boolean setCurrentUser(int userIndex) {
+        User user = users.get(userIndex);
+        boolean wasUpdated = false;
+        DatabaseReference currentUser_del_ref;
+        currentUser_del_ref = currentUserReference.child(currentUser.getId()); // get reference
+        currentUser_del_ref.removeValue(); // delete the user
+        currentUserReference.child(user.getId()).setValue(user); //write the new current user in database
+
+        currentUser = user; //modify the attribute in family
+        wasUpdated = true;
+        return wasUpdated;
+    }
 
     public boolean setId(int aId) {
         boolean wasSet = false;
@@ -540,6 +558,27 @@ public class Family {
      * @return
      */
     public void onStartFamily() {
+
+        currentUserReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Clearing the list
+                currentUser = null;
+                // Iterating through all the nodes
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    // getting each user
+                    currentUser = postSnapshot.getValue(User.class);
+                }
+                //We always want at least one user in App
+                if (currentUser == null) {
+                    currentUser = new User("0", "Default", "User", true, "menu_people", 0);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         // Creating all the reference we need for the database.
         usersReference.addValueEventListener(new ValueEventListener() {

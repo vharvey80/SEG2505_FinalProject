@@ -1,6 +1,8 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +23,15 @@ import java.util.List;
 
 public class UserChangeAdapter extends ArrayAdapter<User> {
     private final Context context;
-    //private final ArrayList<User> users;
-    private final ArrayList<User> users;
+    private final List<User> users;
     private User selected_user;
+    private Activity activity;
 
-    public UserChangeAdapter(Context context, ArrayList<User> users) {
+    public UserChangeAdapter(Context context, List<User> users, Activity activity) {
         super(context, R.layout.user_change_list_item, users);
         this.context = context;
         this.users = users;
+        this.activity = activity;
     }
 
     @Override
@@ -42,8 +46,16 @@ public class UserChangeAdapter extends ArrayAdapter<User> {
         ImageView pic = (ImageView) rowView.findViewById(R.id.userchangelistpic);
         nameView.setText(selected_user.getFname());
         ptsView.setText(Integer.toString(selected_user.getAccumulatedPts()));
-        //pic.setImageResource(selected_user.getProfilePicId());
+
+        Toast.makeText(context, selected_user.getFname(), Toast.LENGTH_SHORT).show();
+        //String resourceName = selected_user.getProfilePicResourceName();
+        String resourceName = "menu_people";
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier(resourceName, "drawable", "familytaskmanager.microso.com.familytaskmanager");
+        pic.setImageResource(resourceId);
+
+        //Set the selected user as the current user in the database and family
+        ((MainActivity)activity).requestSetCurrentUser(position);
         return rowView;
     }
-
 }

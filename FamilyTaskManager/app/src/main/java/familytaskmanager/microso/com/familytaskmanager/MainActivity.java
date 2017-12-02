@@ -56,23 +56,9 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
-        /* CODE FOR USER CHANGE SPINNER */
-        ArrayList<User> users = new ArrayList<User>();
-        for (int i = 0; i < 5; i++) {
-            users.add(new User(Integer.toString(i + 1), "Fname_" + i, "Lname_" + i, true, "menu_people", (1 + i)));
-        }
 
-        UserChangeAdapter user_adapter = new UserChangeAdapter(this, users);
-        user_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
-        View v = navigationView.getHeaderView(0);
-        Spinner user_spinner_list_view = (Spinner) v.findViewById(R.id.userMenuList);
-
-        user_spinner_list_view.setAdapter(user_adapter);
-        /* END USER CHANGE */
 
         //Start code for Tab Menu
         /*vp_pages= (ViewPager) findViewById(R.id.vp_pages);
@@ -143,8 +129,40 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }, 1000);
-
         //End code for Tab Menu
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initSpinner();
+            }
+        }, 3000);
+    }
+
+    public void initSpinner() {
+        /* CODE FOR USER CHANGE SPINNER */
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        //ArrayList<User> users = new ArrayList<User>();
+        /*for (int i = 0; i < family.getUsers().size(); i++) {
+            users.add(family.getUser(i));
+        }*/
+        UserChangeAdapter user_adapter = new UserChangeAdapter(this, family.getUsers(), this);
+        user_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+
+        View v = navigationView.getHeaderView(0);
+        Spinner user_spinner_list_view = (Spinner) v.findViewById(R.id.userMenuList);
+
+        user_spinner_list_view.setAdapter(user_adapter);
+
+        //Set the spinner selection to currentUser
+        for(int i=0; i<family.getUsers().size(); i++){
+            if(family.getCurrentUser().getId().equals(family.getUser(i).getId())){
+                user_spinner_list_view.setSelection(i);
+                break;
+            }
+        }
+        /* END USER CHANGE */
     }
 
     @Override
@@ -326,7 +344,6 @@ public class MainActivity extends AppCompatActivity
 
     public boolean requestShoppingItemCreation(ShoppingItem aShoppingItem) { return family.requestShoppingItemCreation(aShoppingItem); }
     public boolean requestShoppingItemDeletion(ShoppingItem aShoppingItem) { return family.requestShoppingItemDelete(aShoppingItem); }
-
     /**
      * Ask Family to update the task given in argument
      * @param atask
@@ -341,6 +358,10 @@ public class MainActivity extends AppCompatActivity
     public boolean requestToolCreation(Tool newTool) { return family.requestToolCreation(newTool); }
     public boolean requestToolDeletion(String oldTool) { return family.requestToolDelete(oldTool); }
     public boolean requestTaskDeletion(String oldTask) { return family.requestTaskDelete(oldTask); }
+    public boolean requestSetCurrentUser(int userIndex){
+        //Toast.makeText(this,userIndex,Toast.LENGTH_LONG);
+        return family.setCurrentUser(userIndex);
+    }
 
     //TODO cheap method for a cheap breakfix, I need to fix this - walid
     public User getUserWithID(String id) { return family.getUserWithID(id); }
