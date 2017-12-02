@@ -352,18 +352,30 @@ public class Family {
         if (shoppingItems.contains(aShoppingItem)) {
             return false;
         }
+        String shoppingItemID = shoppingItemsReference.push().getKey();
+        aShoppingItem.setId(shoppingItemID);
+        shoppingItemsReference.child(shoppingItemID).setValue(aShoppingItem);
         shoppingItems.add(aShoppingItem);
         wasAdded = true;
         return wasAdded;
     }
 
     public boolean removeShoppingItem(ShoppingItem aShoppingItem) {
-        boolean wasRemoved = false;
-        if (shoppingItems.contains(aShoppingItem)) {
-            shoppingItems.remove(aShoppingItem);
-            wasRemoved = true;
+        boolean found = false;
+        DatabaseReference shoppingItem_del_ref;
+        for(ShoppingItem s : shoppingItems) {
+            if(s.getId() == aShoppingItem.getId()) {
+                aShoppingItem = s;
+                found = true;
+                break;
+            }
         }
-        return wasRemoved;
+        if (found) {
+            shoppingItems.remove(aShoppingItem);
+            shoppingItem_del_ref = shoppingItemsReference.child(aShoppingItem.getId()); // get reference
+            shoppingItem_del_ref.removeValue(); // delete the item
+        }
+        return found;
     }
 
     public boolean addShoppingItemAt(ShoppingItem aShoppingItem, int index) {
@@ -597,8 +609,7 @@ public class Family {
             }
         });
 
-        //TODO, uncoment. I commented out because was crashing app
-        /*shoppingItemsReference.addValueEventListener(new ValueEventListener() {
+        shoppingItemsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Clearing the list
@@ -620,7 +631,7 @@ public class Family {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });*/
+        });
 
         activeTasksReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -684,6 +695,22 @@ public class Family {
             }
         });
 
+    }
+
+    public boolean requestShoppingItemCreation(ShoppingItem newShoppingItem) {
+        try {
+            this.addShoppingItem(newShoppingItem);
+            return true;
+        } catch (Error e) {
+            return false;
+        }
+    }
+
+    public boolean requestShoppingItemDelete(ShoppingItem deletedItem) {
+        try {
+            this.removeShoppingItem(deletedItem);
+            return true;
+        } catch (Error e) { return false; }
     }
 
     public boolean requestToolCreation(Tool newTool) { // Method that allows us to add a new tool to the DB.
