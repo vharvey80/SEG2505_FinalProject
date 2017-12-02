@@ -3,44 +3,34 @@ Priority List for functionnality:
 - MAKE SURE OUR CODE COMPILES (-20%)
     - Not actually a task, just a reminder
 
-****************************************************
-- Add task with name and description (8%) -- Walid
-                                                                (DONE)
-- Modify a task (5%) -- Walid
-****************************************************
+- Add task with name and description (8%) <b>***** (DONE) *****</b>
+                                                                
+- Modify a task (5%) <b>***** (DONE) *****</b>
 
-- Delete task (5%)
+- Delete task (5%) <b>***** (DONE) *****</b>
 
-****************************************************
-- Can see obtained points (5%)                                  (DONE)
-    - I assume this means a user can see his total points
-****************************************************
+- Can see obtained points (5%) <b>***** (DONE) *****</b>
+        <b>- Right now, we can see the user points in the userDetail and also on the spinner-change-user.</b>
 
-- Can list all task assigned to a user (7%)
-    - Should be simple. We already see it in user detail Activity. For task list, we can have an onclick for the switch that get a list of task associated to the present user and the resetting the adapter.
-
-***************************************************
-- Can list all tasks associated to a group (7%) -- Walid        (DONE)
-    - Assigned it to myself because it's already done, it's the TaskFragment and it's view
-***************************************************
-
-- Change the state of a task (5%)
-    - Assigned/Unassigned it done by assigning and unassigning task. For completed or cancel, I guess we can put buttons on TaskDetailActivity
-
-- Can assing task to user (6%)
-
-- Can unassign task from user (6%)
-
-***************************************************
-- Affect ressources to a Task (6%)
-    - I assume ressources are tools. This will be tricky, the person that takes this should contact me (Walid) as I've looked into it (since I desinged the task creation dialog) and could be of help.
-
-- Remove ressources from Task (6%)                              (DONE)
-    - We can either do this in task modification dialog or add a button to each tool in TaskDetailActivity
+- Can list all task assigned to a user (7%) <b>***** RIGHT NOW' WE HAVE SOME BUGS WITH THAT *****</b>
     
-- See all tools for necessary for all tasks of a group (6%)
-    - I guess this is already done, it the ToolActivity              
-***************************************************
+- Can list all tasks associated to a group (7%) <b>***** (DONE) *****</b>
+
+- Change the state of a task (5%) <b>***** (DONE) *****</b>
+        <b>- Right now, we change the pseudo-state (un/assigned) by un/assigning a user and also by deleting (cancelled),
+             cancelling (cancelled) and completing (completed).</b>
+
+- Can assing task to user (6%) <b>***** (DONE) *****</b>
+
+- Can unassign task from user (6%) <b>***** (DONE) *****</b>
+
+- Affect ressources (tools) to a Task (6%) <b>***** (DONE) *****</b>
+        <b>- Right now, only on the onCreate of a task.</b>
+
+- Remove ressources (tools) from Task (6%) <b>***** (DONE) *****</b>
+       <b>- Right now, only on the onUpdate of a task.</b>
+    
+- See all tools necessary for all tasks of a group (6%) <b>***** (DONE) *****</b>
 
 ---------BONUS----------
 
