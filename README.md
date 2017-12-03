@@ -12,7 +12,7 @@ Priority List for functionnality:
 - [x] Can see obtained points (5%)  
                   `Right now, we can see the user points in the userDetail and also on the spinner-change-user.`
 
-- [ ] Can list all task assigned to a user (7%) **RIGHT NOW WE HAVE SOME BUGS WITH THAT**
+- [X] Can list all task assigned to a user (7%) **Should be fixed. Not in the most elegant way, but fixed**
     
 - [x] Can list all tasks associated to a group (7%)  
 
@@ -25,7 +25,7 @@ Priority List for functionnality:
 - [x] Can unassign task from user (6%)  
 
 - [x] Affect ressources (tools) to a Task (6%)  
-                  `Right now, only on the onCreate of a task.`
+                  `Right now, only on the onCreate of a task or onUpdate.`
 
 - [x] Remove ressources (tools) from Task (6%)  
                   `Right now, only on the onUpdate of a task.`
