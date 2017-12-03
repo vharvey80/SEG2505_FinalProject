@@ -114,50 +114,60 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     private void areYouSure() {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(TaskDetailActivity.this);
-        builder.setTitle("Are you sure you want to "+ actionOnTask +" this task ?");
-        if(presentTask.getAssignedUserID() != null) {
-            if (actionOnTask != "complete") {
-                builder.setMessage(Html.fromHtml("This task is currently assigned to </b>"+ presentTask.getUser().getFname() +"</b> and " + actionOnTask + " " +
-                        "it would <b>remove</b> this task for this user."));
-            } else {
-                builder.setMessage(Html.fromHtml("This task is currently assigned to <b>"+ presentTask.getUser().getFname() +"</b> and " + actionOnTask + " " +
-                        "it would <b>remove</b> this task for this user as well as <b>adding</b> "+ presentTask.getRewardPts() +" points to his current point(s)."));
-            }
-        } else {
-            builder.setMessage("This task isn't assigned to a user.");
-        }
-        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //TODO
-                if (actionOnTask != "complete") { // TODO WALID !!!!!
-                    //My code remove
-                    oldUser = presentTask.getUser();
-                    presentTask.removeAssignedUser();
-                    userChange = true;
-                    //end of my code remove
-                    deleteThisTask = true;
-                    dialog.dismiss();
-                    finish();
+        if (currentUser.getIsParent()) {
+            builder.setTitle("Are you sure you want to " + actionOnTask + " this task ?");
+            if (presentTask.getAssignedUserID() != null) {
+                if (actionOnTask != "complete") {
+                    builder.setMessage(Html.fromHtml("This task is currently assigned to </b>" + presentTask.getUser().getFname() + "</b> and " + actionOnTask + " " +
+                            "it would <b>remove</b> this task for this user."));
                 } else {
-                    Toast.makeText(TaskDetailActivity.this, "Complete task...?", Toast.LENGTH_SHORT).show();
-                    oldUser = presentTask.getUser();
-                    if (oldUser != null)
-                        oldUser.setAccumulatedPts(oldUser.getAccumulatedPts() + presentTask.getRewardPts());
-                    presentTask.removeAssignedUser();
-                    userChange = true;
-                    deleteThisTask = true;
-                    completeThisTask = true;
-                    dialog.dismiss();
-                    finish();
+                    builder.setMessage(Html.fromHtml("This task is currently assigned to <b>" + presentTask.getUser().getFname() + "</b> and " + actionOnTask + " " +
+                            "it would <b>remove</b> this task for this user as well as <b>adding</b> " + presentTask.getRewardPts() + " points to his current point(s)."));
                 }
+            } else {
+                builder.setMessage("This task isn't assigned to a user.");
             }
-        });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //TODO
-                dialog.dismiss();
-            }
-        });
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if (actionOnTask != "complete") {
+                        //My code remove
+                        oldUser = presentTask.getUser();
+                        presentTask.removeAssignedUser();
+                        userChange = true;
+                        //end of my code remove
+                        deleteThisTask = true;
+                        dialog.dismiss();
+                        finish();
+                    } else {
+                        oldUser = presentTask.getUser();
+                        if (oldUser != null)
+                            oldUser.setAccumulatedPts(oldUser.getAccumulatedPts() + presentTask.getRewardPts());
+                        presentTask.removeAssignedUser();
+                        userChange = true;
+                        deleteThisTask = true;
+                        completeThisTask = true;
+                        dialog.dismiss();
+                        finish();
+                    }
+                }
+            });
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    //TODO
+                    dialog.dismiss();
+                }
+            });
+        } else {
+            builder.setTitle("You don't have the rights to do this operation");
+            builder.setMessage(Html.fromHtml("You're currently connected on " + currentUser.getFname() + "'s profile and you're not a parent." +
+                    " Only parents have the right to <b>remove, cancel</b> or <b>complete</b> a task."));
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
         android.support.v7.app.AlertDialog dialog = builder.create();
         dialog.show();
     }
