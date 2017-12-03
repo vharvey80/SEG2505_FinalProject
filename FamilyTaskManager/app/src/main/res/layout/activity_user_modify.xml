@@ -106,6 +106,78 @@
                 android:layout_height="wrap_content"
                 android:text="Choose a picture" />
 
+            <GridLayout
+                android:id="@+id/grid_pictures"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                android:rowCount="3">
+
+                <ImageButton
+                    android:id="@+id/select_man1"
+                    android:layout_width="@dimen/icon_select_side"
+                    android:layout_height="@dimen/icon_select_side"
+                    android:onClick="onClickSelectImage"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/man1" />
+
+                <ImageButton
+                    android:id="@+id/select_man2"
+                    android:layout_width="@dimen/icon_select_side"
+                    android:layout_height="@dimen/icon_select_side"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/man2" />
+
+                <ImageButton
+                    android:id="@+id/select_man3"
+                    android:layout_width="@dimen/icon_select_side"
+                    android:layout_height="@dimen/icon_select_side"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/man3" />
+
+                <ImageButton
+                    android:id="@+id/select_man4"
+                    android:layout_width="@dimen/icon_select_side"
+                    android:layout_height="@dimen/icon_select_side"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/man4" />
+
+                <ImageButton
+                    android:id="@+id/select_man5"
+                    android:layout_width="@dimen/icon_select_side"
+                    android:layout_height="@dimen/icon_select_side"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/man5" />
+
+                <ImageButton
+                    android:id="@+id/select_woman1"
+                    android:layout_width="@dimen/icon_select_side"
+                    android:layout_height="@dimen/icon_select_side"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/woman1" />
+
+                <ImageButton
+                    android:id="@+id/select_woman2"
+                    android:layout_width="@dimen/icon_select_side"
+                    android:layout_height="@dimen/icon_select_side"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/woman2" />
+
+                <ImageButton
+                    android:id="@+id/select_woman3"
+                    android:layout_width="@dimen/icon_select_side"
+                    android:layout_height="@dimen/icon_select_side"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/woman3" />
+
+                <ImageButton
+                    android:id="@+id/select_woman4"
+                    android:layout_width="@dimen/icon_select_side"
+                    android:layout_height="@dimen/icon_select_side"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/woman4" />
+            </GridLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
