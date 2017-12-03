@@ -49,7 +49,7 @@ public class FridgeActivity extends AppCompatActivity {
                 final EditText supply_edit = (EditText) mView.findViewById(R.id.tool_supply);
                 supply_edit.setHint("Quantity"); // personalize the hint in the edittext
                 final ImageView image = (ImageView) mView.findViewById(R.id.add_pic);
-                image.setImageResource(R.drawable.foodadd); // personalize the picture at the top
+                //image.setImageResource(R.drawable.foodadd); // personalize the picture at the top
                 final TextView add_title = (TextView) mView.findViewById(R.id.add_title);
                 add_title.setText("ADD GROCERIE MANAGER"); // personalize the title of your dialog
                 /* END OF PERSONALIZATION */

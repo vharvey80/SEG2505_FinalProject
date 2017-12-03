@@ -199,10 +199,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_tasks) {
             Toast.makeText(this, "Tasks", Toast.LENGTH_SHORT).show();
             vp_pages.setCurrentItem(1, true);
-        } else if (id == R.id.nav_schedule) {
-            Toast.makeText(this, "Schedule is not implemented", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_backlog) {
-            Toast.makeText(this, "Backlog is not implemented", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_people) {
             Toast.makeText(this, "People", Toast.LENGTH_SHORT).show();
             vp_pages.setCurrentItem(2, true);

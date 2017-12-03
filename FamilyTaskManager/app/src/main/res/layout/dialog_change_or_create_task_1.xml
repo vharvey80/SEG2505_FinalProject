@@ -20,12 +20,15 @@
                 android:id="@+id/dialogTaskNameLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Task Name: " />
+                android:text="Task Name: "/>
 
             <EditText
                 android:id="@+id/dialogTaskNameField"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimaryBlue"
+                android:textCursorDrawable="@null"
+                android:textColor="#000" />
 
         </LinearLayout>
 
@@ -39,12 +42,15 @@
                 android:id="@+id/dialogTimeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Estimated Time: " />
+                android:text="Estimated Time: "/>
 
             <EditText
                 android:id="@+id/dialogTimeField"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimaryBlue"
+                android:textCursorDrawable="@null"
+                android:textColor="#000" />
 
         </LinearLayout>
 
@@ -64,15 +70,24 @@
             <NumberPicker
                 android:id="@+id/dialogYearPicker"
                 android:layout_width="45dp"
-                android:layout_height="100dp"/>
+                android:layout_height="100dp"
+                android:backgroundTint="@color/colorPrimaryBlue"
+                android:textCursorDrawable="@null"
+                android:textColor="#000"/>
             <NumberPicker
                 android:id="@+id/dialogMonthPicker"
                 android:layout_width="45dp"
-                android:layout_height="100dp"/>
+                android:layout_height="100dp"
+                android:backgroundTint="@color/colorPrimaryBlue"
+                android:textCursorDrawable="@null"
+                android:textColor="#000"/>
             <NumberPicker
                 android:id="@+id/dialogDayPicker"
                 android:layout_width="45dp"
-                android:layout_height="100dp"/>
+                android:layout_height="100dp"
+                android:backgroundTint="@color/colorPrimaryBlue"
+                android:textCursorDrawable="@null"
+                android:textColor="#000"/>
 
         </LinearLayout>
 
@@ -92,7 +107,10 @@
                 android:id="@+id/dialogRewardField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:backgroundTint="@color/colorPrimaryBlue"
+                android:textCursorDrawable="@null"
+                android:textColor="#000"/>
 
         </LinearLayout>
 
@@ -111,7 +129,10 @@
             <EditText
                 android:id="@+id/dialogNoteField"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimaryBlue"
+                android:textCursorDrawable="@null"
+                android:textColor="#000" />
 
         </LinearLayout>
 
