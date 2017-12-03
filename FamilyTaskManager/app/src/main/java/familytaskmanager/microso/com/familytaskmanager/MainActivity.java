@@ -143,10 +143,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //ArrayList<User> users = new ArrayList<User>();
-        /*for (int i = 0; i < family.getUsers().size(); i++) {
-            users.add(family.getUser(i));
-        }*/
         UserChangeAdapter user_adapter = new UserChangeAdapter(this, family.getUsers(), this);
         user_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
@@ -368,5 +364,9 @@ public class MainActivity extends AppCompatActivity
 
     //TODO cheap method for a cheap breakfix, I need to fix this - walid
     public User getUserWithID(String id) { return family.getUserWithID(id); }
+
+    public User getCurrentUser(){
+        return family.getCurrentUser();
+    }
 
 }

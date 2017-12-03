@@ -17,6 +17,7 @@ public class User implements Serializable {
     private boolean isParent;
     private String profilePicResourceName;
     private int accumulatedPts;
+    private String password;
 
     //User Associations
     private List<Task> assignedTo;
@@ -102,6 +103,15 @@ public class User implements Serializable {
         assignedTo.remove(toRemove);
         printAssggnedTasks();
         return removed;
+    }
+
+    //TODO return acutal password
+    public String getPassword() {
+        return "allo";
+    }
+
+    public void setPassword(String pass) {
+        password = pass;
     }
 
     public String getId() {
