@@ -328,7 +328,7 @@ public class MainActivity extends AppCompatActivity
 
         //TODO Remove this dummy user and replace by currentUser
         //User creator = new User("1", "C.U.", "Creator Dummy", true, "menu_people", 0);
-        User creator = getFamilyPeopleList().get(0);
+        User creator = family.getCurrentUser();
 
         System.out.println("Before creating task in MainActivity xyz, the creator is " + creator.getFname());
         Task created = family.requestTaskCreation(creator, taskName, validTime, year, month, day,
@@ -359,7 +359,6 @@ public class MainActivity extends AppCompatActivity
     public boolean requestTaskDeletion(String oldTask, boolean completed) { return family.requestTaskDelete(oldTask, completed); }
 
     public boolean requestSetCurrentUser(int userIndex){
-        //Toast.makeText(this,userIndex,Toast.LENGTH_LONG);
         return family.setCurrentUser(userIndex);
     }
 
