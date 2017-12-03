@@ -279,6 +279,7 @@ public class Family {
         if (toolToRemove != null) { tools.remove(toolToRemove); } else { throw new IllegalArgumentException("Impossible de deleter un tool inexistant."); }
         return wasRemoved;
     }
+
     public List<String> getToolsID() {
         List<String> ids = new ArrayList<String>();
         for (Tool t : tools) {
