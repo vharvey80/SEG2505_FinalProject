@@ -144,10 +144,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //ArrayList<User> users = new ArrayList<User>();
-        /*for (int i = 0; i < family.getUsers().size(); i++) {
-            users.add(family.getUser(i));
-        }*/
         UserChangeAdapter user_adapter = new UserChangeAdapter(this, family.getUsers(), this);
         user_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
@@ -328,7 +324,7 @@ public class MainActivity extends AppCompatActivity
 
         //TODO Remove this dummy user and replace by currentUser
         //User creator = new User("1", "C.U.", "Creator Dummy", true, "menu_people", 0);
-        User creator = getFamilyPeopleList().get(0);
+        User creator = family.getCurrentUser();
 
         System.out.println("Before creating task in MainActivity xyz, the creator is " + creator.getFname());
         Task created = family.requestTaskCreation(creator, taskName, validTime, year, month, day,
@@ -359,12 +355,15 @@ public class MainActivity extends AppCompatActivity
     public boolean requestTaskDeletion(String oldTask, boolean completed) { return family.requestTaskDelete(oldTask, completed); }
 
     public boolean requestSetCurrentUser(int userIndex){
-        //Toast.makeText(this,userIndex,Toast.LENGTH_LONG);
         return family.setCurrentUser(userIndex);
     }
 
     //TODO cheap method for a cheap breakfix, I need to fix this - walid
     public User getUserWithID(String id) { return family.getUserWithID(id); }
     public User requestCurrentUser() { return family.getCurrentUser(); }
+
+    public User getCurrentUser(){
+        return family.getCurrentUser();
+    }
 
 }
