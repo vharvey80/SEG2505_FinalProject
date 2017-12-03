@@ -15,7 +15,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="448dp"
+            android:layout_height="440dp"
             android:paddingBottom="-10dp"
             tools:layout_editor_absoluteX="5dp"
             tools:layout_editor_absoluteY="8dp">
@@ -61,7 +61,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
@@ -69,20 +69,21 @@
                 android:id="@+id/grocerie_add_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
                 android:layout_gravity="end|bottom"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="20dp"
                 android:clickable="true"
-                android:layout_marginEnd="14dp"
                 android:scaleType="center"
-                app:backgroundTint="#4444FF"
+                app:backgroundTint="@color/colorPrimaryBlue"
                 app:borderWidth="6dp"
                 app:elevation="5dp"
                 app:fabSize="normal"
                 app:rippleColor="@color/cardview_dark_background"
                 app:srcCompat="@drawable/tooladd"
                 tools:layout_editor_absoluteX="312dp"
-                tools:layout_editor_absoluteY="439dp" />
+                tools:layout_editor_absoluteY="430dp" />
         </RelativeLayout>
     </LinearLayout>
 

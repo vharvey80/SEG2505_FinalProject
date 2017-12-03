@@ -98,7 +98,10 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/new_item"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:backgroundTint="@color/colorPrimaryBlue"
+                    android:textCursorDrawable="@null"
+                    android:textColor="#000" />
 
                 <Spinner
                     android:id="@+id/spinner_item"

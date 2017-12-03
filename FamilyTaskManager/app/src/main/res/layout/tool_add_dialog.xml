@@ -11,8 +11,8 @@
         <ImageView
             android:id="@+id/add_pic"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="#4444FF"
+            android:layout_height="15dp"
+            android:background="@color/colorPrimaryBlue"
             android:contentDescription="@string/app_name"
             android:scaleType="center"/>
 
@@ -34,7 +34,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="sans-serif"
             android:inputType="text"
-            android:backgroundTint="#4444FF"
+            android:backgroundTint="@color/colorPrimaryBlue"
             android:textCursorDrawable="@null"
             android:textColor="#000"/>
 
@@ -48,7 +48,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="sans-serif"
             android:inputType="number"
-            android:backgroundTint="#4444FF"
+            android:backgroundTint="@color/colorPrimaryBlue"
             android:textCursorDrawable="@null"
             android:textColor="#000"/>
 
@@ -64,6 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/colorPrimaryBlue"
+                android:textColor="#FFF"
                 android:text="Cancel" />
 
             <Button
@@ -71,6 +73,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/colorPrimaryBlue"
+                android:textColor="#FFF"
                 android:text="Add" />
         </LinearLayout>
 
