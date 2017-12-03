@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 initSpinner();
+                family.populateTaskUsers();//TODO might need to remove if not usefull
             }
         }, 3000);
     }
@@ -368,5 +369,6 @@ public class MainActivity extends AppCompatActivity
 
     //TODO cheap method for a cheap breakfix, I need to fix this - walid
     public User getUserWithID(String id) { return family.getUserWithID(id); }
+    public User requestCurrentUser() { return family.getCurrentUser(); }
 
 }

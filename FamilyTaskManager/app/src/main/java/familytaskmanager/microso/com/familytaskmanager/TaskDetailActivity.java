@@ -38,6 +38,7 @@ public class TaskDetailActivity extends AppCompatActivity {
     private Task presentTask;
     private List<Tool> familyToolList;
     private List<User> userList;
+    private User currentUser;
 
     //flag to be set when we change the user (assign or un-assign)
     private boolean userChange, deleteThisTask, completeThisTask = false;
@@ -57,6 +58,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         presentTask = (Task) intent.getSerializableExtra("task");
         familyToolList = (List<Tool>) intent.getSerializableExtra("toolList");
         userList = (List<User>) intent.getSerializableExtra("userList");
+        currentUser = (User) intent.getSerializableExtra("currentUser");
 
         userChange = false; //default no change
 
@@ -548,7 +550,13 @@ public class TaskDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (presentTask.hasUser()) {
-                    showReleaseDialog();
+                    String assignedUserId = presentTask.getAssignedUserID();
+                    if (currentUser.getIsParent() || currentUser.getId().equals(assignedUserId)) {
+                        showReleaseDialog();
+                    }else {
+                        Toast.makeText(TaskDetailActivity.this, "You can't release a Task " +
+                                "that's not yours. Ask your parent.", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     assignTask();
                 }
@@ -577,7 +585,11 @@ public class TaskDetailActivity extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.dialog_choose_user, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Choose User To Assign");
+        if (currentUser.getIsParent()) {
+            alertDialogBuilder.setTitle("Choose User To Assign");
+        } else {
+            alertDialogBuilder.setTitle("You can only assign to yourself since you're not a parent");
+        }
         alertDialogBuilder.setView(dialogView);
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
@@ -596,9 +608,16 @@ public class TaskDetailActivity extends AppCompatActivity {
                 alertDialog.dismiss();
                 final User clickedUser = (User) parent.getItemAtPosition(position);
 
-                //TODO Make diffrence between current parent user and current kid
-                if(true) {
+                //if parent or the user chose himself
+                if(currentUser.getIsParent() ||
+                        currentUser.getId().equals(clickedUser.getId())) {
                     askAssignmentConfirmation(clickedUser);
+                } else {
+                    Toast.makeText(TaskDetailActivity.this, "Please either assign to yourself of " +
+                            "ask your Parent to assign the Task", Toast.LENGTH_SHORT).show();
+
+                    alertDialog.cancel();
+                    assignTask();
                 }
 
             }
@@ -634,30 +653,25 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     private void showReleaseDialog() {
 
-        //TODO check that the present user is assigned assigned user or is a Parent
-        if (true) {
-
-            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-            dialogBuilder.setTitle("Confirm release")
-                    .setMessage("Are you certain you want to release this Task.")
-                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            oldUser = presentTask.getUser();
-                            presentTask.removeAssignedUser();
-                            userChange = true;
-                            updateActivityView();
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    })
-                    .show();
-
-        }
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("Confirm release")
+                .setMessage("Are you certain you want to release this Task.")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        oldUser = presentTask.getUser();
+                        presentTask.removeAssignedUser();
+                        userChange = true;
+                        updateActivityView();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
 
     }
 

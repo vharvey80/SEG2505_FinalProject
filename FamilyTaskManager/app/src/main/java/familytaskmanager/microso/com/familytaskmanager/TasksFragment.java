@@ -14,9 +14,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -37,7 +39,7 @@ public class TasksFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
@@ -53,7 +55,7 @@ public class TasksFragment extends Fragment {
 
 
         //List view code
-        ListView listView = (ListView) view.findViewById(R.id.tasksListView);
+        final ListView listView = (ListView) view.findViewById(R.id.tasksListView);
 
         taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(),
                 ((MainActivity)getActivity()).getFamilyActiveTaskList() ,((MainActivity)getActivity()).getFamilyPeopleList(),
@@ -83,12 +85,38 @@ public class TasksFragment extends Fragment {
                 intent.putExtra("task", (Serializable) clickedTask);
                 intent.putExtra("toolList", (Serializable) ((MainActivity)getActivity()).getFamilyToolList());
                 intent.putExtra("userList", (Serializable) ((MainActivity)getActivity()).getFamilyPeopleList());
+                intent.putExtra("currentUser", (Serializable) ((MainActivity)getActivity()).requestCurrentUser());
                 getActivity().startActivityForResult(intent, MainActivity.TASK_ACTIVITY_REQ_CODE);
 
             }
         });
-        //End of List view codz
+        //End of List view code
 
+        //code foe switch
+        final Switch taskSwitch = (Switch) view.findViewById(R.id.taskSwitch);
+        taskSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                //MainActivity
+
+                if (isChecked) {
+                    User currentUser = ((MainActivity) getActivity()).requestCurrentUser();
+                    User realCurrent = ((MainActivity) getActivity()).getUserWithID(currentUser.getId());
+
+                    List<Task> currentUserTasks = realCurrent.getAssignedTo();
+                    TaskListAdapter newAdapter;
+                    newAdapter = new TaskListAdapter(getActivity().getApplicationContext(),
+                            currentUserTasks ,((MainActivity)getActivity()).getFamilyPeopleList(),
+                            getActivity());
+                    listView.setAdapter(newAdapter);
+                    taskListAdapter.notifyDataSetChanged();
+                } else {
+                    listView.setAdapter(taskListAdapter);
+                    taskListAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+        //end code for switch
 
         return view;
     }
