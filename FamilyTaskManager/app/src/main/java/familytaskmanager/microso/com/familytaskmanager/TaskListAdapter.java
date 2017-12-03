@@ -34,7 +34,7 @@ import java.util.List;
 public class TaskListAdapter extends ArrayAdapter {
 
     private final Context context;
-    private final List<Task> values;
+    private List<Task> values;
     private final List<User> userList;
     private final FragmentActivity activity;
 
