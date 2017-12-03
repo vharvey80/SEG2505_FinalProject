@@ -7,11 +7,14 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,18 +95,38 @@ public class UserChangeAdapter extends ArrayAdapter<User> {
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
             /* PERSONALIZATION OF THE DIALOG (REUSABILITY) */
-        final EditText password_edit = (EditText) mView.findViewById(R.id.password);
-        password_edit.setHint("password"); // personalize the hint in the edittext
+        /*final EditText password_edit = (EditText) mView.findViewById(R.id.password);
+        password_edit.setHint("password"); // personalize the hint in the edittext*/
         final TextView add_title = (TextView) mView.findViewById(R.id.add_title);
         add_title.setText("Please Enter Your Password"); // personalize the title of your dialog
             /* END OF PERSONALIZATION */
+
+        //4 number pickers 0-9 to enter a PIN
+        final NumberPicker pin1 = (NumberPicker) mView.findViewById(R.id.PINPicker1);
+        pin1.setMaxValue(9);
+        pin1.setMinValue(0);
+        final NumberPicker pin2 = (NumberPicker) mView.findViewById(R.id.PINPicker2);
+        pin2.setMaxValue(9);
+        pin2.setMinValue(0);
+        final NumberPicker pin3 = (NumberPicker) mView.findViewById(R.id.PINPicker3);
+        pin3.setMaxValue(9);
+        pin3.setMinValue(0);
+        final NumberPicker pin4 = (NumberPicker) mView.findViewById(R.id.PINPicker4);
+        pin4.setMaxValue(9);
+        pin4.setMinValue(0);
 
         Button enter_btn = (Button) mView.findViewById(R.id.enter_btn);
         enter_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //if password is correct, call change user
-                if(password_edit.getText().toString().equals(selected_user.getPassword())) {
+                int num1 = pin1.getValue();
+                int num2 = pin2.getValue();
+                int num3 = pin3.getValue();
+                int num4 = pin4.getValue();
+                String password = ""+num1+num2+num3+num4;
+
+                if(password.equals(selected_user.getPassword())) {
                     changeUser(position);
                     dialog.dismiss();
                 } else {
@@ -115,7 +138,7 @@ public class UserChangeAdapter extends ArrayAdapter<User> {
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                dialog.cancel();
             }
         });
         dialog.show();
