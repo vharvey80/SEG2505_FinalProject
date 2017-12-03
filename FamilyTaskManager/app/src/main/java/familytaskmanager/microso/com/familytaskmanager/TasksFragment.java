@@ -100,6 +100,10 @@ public class TasksFragment extends Fragment {
                 //MainActivity
 
                 if (isChecked) {
+
+                    //This double getting of the "real" user is requiered because of issue with
+                    //pulling from the DB. The current user seems to not be the same object as the
+                    //one in the user list, even if the have same ID.
                     User currentUser = ((MainActivity) getActivity()).requestCurrentUser();
                     User realCurrent = ((MainActivity) getActivity()).getUserWithID(currentUser.getId());
 
