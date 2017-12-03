@@ -8,56 +8,61 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addTaskFAB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="32dp"
+            android:clickable="true"
+            android:scaleType="center"
+            app:backgroundTint="@color/colorPrimaryBlue"
+            app:borderWidth="6dp"
+            app:elevation="5dp"
+            app:fabSize="normal"
+            app:rippleColor="@color/cardview_dark_background"
+            app:srcCompat="@drawable/tooladd"
+            tools:layout_editor_absoluteX="312dp"
+            tools:layout_editor_absoluteY="430dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:layout_height="match_parent"
+            android:layout_marginTop="100dp"
+            android:orientation="vertical">
 
-
-            <Switch
-                android:id="@+id/taskSwitch"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:switchPadding="5dp"
-                android:text="@string/show_my_tasks" />
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+
+                <Switch
+                    android:id="@+id/taskSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:switchPadding="5dp"
+                    android:text="@string/show_my_tasks" />
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/tasksListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"></ListView>
 
         </LinearLayout>
-
-        <ListView
-            android:id="@+id/tasksListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="15dp"></ListView>
-
-    </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addTaskFAB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="end|bottom"
-        android:clickable="true"
-        android:layout_marginEnd="14dp"
-        android:scaleType="center"
-        app:backgroundTint="#4444FF"
-        app:borderWidth="6dp"
-        app:elevation="5dp"
-        app:fabSize="normal"
-        app:rippleColor="@color/cardview_dark_background"
-        app:srcCompat="@drawable/tooladd"
-        tools:layout_editor_absoluteX="312dp"
-        tools:layout_editor_absoluteY="439dp" />
-
+    </RelativeLayout>
 
 
 </FrameLayout>
