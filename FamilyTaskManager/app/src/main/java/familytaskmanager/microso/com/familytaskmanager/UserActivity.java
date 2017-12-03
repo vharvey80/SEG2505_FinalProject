@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,12 +33,12 @@ public class UserActivity extends AppCompatActivity {
         selectedUser = (User) intent.getSerializableExtra("user");
 
         //Get the user list of tasks
-         taskList = selectedUser.getAssignedTo();
+        taskList = selectedUser.getAssignedTo();
 
         //Setting the title to the task from which the activity was called
         if (selectedUser != null) {
             setTitle(selectedUser.getFname());
-        }else {
+        } else {
             setTitle("User");
         }
 
@@ -46,9 +49,9 @@ public class UserActivity extends AppCompatActivity {
 
 
         //Set user info into the views
-        String s = selectedUser.getFname()+" "+selectedUser.getLname();
+        String s = selectedUser.getFname() + " " + selectedUser.getLname();
         userName.setText(s);
-        s = selectedUser.getAccumulatedPts()+" pts";
+        s = selectedUser.getAccumulatedPts() + " pts";
         rewardValue.setText(s);
         //Getting profile pic
         String resourceName = selectedUser.getProfilePicResourceName();
@@ -72,13 +75,41 @@ public class UserActivity extends AppCompatActivity {
         super.finish();
     }
 
+    /**
+     * Generates edit and delete buttons on top of screen
+     *
+     * @param menu
+     * @return boolean
+     */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.task_detail_menu, menu);
+        return true;
+    }
+
+
+    /**
+     * Invoques the appropriate logic when either the edit or delete
+     * buttons are pressed
+     *
+     * @param item
+     * @return boolean
+     */
+    // TODO: 03/12/17 Adjust values to better suit this implementation 
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item){
         switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
+            case R.id.action_changeTaskName: // Actually change user
+                Intent intent = new Intent(getApplicationContext(), UserModifyActivity.class);
+                intent.putExtra("user", (Serializable) selectedUser);
+                startActivity(intent);
                 return true;
+            case R.id.action_deletaTask: // Delete user
+                Toast.makeText(this, "Can't delete yet, might get complicated", Toast.LENGTH_SHORT).show();
+            default:
+                return super.onOptionsItemSelected(item); //Simply copied this line from official Android Tutorials
         }
-        return super.onOptionsItemSelected(item);
     }
 }
+
