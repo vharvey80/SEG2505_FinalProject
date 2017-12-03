@@ -96,7 +96,7 @@ public class UserActivity extends AppCompatActivity {
      * @param item
      * @return boolean
      */
-    // TODO: 03/12/17 Adjust values to better suit this implementation 
+    // TODO: 03/12/17 Oliver: Adjust values to better suit this implementation
     @Override
     public boolean onOptionsItemSelected (MenuItem item){
         switch (item.getItemId()) {
