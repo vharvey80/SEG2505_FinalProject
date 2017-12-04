@@ -208,8 +208,6 @@ public class Task implements Serializable {
     }
 
     public List<Tool> getTools() {
-        //TODO analyze code
-        //List<Tool> newTools = Collections.unmodifiableList(tools);
         return tools;
     }
 
@@ -235,8 +233,6 @@ public class Task implements Serializable {
         User existingUser = users.get("user");
         users.put("user", aUser);
         assignedUserID = aUser.getId();
-        //user = aUser;
-        //This 'if' should never be executed in our system, kept as security
         if (existingUser != null && !existingUser.equals(aUser)) {
             existingUser.removeAssignedTo(this);
         }
@@ -298,15 +294,6 @@ public class Task implements Serializable {
             return false;
         }
         tools.add(aTool);
-        //TODO clean
-        /*if (aTool.indexOfTask(this) != -1) {
-            wasAdded = true;
-        } else {
-            wasAdded = aTool.addTask(this);
-            if (!wasAdded) {
-                tools.remove(aTool);
-            }
-        }*/
         return wasAdded;
     }
 
@@ -373,17 +360,7 @@ public class Task implements Serializable {
 
 
     public String toString() {
-        return super.toString() + "[" +
-                "id" + ":" + getId() + "," +
-                "title" + ":" + getTitle() + "," +
-                "note" + ":" + getNote() + "," +
-                "recurrent" + ":" + getRecurrent() + "," +
-                "estimatedTime" + ":" + getEstimatedTime() + "," +
-                "rewardPts" + ":" + getRewardPts() + "]" + System.getProperties().getProperty("line.separator") +
-                "  " + "dueDate" + "=" + getDueDate() + " " +
-                "  " + "state" + "=" + (getState() != null ? !getState().equals(this) ? getState().toString().replaceAll("  ", "    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-                "  " + "user = " + (getUser() != null ? Integer.toHexString(System.identityHashCode(getUser())) : "null") + System.getProperties().getProperty("line.separator") +
-                "  " + "creator = " + (getCreator() != null ? Integer.toHexString(System.identityHashCode(getCreator())) : "null");
+        return getTitle() + " : " + getNote();
     }
 
     @Exclude

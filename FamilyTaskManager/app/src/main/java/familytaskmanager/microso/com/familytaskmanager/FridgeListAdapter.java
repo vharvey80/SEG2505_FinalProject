@@ -28,14 +28,8 @@ public class FridgeListAdapter extends ArrayAdapter<ShoppingItem> {
         this.groceries = values;
     }
 
-
-
-
-
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         selected_grocerie = groceries.get(position);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.grocerie_list_item, parent, false);

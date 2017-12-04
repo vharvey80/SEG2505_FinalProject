@@ -31,8 +31,6 @@ public class ToolActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tool);
 
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
-
         returnedIntent = new Intent(getBaseContext(), MainActivity.class);
 
         ListView listView = (ListView) findViewById(R.id.list_tools);
@@ -60,7 +58,6 @@ public class ToolActivity extends AppCompatActivity {
             final EditText supply_edit = (EditText) mView.findViewById(R.id.tool_supply);
             supply_edit.setHint("Tool supply"); // personalize the hint in the edittext
             final ImageView image = (ImageView) mView.findViewById(R.id.add_pic);
-            //image.setImageResource(R.drawable.toolsadd_bg); // personalize the picture at the top
             final TextView add_title = (TextView) mView.findViewById(R.id.add_title);
             add_title.setText("ADD TOOL MANAGER"); // personalize the title of your dialog
             /* END OF PERSONALIZATION */

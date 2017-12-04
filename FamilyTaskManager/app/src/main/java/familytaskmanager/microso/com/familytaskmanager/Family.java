@@ -83,7 +83,7 @@ public class Family {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                return;
             }
         });
 
@@ -105,9 +105,6 @@ public class Family {
         return wasAdded;
     }
 
-    //------------------------
-    // INTERFACE
-    //------------------------
     public User getCurrentUser(){
         return currentUser;
     }
@@ -289,14 +286,6 @@ public class Family {
         return wasRemoved;
     }
 
-    public List<String> getToolsID() {
-        List<String> ids = new ArrayList<String>();
-        for (Tool t : tools) {
-            ids.add(t.getId());
-        }
-        return ids;
-    }
-
     public static int minimumNumberOfUsers() {
         return 1;
     }
@@ -338,7 +327,6 @@ public class Family {
     }
 
     public boolean updateUser(User aUser) {
-        System.out.println("WASD - Update user called with " + aUser.getFname() + " - " + aUser.hasAssignedTo());
         boolean wasUpdated = false;
         DatabaseReference user_update_ref;
         /*if (users.contains(aUser)) {
@@ -441,40 +429,6 @@ public class Family {
         return found;
     }
 
-    public boolean addShoppingItemAt(ShoppingItem aShoppingItem, int index) {
-        boolean wasAdded = false;
-        if (addShoppingItem(aShoppingItem)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfShoppingItems()) {
-                index = numberOfShoppingItems() - 1;
-            }
-            shoppingItems.remove(aShoppingItem);
-            shoppingItems.add(index, aShoppingItem);
-            wasAdded = true;
-        }
-        return wasAdded;
-    }
-
-    public boolean addOrMoveShoppingItemAt(ShoppingItem aShoppingItem, int index) {
-        boolean wasAdded = false;
-        if (shoppingItems.contains(aShoppingItem)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfShoppingItems()) {
-                index = numberOfShoppingItems() - 1;
-            }
-            shoppingItems.remove(aShoppingItem);
-            shoppingItems.add(index, aShoppingItem);
-            wasAdded = true;
-        } else {
-            wasAdded = addShoppingItemAt(aShoppingItem, index);
-        }
-        return wasAdded;
-    }
-
     public static int minimumNumberOfTasks() {
         return 0;
     }
@@ -554,40 +508,6 @@ public class Family {
         return wasRemoved;
     }
 
-    public boolean addTaskAt(Task aTask, int index) {
-        boolean wasAdded = false;
-        if (addTask(aTask)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfTasks()) {
-                index = numberOfTasks() - 1;
-            }
-            activeTasks.remove(aTask);
-            activeTasks.add(index, aTask);
-            wasAdded = true;
-        }
-        return wasAdded;
-    }
-
-    public boolean addOrMoveTaskAt(Task aTask, int index) {
-        boolean wasAdded = false;
-        if (activeTasks.contains(aTask)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfTasks()) {
-                index = numberOfTasks() - 1;
-            }
-            activeTasks.remove(aTask);
-            activeTasks.add(index, aTask);
-            wasAdded = true;
-        } else {
-            wasAdded = addTaskAt(aTask, index);
-        }
-        return wasAdded;
-    }
-
     public void delete() {
         tools.clear();
         users.clear();
@@ -602,10 +522,6 @@ public class Family {
                 "id" + ":" + getId() + "]";
     }
 
-    /**
-     * Testong Method.
-     * @return
-     */
     public void onStartFamily() {
 
         currentUserReference.addValueEventListener(new ValueEventListener() {
@@ -807,7 +723,7 @@ public class Family {
             }
         });
 
-    }
+    }  // Initialize and load from DB.
 
     public boolean requestShoppingItemCreation(ShoppingItem newShoppingItem) {
         try {
@@ -968,71 +884,4 @@ public class Family {
         }
         return user;
     }
-
-    public void initializeDummyDB() {
-        String tool_id = toolsReference.push().getKey();
-        toolsReference.child(tool_id).setValue(new Tool(tool_id, "Walid", 2));
-    }
-
-    /*public static Family createDummyFamily() {
-
-        User mainUser = new User("1", "Walid", "B", true, R.drawable.menu_people, 0);
-
-        Family family = new Family(1);
-
-        //Creation of 4 more users for testing
-        User thomas = new User("2", "Thomas", "C", true, R.drawable.menu_people, 0);
-        User vincent = new User("3", "Vincent", "H", true, R.drawable.menu_people, 0);
-        User oliver = new User("4", "Oliver", "B", false, R.drawable.menu_people, 0);
-        User jeanGab = new User("5", "Jean-Gabriel", "G", true, R.drawable.menu_people, 0);
-        family.addUser(mainUser);
-        family.addUser(thomas);
-        family.addUser(vincent);
-        family.addUser(oliver);
-        List<User> users = new ArrayList<>();
-        users.add(mainUser);
-        users.add(thomas);
-        users.add(vincent);
-        users.add(oliver);
-        users.add(jeanGab);
-        family.users = users;*/
-
-        /*Creating some tools for the tasks
-        Tool bucket = new Tool("1", "Bucket", 5);
-        Tool mop = new Tool("2", "Mop", 4);
-        Tool sponge = new Tool("3", "Sponge", 3);
-        Tool wrench = new Tool("4", "Wrench", 2);
-        Tool broom = new Tool("5", "Broom", 1);
-        family.tools.add(bucket);
-        family.tools.add(mop);
-        family.tools.add(sponge);
-        family.tools.add(wrench);
-        family.tools.add(broom);*/
-
-        //Creation of 5 tasks for testing
-        /*Task dishes = new Task("1", "Dishes", "Dishes note", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
-        dishes.setUser(mainUser);
-        dishes.addTool(sponge);
-        Task sweep = new Task("2", "Sweep", "Sweep noooooooote", 1511880133, false, 1, 10, Task.TaskState.Created, mainUser);
-        sweep.setUser(thomas);
-        sweep.addTool(broom);
-        Task washCar = new Task("1", "Wash Car", "Wash Car note", 1511880133, false, 1, 5, Task.TaskState.Created, thomas);
-        washCar.addTool(bucket);
-        washCar.addTool(sponge);
-        Task shop = new Task("1", "Shop", "shop nooooote", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
-        shop.addTool(mop);
-        Task otherTask = new Task("1", "Other", "Other task note", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
-        otherTask.addTool(wrench);
-        Task outOfIdeas = new Task("1", "I'm out of ideas", "Other task note", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
-        List<Task> tasks = new ArrayList<>();
-        tasks.add(dishes);
-        tasks.add(sweep);
-        tasks.add(washCar);
-        tasks.add(shop);
-        tasks.add(otherTask);
-        tasks.add(outOfIdeas);
-        family.activeTasks = tasks;
-
-        return family;
-    }*/
 }
