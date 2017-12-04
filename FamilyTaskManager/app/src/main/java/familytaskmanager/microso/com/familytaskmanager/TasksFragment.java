@@ -19,9 +19,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import junit.framework.Test;
+
+import org.w3c.dom.Text;
+
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -155,6 +161,15 @@ public class TasksFragment extends Fragment {
         dialogBuilder.setView(dialogView);
         dialogBuilder.setTitle("Task Info (1/2)");
 
+        //If the user is not parent, lock reward at 0 pts
+        if (!((MainActivity)getActivity()).requestCurrentUser().getIsParent()){
+            dialogBuilder.setMessage("Since you're not Parent, reward is default 1.");
+            EditText rewardInput = (EditText) dialogView.findViewById(R.id.dialogRewardField);
+            rewardInput.setText("1");
+            rewardInput.setEnabled(false);
+        }
+
+
         //get buttons to set onClick
         final Button buttonConfirm = (Button) dialogView.findViewById(R.id.dialogConfirmAndNext);
         final Button buttonCancel = (Button) dialogView.findViewById(R.id.dialogCancel);
@@ -209,11 +224,11 @@ public class TasksFragment extends Fragment {
 
                 boolean validDate = validateDate(year, month, day); //Validating date
                 if (!validDate && allGood) {
-                    Toast.makeText(getActivity(), "Wrong Date input. Make sure to respect the number of days per month.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Wrong Date input. Make sure to respect the number " +
+                            "of days per month and that you choose future date.", Toast.LENGTH_LONG).show();
                     allGood = false;
                 }
 
-                //TODO make sure if not parent, reward = 0 pts
                 int validReward = validateReward(taskReward); //validating input
                 if (validReward == -1 && allGood) {
                     Toast.makeText(getActivity(), "Wrong Reward input. Make sure its an integer over 0.", Toast.LENGTH_LONG).show();
@@ -354,6 +369,16 @@ public class TasksFragment extends Fragment {
             if (day > 30) {
                 valid = false;
             }
+        }
+
+        //Need future date
+        Calendar presentCal = Calendar.getInstance();
+        long presentDate = presentCal.getTimeInMillis();
+        Calendar inputDateCal = Calendar.getInstance();
+        inputDateCal.set(year, month-1, day);
+        long wantedDate = inputDateCal.getTimeInMillis();
+        if(wantedDate < presentDate) {
+            valid = false;
         }
 
         return valid;

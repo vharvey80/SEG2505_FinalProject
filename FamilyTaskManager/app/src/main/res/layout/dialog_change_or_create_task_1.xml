@@ -48,6 +48,7 @@
                 android:id="@+id/dialogTimeField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:backgroundTint="@color/colorPrimaryBlue"
                 android:textCursorDrawable="@null"
                 android:textColor="#000" />
