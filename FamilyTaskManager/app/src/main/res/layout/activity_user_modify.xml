@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    tools:context="familytaskmanager.microso.com.familytaskmanager.ToolActivity">
+    tools:context="familytaskmanager.microso.com.familytaskmanager.UserModifyActivity">
 
     <!-- Master stack layout for entire view -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+g
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -117,7 +117,6 @@
                     android:id="@+id/select_man1"
                     android:layout_width="@dimen/icon_select_side"
                     android:layout_height="@dimen/icon_select_side"
-                    android:onClick="onClickSelectImage"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/man1" />
 

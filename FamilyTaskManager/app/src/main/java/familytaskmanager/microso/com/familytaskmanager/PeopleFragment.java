@@ -80,6 +80,8 @@ public class PeopleFragment extends Fragment {
      */
     public void taskFabClicked() {
         Toast.makeText(getActivity(), "User FAB clicked", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity().getApplication().getApplicationContext(), UserActivity.class);
+        startActivity(intent);
     }
 
 }

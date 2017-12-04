@@ -9,6 +9,7 @@ import android.util.NoSuchPropertyException;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -26,9 +27,10 @@ public class UserModifyActivity extends AppCompatActivity {
     private User selectedUser;
     // Intent used to return the user object via the finish() method
     Intent returnedIntent;
-
-    int imageId;
-
+    // Globally store imageId to return at end
+    private int imageId;
+    private String fName;
+    private String lName;
 
 
     /**
@@ -41,6 +43,7 @@ public class UserModifyActivity extends AppCompatActivity {
 
         // Create object to accesss display statistics
         Display d = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        // TODO: 03/12/17 Oliver: Use this to set sizes
 
         // Extract user from intent that created this instance as selectedUser
         Intent intent = getIntent();
@@ -66,7 +69,8 @@ public class UserModifyActivity extends AppCompatActivity {
 
         // Pre-populate the field with the user's current first name
         final EditText editFname = (EditText) findViewById(R.id.edit_first_name);
-        editFname.setText(selectedUser.getFname(), TextView.BufferType.EDITABLE);
+        fName = selectedUser.getFname();
+        editFname.setText(fName, TextView.BufferType.EDITABLE);
 
         // Label the text view "Last name:" next to the edit text field
         final TextView title_edit_last_name = (TextView) findViewById(R.id.title_edit_last_name);
@@ -74,8 +78,11 @@ public class UserModifyActivity extends AppCompatActivity {
 
         // Pre-populate the field with the user's current first name
         final EditText editLname = (EditText) findViewById(R.id.edit_last_name);
-        editLname.setText(selectedUser.getLname(), TextView.BufferType.EDITABLE);
+        lName = selectedUser.getLname();
+        editLname.setText(lName, TextView.BufferType.EDITABLE);
 
+
+        //****START IMAGE BUTTONS****//
         // Create on click listeners for set image buttons using the tag to set image
         // and storing it into global imageId for later
         View.OnClickListener iconClickHandler = new View.OnClickListener(){
@@ -130,6 +137,16 @@ public class UserModifyActivity extends AppCompatActivity {
         final ImageButton woman4 = (ImageButton) findViewById(R.id.select_woman4);
         woman4.setTag(R.drawable.woman4);
         woman4.setOnClickListener(iconClickHandler);
+        //****END IMAGE BUTTONS****//
+
+        final Button submit = (Button) findViewById(R.id.submitChangedUser);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
     }
 
 
