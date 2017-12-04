@@ -38,7 +38,8 @@ public class TaskListAdapter extends ArrayAdapter {
     private final List<User> userList;
     private final FragmentActivity activity;
 
-    public TaskListAdapter(Context context, List<Task> values, List<User> userList, FragmentActivity activity) {
+    public TaskListAdapter(Context context, List<Task> values, List<User> userList,
+                           FragmentActivity activity) {
         super(context, R.layout.task_list_item, values);
         this.context = context;
         this.values = values;
@@ -105,7 +106,11 @@ public class TaskListAdapter extends ArrayAdapter {
 
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
-        alertDialogBuilder.setTitle("Choose User To Assign");
+        if (((MainActivity)activity).requestCurrentUser().getIsParent()) {
+            alertDialogBuilder.setTitle("Choose User To Assign");
+        } else {
+            alertDialogBuilder.setTitle("You can only assign to yourself since you're not a parent");
+        }
         alertDialogBuilder.setView(dialogView);
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
@@ -124,10 +129,18 @@ public class TaskListAdapter extends ArrayAdapter {
                 alertDialog.dismiss();
                 final User clickedUser = (User) parent.getItemAtPosition(position);
 
-                //TODO Make diffrence between current parent user and current kid
-                if(true) {
+                //if parent or the user chose himself
+                User currentUser = ((MainActivity)activity).requestCurrentUser();
+                if(currentUser.getIsParent()
+                        || currentUser.getId().equals(clickedUser.getId())) {
                     askAssignmentConfirmation(clickedUser, clickedTask);
+                } else {
+                    Toast.makeText(activity, "Please either assign to yourself of " +
+                            "ask your Parent to assign the Task", Toast.LENGTH_SHORT).show();
+
+                    alertDialog.cancel();
                 }
+
             }
         });
         //End of List view code

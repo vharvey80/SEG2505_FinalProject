@@ -115,6 +115,7 @@ public class TasksFragment extends Fragment {
                     listView.setAdapter(newAdapter);
                     taskListAdapter.notifyDataSetChanged();
                 } else {
+                    //I never actually changed taskListAdapter, so can just re-assign to listView
                     listView.setAdapter(taskListAdapter);
                     taskListAdapter.notifyDataSetChanged();
                 }

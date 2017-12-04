@@ -97,7 +97,11 @@ public class TaskDetailActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_changeTaskName:
                 Toast.makeText(this, "Can't chane yet, but should be easy", Toast.LENGTH_SHORT).show();
-                showDialogPart1();
+                if(currentUser.getIsParent()){
+                    showDialogPart1();
+                } else {
+                    Toast.makeText(this, "Sorry you can't modify a Task. Ask your parent.", Toast.LENGTH_LONG).show();
+                }
                 return true;
             case R.id.action_deletaTask:
                 actionOnTask = "delete";
