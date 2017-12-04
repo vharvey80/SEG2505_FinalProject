@@ -76,7 +76,6 @@ public class UserChangeAdapter extends ArrayAdapter<User> {
         nameView.setText(selected_user.getFname());
         ptsView.setText(Integer.toString(selected_user.getAccumulatedPts()));
 
-        Toast.makeText(context, selected_user.getFname(), Toast.LENGTH_SHORT).show();
         //TODO fix this in master
         String resourceName = selected_user.getProfilePicResourceName();
         Resources resources = context.getResources();
@@ -95,8 +94,6 @@ public class UserChangeAdapter extends ArrayAdapter<User> {
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
             /* PERSONALIZATION OF THE DIALOG (REUSABILITY) */
-        /*final EditText password_edit = (EditText) mView.findViewById(R.id.password);
-        password_edit.setHint("password"); // personalize the hint in the edittext*/
         final TextView add_title = (TextView) mView.findViewById(R.id.add_title);
         add_title.setText("Please Enter Your Password"); // personalize the title of your dialog
             /* END OF PERSONALIZATION */

@@ -71,8 +71,6 @@ public class TaskListAdapter extends ArrayAdapter {
         taskIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //Had to make postion final to be able to use it here
                 imageIconClicked(position);
 
             }
@@ -141,7 +139,6 @@ public class TaskListAdapter extends ArrayAdapter {
      * Method called when user chose who to assign task to.
      */
     private void askAssignmentConfirmation(final User userToAssign, final Task clickedTask) {
-
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
         dialogBuilder.setTitle("Confirm allocation")
                 .setMessage("Task will be assigned to " + userToAssign.getFname() + "\n"
