@@ -125,7 +125,9 @@ public class ShoppingFragment extends Fragment implements View.OnClickListener {
 
                 @Override
                 public void run() {
-                    Toast.makeText(getActivity(), "Item deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Item added to fridge", Toast.LENGTH_SHORT).show();
+                    aShoppingItem.setQuantity(1);
+                    ((MainActivity) getActivity()).requestFridgeItemCreation(aShoppingItem);
                     adapterGrocery.remove(aShoppingItem);
                 }
             }, 750);
