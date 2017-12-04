@@ -19,9 +19,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import junit.framework.Test;
+
+import org.w3c.dom.Text;
+
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -36,7 +42,6 @@ public class TasksFragment extends Fragment {
     public TasksFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -66,20 +71,13 @@ public class TasksFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 
-                Toast.makeText(getActivity(), "You clicked a view", Toast.LENGTH_SHORT).show();
-
                 final Task clickedTask = (Task) parent.getItemAtPosition(position);
 
                 //TODO this is just a cheap breakfix, I need to find cause of problem
                 if((clickedTask.getCreator() == null) && (clickedTask.getCreatorID() != null)) {
-                    System.out.println("IN THE IFFFFFFFFFFFFFFFF xyz");
                     User creator = ((MainActivity)getActivity()).getUserWithID(clickedTask.getCreatorID());
                     clickedTask.setCreator(creator);
                 }
-
-                System.out.println("xyz clicked task has creator --> " + (clickedTask.getCreator() != null)
-                        + ", Task ID " + clickedTask.getId() + ", Task creator id" + clickedTask.getCreatorID());
-
 
                 Intent intent = new Intent(getActivity().getApplicationContext(), TaskDetailActivity.class);
                 intent.putExtra("task", (Serializable) clickedTask);
@@ -100,7 +98,6 @@ public class TasksFragment extends Fragment {
                 //MainActivity
 
                 if (isChecked) {
-
                     //This double getting of the "real" user is requiered because of issue with
                     //pulling from the DB. The current user seems to not be the same object as the
                     //one in the user list, even if the have same ID.
@@ -115,19 +112,17 @@ public class TasksFragment extends Fragment {
                     listView.setAdapter(newAdapter);
                     taskListAdapter.notifyDataSetChanged();
                 } else {
+                    //I never actually changed taskListAdapter, so can just re-assign to listView
                     listView.setAdapter(taskListAdapter);
                     taskListAdapter.notifyDataSetChanged();
                 }
             }
         });
         //end code for switch
-
         return view;
     }
 
     public void taskFabClicked() {
-        Toast.makeText(getActivity(), "Task FAB clicked", Toast.LENGTH_SHORT).show();
-
         showDialogPart1();
 
     }
@@ -153,6 +148,15 @@ public class TasksFragment extends Fragment {
         MainActivity.setNumberPickersDialog(dialogView);
         dialogBuilder.setView(dialogView);
         dialogBuilder.setTitle("Task Info (1/2)");
+
+        //If the user is not parent, lock reward at 0 pts
+        if (!((MainActivity)getActivity()).requestCurrentUser().getIsParent()){
+            dialogBuilder.setMessage("Since you're not Parent, reward is default 1.");
+            EditText rewardInput = (EditText) dialogView.findViewById(R.id.dialogRewardField);
+            rewardInput.setText("1");
+            rewardInput.setEnabled(false);
+        }
+
 
         //get buttons to set onClick
         final Button buttonConfirm = (Button) dialogView.findViewById(R.id.dialogConfirmAndNext);
@@ -208,11 +212,11 @@ public class TasksFragment extends Fragment {
 
                 boolean validDate = validateDate(year, month, day); //Validating date
                 if (!validDate && allGood) {
-                    Toast.makeText(getActivity(), "Wrong Date input. Make sure to respect the number of days per month.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Wrong Date input. Make sure to respect the number " +
+                            "of days per month and that you choose future date.", Toast.LENGTH_LONG).show();
                     allGood = false;
                 }
 
-                //TODO make sure if not parent, reward = 0 pts
                 int validReward = validateReward(taskReward); //validating input
                 if (validReward == -1 && allGood) {
                     Toast.makeText(getActivity(), "Wrong Reward input. Make sure its an integer over 0.", Toast.LENGTH_LONG).show();
@@ -222,11 +226,8 @@ public class TasksFragment extends Fragment {
 
                 if (allGood) {
                     dialog.cancel();
-                    System.out.println("Before creting task in Fragemnt xyz");
                     Task createdTask = ((MainActivity)getActivity()).requestTaskCreation(taskName,
                             validTime, year, month, day, validReward, taskNote);
-
-                    System.out.println("After creating task in Fragment xyz --> " + createdTask.getCreator().getFname());
 
                     if (createdTask == null) {
                         Toast.makeText(getActivity(), "A task of the same name exists already", Toast.LENGTH_LONG).show();
@@ -276,7 +277,6 @@ public class TasksFragment extends Fragment {
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 SparseBooleanArray checked = list.getCheckedItemPositions();
 
                 for (int i = 0; i < list.getAdapter().getCount(); i++) {
@@ -305,12 +305,6 @@ public class TasksFragment extends Fragment {
 
     }
 
-    /**
-     * Helper method. Return double if time given is valid. Else, returns -1.
-     * TODO: Add description for arguments
-     * @param time
-     * @return
-     */
     private double validateTime(String time) {
 
         double output;
@@ -324,20 +318,11 @@ public class TasksFragment extends Fragment {
         if (output <= 0) {
             output = -1;
         }
-
         return output;
 
     }
 
-    /**
-     * Helper method. Return true if date given is valid. Else, returns false.
-     * TODO: Add description for arguments
-     * @param month
-     * @param day
-     * @return
-     */
     private boolean validateDate(int year, int month, int day) {
-
         boolean valid = true;
 
         //Test February with 28 days
@@ -355,18 +340,21 @@ public class TasksFragment extends Fragment {
             }
         }
 
+        //Need future date
+        Calendar presentCal = Calendar.getInstance();
+        long presentDate = presentCal.getTimeInMillis();
+        Calendar inputDateCal = Calendar.getInstance();
+        inputDateCal.set(year, month-1, day);
+        long wantedDate = inputDateCal.getTimeInMillis();
+        if(wantedDate < presentDate) {
+            valid = false;
+        }
+
         return valid;
 
     }
 
-    /**
-     * Helper method. Return int if points given is valid. Else, returns -1.
-     * TODO: Add description for arguments
-     * @param pts
-     * @return
-     */
     private int validateReward(String pts) {
-
         int output;
 
         try {
@@ -375,48 +363,15 @@ public class TasksFragment extends Fragment {
             output = -1;
         }
 
-        if (output <= 0) {
-            output = -1;
-        }
-
+        if (output <= 0) { output = -1; }
         return output;
-
     }
 
-    /**
-     * Helper method to check if all fields are filled
-     * TODO descriptes arugments
-     * @param taskName
-     * @param taskTime
-     * @param taskReward
-     * @param taskNote
-     * @return
-     */
     private boolean checkAllFilled(String taskName, String taskTime, String taskReward, String taskNote) {
-
         boolean valid = true;
 
         if (taskName.isEmpty() || taskTime.isEmpty() || taskReward.isEmpty() || taskNote.isEmpty()) {
             valid = false;
-        }
-
-        return valid;
-
+        } return valid;
     }
-
-    /*@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) { // doesn't detect the return of my tool Activity TODO
-        super.onActivityResult(requestCode, resultCode, data);
-        //TODO a switch statement might be better
-        System.out.println("In onActivityResult xyz, requestCode = " + requestCode); //TODO remove
-        if (requestCode == MainActivity.TASK_ACTIVITY_REQ_CODE) {
-            System.out.println("Passed the else if xyz"); //TODO remove
-            if(data.hasExtra("updatedTask")) {
-                System.out.println("passed the hasExtra xyz"); //TODO remove
-                Task updatedTask = (Task) data.getSerializableExtra("updatedTask");
-                family.updateTask(updatedTask);
-            }
-        }
-    }*/
-
 }

@@ -1,5 +1,6 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import android.provider.ContactsContract;
 import android.view.SoundEffectConstants;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class Family {
     //Family Associations
     private List<Tool> tools;
     private List<User> users;
+    private List<ShoppingItem> fridge;
     private List<ShoppingItem> shoppingItems;
     private List<Task> activeTasks;
     private List<Task> inactiveTasks;
@@ -37,6 +39,7 @@ public class Family {
     private DatabaseReference activeTasksReference;
     private DatabaseReference inactiveTasksReference;
     private DatabaseReference currentUserReference;
+    private DatabaseReference fridgeReference;
 
     private User currentUser;
 
@@ -48,6 +51,7 @@ public class Family {
         id = aId;
         tools = new ArrayList<Tool>();
         users = new ArrayList<User>();
+        fridge = new ArrayList<ShoppingItem>();
         //this user will always be replaced
         currentUser = new User("0", "Default", "User", true, "menu_people", 0);
 
@@ -56,6 +60,7 @@ public class Family {
         inactiveTasks = new ArrayList<Task>();
 
         toolsReference = database.getReference("Tools");
+        fridgeReference = database.getReference("Fridge");
         usersReference = database.getReference("Users");
         shoppingItemsReference = database.getReference("ShoppingItems");
         activeTasksReference = database.getReference("ActiveTasks");
@@ -78,7 +83,7 @@ public class Family {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                return;
             }
         });
 
@@ -100,9 +105,6 @@ public class Family {
         return wasAdded;
     }
 
-    //------------------------
-    // INTERFACE
-    //------------------------
     public User getCurrentUser(){
         return currentUser;
     }
@@ -241,6 +243,10 @@ public class Family {
         return index;
     }
 
+    public List<ShoppingItem> getFridge() {
+        return fridge;
+    }
+
     public static int minimumNumberOfTools() {
         return 0;
     }
@@ -278,14 +284,6 @@ public class Family {
         }
         if (toolToRemove != null) { tools.remove(toolToRemove); } else { throw new IllegalArgumentException("Impossible de deleter un tool inexistant."); }
         return wasRemoved;
-    }
-
-    public List<String> getToolsID() {
-        List<String> ids = new ArrayList<String>();
-        for (Tool t : tools) {
-            ids.add(t.getId());
-        }
-        return ids;
     }
 
     public static int minimumNumberOfUsers() {
@@ -329,7 +327,6 @@ public class Family {
     }
 
     public boolean updateUser(User aUser) {
-        System.out.println("WASD - Update user called with " + aUser.getFname() + " - " + aUser.hasAssignedTo());
         boolean wasUpdated = false;
         DatabaseReference user_update_ref;
         /*if (users.contains(aUser)) {
@@ -361,6 +358,40 @@ public class Family {
         users.addAll(verifiedUsers);
         wasSet = true;
         return wasSet;
+    }
+
+    public boolean addFridgeItem(ShoppingItem aFridgeItem) {
+        boolean wasAdded = false;
+        for (ShoppingItem s : fridge) {
+            if (s.getId().equals(aFridgeItem.getId())) { return false; }
+        }
+        /** DATABASE CODE **/
+        String fridge_id = fridgeReference.push().getKey();
+        aFridgeItem.setId(fridge_id);
+        fridgeReference.child(fridge_id).setValue(aFridgeItem);
+        /** END **/
+        fridge.add(aFridgeItem);
+        wasAdded = true;
+        return wasAdded;
+    }
+
+    // Modified for the database.
+    public boolean removeFridgeItem(String aFridgeItem) {
+        boolean wasRemoved = false;
+        ShoppingItem itemToRemove = null;
+        DatabaseReference fridge_del_ref; // temporary reference
+        for (ShoppingItem s : fridge) {
+            if (s.getId().equals(aFridgeItem)) {
+                /** DATABASE CODE **/
+                fridge_del_ref = fridgeReference.child(aFridgeItem); // get reference
+                fridge_del_ref.removeValue(); // delete the tool
+                /** END **/
+                wasRemoved = true;
+                itemToRemove = s;
+            }
+        }
+        if (itemToRemove != null) { fridge.remove(itemToRemove); } else { throw new IllegalArgumentException("Impossible de supprimer un item inexistant."); }
+        return wasRemoved;
     }
 
     public static int minimumNumberOfShoppingItems() {
@@ -396,40 +427,6 @@ public class Family {
             shoppingItem_del_ref.removeValue(); // delete the item
         }
         return found;
-    }
-
-    public boolean addShoppingItemAt(ShoppingItem aShoppingItem, int index) {
-        boolean wasAdded = false;
-        if (addShoppingItem(aShoppingItem)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfShoppingItems()) {
-                index = numberOfShoppingItems() - 1;
-            }
-            shoppingItems.remove(aShoppingItem);
-            shoppingItems.add(index, aShoppingItem);
-            wasAdded = true;
-        }
-        return wasAdded;
-    }
-
-    public boolean addOrMoveShoppingItemAt(ShoppingItem aShoppingItem, int index) {
-        boolean wasAdded = false;
-        if (shoppingItems.contains(aShoppingItem)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfShoppingItems()) {
-                index = numberOfShoppingItems() - 1;
-            }
-            shoppingItems.remove(aShoppingItem);
-            shoppingItems.add(index, aShoppingItem);
-            wasAdded = true;
-        } else {
-            wasAdded = addShoppingItemAt(aShoppingItem, index);
-        }
-        return wasAdded;
     }
 
     public static int minimumNumberOfTasks() {
@@ -511,43 +508,10 @@ public class Family {
         return wasRemoved;
     }
 
-    public boolean addTaskAt(Task aTask, int index) {
-        boolean wasAdded = false;
-        if (addTask(aTask)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfTasks()) {
-                index = numberOfTasks() - 1;
-            }
-            activeTasks.remove(aTask);
-            activeTasks.add(index, aTask);
-            wasAdded = true;
-        }
-        return wasAdded;
-    }
-
-    public boolean addOrMoveTaskAt(Task aTask, int index) {
-        boolean wasAdded = false;
-        if (activeTasks.contains(aTask)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfTasks()) {
-                index = numberOfTasks() - 1;
-            }
-            activeTasks.remove(aTask);
-            activeTasks.add(index, aTask);
-            wasAdded = true;
-        } else {
-            wasAdded = addTaskAt(aTask, index);
-        }
-        return wasAdded;
-    }
-
     public void delete() {
         tools.clear();
         users.clear();
+        fridge.clear();
         shoppingItems.clear();
         activeTasks.clear();
     }
@@ -558,10 +522,6 @@ public class Family {
                 "id" + ":" + getId() + "]";
     }
 
-    /**
-     * Testong Method.
-     * @return
-     */
     public void onStartFamily() {
 
         currentUserReference.addValueEventListener(new ValueEventListener() {
@@ -653,6 +613,30 @@ public class Family {
             }
         });
 
+        fridgeReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Clearing the list
+                fridge.clear();
+
+
+                // Iterating through all the nodes
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    // getting each tool
+                    ShoppingItem item = postSnapshot.getValue(ShoppingItem.class);
+
+                    // Add item gotten in the list
+                    fridge.add(item);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         shoppingItemsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -664,7 +648,7 @@ public class Family {
                     // getting each item
                     ShoppingItem shoppingItem = postSnapshot.getValue(ShoppingItem.class);
 
-                    // Add shopping getted in the list
+                    // Add shopping gotten in the list
                     shoppingItems.add(shoppingItem);
                 }
 
@@ -739,7 +723,7 @@ public class Family {
             }
         });
 
-    }
+    }  // Initialize and load from DB.
 
     public boolean requestShoppingItemCreation(ShoppingItem newShoppingItem) {
         try {
@@ -767,6 +751,20 @@ public class Family {
     public boolean requestToolDelete(String deletedTool) {
         try {
             this.removeTool(deletedTool);
+            return true;
+        } catch (Error e) { return false; }
+    }
+
+    public boolean requestFridgeItemCreation(ShoppingItem newShoppingItem) { // Method that allows us to add a new tool to the DB.
+        try {
+            this.addFridgeItem(newShoppingItem);
+            return true;
+        } catch (Error e) { return false; }
+    }
+
+    public boolean requestFridgeItemDelete(String deletedShoppingItem) {
+        try {
+            this.removeFridgeItem(deletedShoppingItem);
             return true;
         } catch (Error e) { return false; }
     }
@@ -886,71 +884,4 @@ public class Family {
         }
         return user;
     }
-
-    public void initializeDummyDB() {
-        String tool_id = toolsReference.push().getKey();
-        toolsReference.child(tool_id).setValue(new Tool(tool_id, "Walid", 2));
-    }
-
-    /*public static Family createDummyFamily() {
-
-        User mainUser = new User("1", "Walid", "B", true, R.drawable.menu_people, 0);
-
-        Family family = new Family(1);
-
-        //Creation of 4 more users for testing
-        User thomas = new User("2", "Thomas", "C", true, R.drawable.menu_people, 0);
-        User vincent = new User("3", "Vincent", "H", true, R.drawable.menu_people, 0);
-        User oliver = new User("4", "Oliver", "B", false, R.drawable.menu_people, 0);
-        User jeanGab = new User("5", "Jean-Gabriel", "G", true, R.drawable.menu_people, 0);
-        family.addUser(mainUser);
-        family.addUser(thomas);
-        family.addUser(vincent);
-        family.addUser(oliver);
-        List<User> users = new ArrayList<>();
-        users.add(mainUser);
-        users.add(thomas);
-        users.add(vincent);
-        users.add(oliver);
-        users.add(jeanGab);
-        family.users = users;*/
-
-        /*Creating some tools for the tasks
-        Tool bucket = new Tool("1", "Bucket", 5);
-        Tool mop = new Tool("2", "Mop", 4);
-        Tool sponge = new Tool("3", "Sponge", 3);
-        Tool wrench = new Tool("4", "Wrench", 2);
-        Tool broom = new Tool("5", "Broom", 1);
-        family.tools.add(bucket);
-        family.tools.add(mop);
-        family.tools.add(sponge);
-        family.tools.add(wrench);
-        family.tools.add(broom);*/
-
-        //Creation of 5 tasks for testing
-        /*Task dishes = new Task("1", "Dishes", "Dishes note", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
-        dishes.setUser(mainUser);
-        dishes.addTool(sponge);
-        Task sweep = new Task("2", "Sweep", "Sweep noooooooote", 1511880133, false, 1, 10, Task.TaskState.Created, mainUser);
-        sweep.setUser(thomas);
-        sweep.addTool(broom);
-        Task washCar = new Task("1", "Wash Car", "Wash Car note", 1511880133, false, 1, 5, Task.TaskState.Created, thomas);
-        washCar.addTool(bucket);
-        washCar.addTool(sponge);
-        Task shop = new Task("1", "Shop", "shop nooooote", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
-        shop.addTool(mop);
-        Task otherTask = new Task("1", "Other", "Other task note", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
-        otherTask.addTool(wrench);
-        Task outOfIdeas = new Task("1", "I'm out of ideas", "Other task note", 1511880133, false, 0.25, 5, Task.TaskState.Created, mainUser);
-        List<Task> tasks = new ArrayList<>();
-        tasks.add(dishes);
-        tasks.add(sweep);
-        tasks.add(washCar);
-        tasks.add(shop);
-        tasks.add(otherTask);
-        tasks.add(outOfIdeas);
-        family.activeTasks = tasks;
-
-        return family;
-    }*/
 }

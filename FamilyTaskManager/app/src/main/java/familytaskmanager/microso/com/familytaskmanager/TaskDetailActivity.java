@@ -96,15 +96,17 @@ public class TaskDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_changeTaskName:
-                Toast.makeText(this, "Can't chane yet, but should be easy", Toast.LENGTH_SHORT).show();
-                showDialogPart1();
+                if(currentUser.getIsParent()){
+                    showDialogPart1();
+                } else {
+                    Toast.makeText(this, "Sorry you can't modify a Task. Ask your parent.", Toast.LENGTH_LONG).show();
+                }
                 return true;
             case R.id.action_deletaTask:
                 actionOnTask = "delete";
                 areYouSure();
                 return true;
             case android.R.id.home:
-                System.out.println("Clicked home, xyz");
                 this.finish();
                 return true;
             default:
@@ -181,6 +183,14 @@ public class TaskDetailActivity extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
         dialogBuilder.setTitle("Task Info (1/2)");
 
+        //If the user is not parent, lock reward at 0 pts
+        if (!(currentUser.getIsParent())) {
+            dialogBuilder.setMessage("Since you're not Parent, reward is default 1.");
+            EditText rewardInput = (EditText) dialogView.findViewById(R.id.dialogRewardField);
+            rewardInput.setText("1");
+            rewardInput.setEnabled(false);
+        }
+
         //get buttons to set onClick
         final Button buttonConfirm = (Button) dialogView.findViewById(R.id.dialogConfirmAndNext);
         final Button buttonCancel = (Button) dialogView.findViewById(R.id.dialogCancel);
@@ -236,7 +246,8 @@ public class TaskDetailActivity extends AppCompatActivity {
 
                 boolean validDate = validateDate(year, month, day); //Validating date
                 if (!validDate && allGood) {
-                    Toast.makeText(getApplicationContext(), "Wrong Date input. Make sure to respect the number of days per month.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Wrong Date input. Make sure to respect the number " +
+                            "of days per month and that you choose future date.", Toast.LENGTH_LONG).show();
                     allGood = false;
                 }
 
@@ -313,10 +324,6 @@ public class TaskDetailActivity extends AppCompatActivity {
 
                 for (int i = 0; i < listView.getAdapter().getCount(); i++) {
                     if (checked.get(i)) {
-
-                        //TODO review strategie for adding tool
-                        // To add tool, we will add them to the tool object given in argument to onclick
-                        // and will update DB when going back to MainActivity (startActivityForResult).
                         boolean added = presentTask.addTool(familyToolList.get(i));
                     }
                 }
@@ -428,18 +435,21 @@ public class TaskDetailActivity extends AppCompatActivity {
             }
         }
 
+        //Need future date
+        Calendar presentCal = Calendar.getInstance();
+        long presentDate = presentCal.getTimeInMillis();
+        Calendar inputDateCal = Calendar.getInstance();
+        inputDateCal.set(year, month-1, day);
+        long wantedDate = inputDateCal.getTimeInMillis();
+        if(wantedDate < presentDate) {
+            valid = false;
+        }
+
         return valid;
 
     }
 
-    /**
-     * Helper method. Return int if points given is valid. Else, returns -1.
-     * TODO: Add description for arguments
-     * @param pts
-     * @return
-     */
     private int validateReward(String pts) {
-
         int output;
 
         try {
@@ -456,14 +466,6 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Helper method that updates all fields
-     * @param taskName
-     * @param taskTime
-     * @param taskReward
-     * @param taskNote
-     * @return
-     */
     private boolean checkAllFilled(String taskName, String taskTime, String taskReward, String taskNote) {
 
         boolean valid = true;
@@ -682,7 +684,6 @@ public class TaskDetailActivity extends AppCompatActivity {
                     }
                 })
                 .show();
-
     }
 
     @Override
@@ -706,5 +707,4 @@ public class TaskDetailActivity extends AppCompatActivity {
         setResult(MainActivity.TASK_ACTIVITY_REQ_CODE, returnIntent);
         super.finish();
     }
-
 }

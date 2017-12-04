@@ -1,7 +1,9 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
 
-public class ShoppingItem {
+import java.io.Serializable;
+
+public class ShoppingItem implements Serializable{
 
     //------------------------
     // ENUMERATIONS
@@ -18,6 +20,7 @@ public class ShoppingItem {
     private String name;
     private boolean needToBuy;
     private Category category;
+    private int quantity;
 
     //------------------------
     // CONSTRUCTOR
@@ -31,6 +34,14 @@ public class ShoppingItem {
         name = aName;
         needToBuy = aNeedToBuy;
         category = aCategory;
+    }
+
+    public ShoppingItem(String aId, String aName, boolean aNeedToBuy, Category aCategory, int aQuantity) {
+        id = aId;
+        name = aName;
+        needToBuy = aNeedToBuy;
+        category = aCategory;
+        quantity = aQuantity;
     }
 
     //------------------------
@@ -53,6 +64,7 @@ public class ShoppingItem {
 
     public boolean setQuantity(int aQuantity) {
         boolean wasSet = false;
+        quantity = aQuantity;
         wasSet = true;
         return wasSet;
     }
@@ -78,6 +90,8 @@ public class ShoppingItem {
     public String getName() {
         return name;
     }
+
+    public int getQuantity(){ return quantity; }
 
     public boolean getNeedToBuy() {
         return needToBuy;

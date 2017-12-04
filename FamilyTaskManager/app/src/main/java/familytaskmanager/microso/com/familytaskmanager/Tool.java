@@ -15,6 +15,7 @@ public class Tool implements Serializable {
     private int supply;
 
     //Tool Associations
+        // No associations needed.
 
     //------------------------
     // CONSTRUCTOR
@@ -66,14 +67,7 @@ public class Tool implements Serializable {
         return supply;
     }
 
-    /*public int getPictureID() {
-        return pictureID;
-    }*/
-
     public String toString() {
-        return super.toString() + "[" +
-                "id" + ":" + getId() + "," +
-                "name" + ":" + getName() + "," +
-                "supply" + ":" + getSupply() + "," + "]";
+        return name + " | " + supply;
     }
 }

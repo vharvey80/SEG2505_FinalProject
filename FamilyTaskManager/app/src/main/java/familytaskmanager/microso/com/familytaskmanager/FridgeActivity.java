@@ -1,9 +1,12 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,27 +15,33 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FridgeActivity extends AppCompatActivity {
 
-    private String itemString;
-    private String itemQuantity;
-    public ArrayList<Grocerie> fridge = new ArrayList<Grocerie>();
+    public List<ShoppingItem> fridge, addedItems;
+    public List<String> deletedItems;
+    private FridgeListAdapter fridgeAdapter;
+    private Intent returnedIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fridge);
 
+        returnedIntent = new Intent(getBaseContext(), MainActivity.class);
+
         ListView listView = (ListView) findViewById(R.id.list_groceries);
 
-        fridge.add(new Grocerie(1, "Tomatoes", 8));
-        fridge.add(new Grocerie(2, "Potatoes", 16));
-        fridge.add(new Grocerie(3, "Bread", 1));
 
-        FridgeListAdapter adapter = new FridgeListAdapter(this, fridge);
-        listView.setAdapter(adapter);
+        fridge = (List<ShoppingItem>) getIntent().getSerializableExtra("fridge");
+        addedItems = new ArrayList<ShoppingItem>();
+        deletedItems = new ArrayList<String>();
+
+        fridgeAdapter = new FridgeListAdapter(this, fridge);
+        listView.setAdapter(fridgeAdapter);
 
         FloatingActionButton add_grocerie = (FloatingActionButton) findViewById(R.id.grocerie_add_btn);
         add_grocerie.setOnClickListener(new View.OnClickListener() {
@@ -67,10 +76,11 @@ public class FridgeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if(!name_edit.getText().toString().isEmpty() && !supply_edit.getText().toString().isEmpty()) {
+                            ShoppingItem createdGrocery = new ShoppingItem("temp", name_edit.getText().toString(), false, ShoppingItem.Category.Grocerie, Integer.parseInt(supply_edit.getText().toString()));
+                            fridge.add(createdGrocery);
+                            addedItems.add(createdGrocery);
+                            fridgeAdapter.notifyDataSetChanged();
                             Toast.makeText(FridgeActivity.this, name_edit.getText() + " has been added to your fridge.", Toast.LENGTH_SHORT).show();
-                            /*tools.add(new Tool(5, name_edit.getText().toString(), Integer.parseInt(supply_edit.getText().toString())));
-                            finish();
-                            startActivity(getIntent());*/
                             dialog.dismiss();
                         } else {
                             Toast.makeText(FridgeActivity.this, "You need to fill both fields..", Toast.LENGTH_SHORT).show();
@@ -80,5 +90,63 @@ public class FridgeActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        returnedIntent.putExtra("addedItems", (Serializable) addedItems);
+        returnedIntent.putExtra("deletedItems", (Serializable) deletedItems);
+        setResult(3, returnedIntent);
+        super.finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean deleteItem(ShoppingItem d_item) {
+        areYouSure(d_item);
+        return true;
+    }
+
+    private void areYouSure(final ShoppingItem itemToDelete) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(FridgeActivity.this);
+        builder.setTitle("Are you sure you want to delete this item ? ");
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                fridge.remove(itemToDelete);
+                if (addedItems.size() <= 0) {
+                    deletedItems.add(itemToDelete.getId());
+                } else {
+                    boolean added = false;
+                    for (ShoppingItem t : addedItems) {
+                        if (t.getId().equals(itemToDelete.getId())) {
+                            added = true;
+                            break;
+                        }
+                    }
+                    if(added) {
+                        addedItems.remove(itemToDelete);
+                    } else {
+                        deletedItems.add(itemToDelete.getId());
+                    }
+                }
+                fridgeAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

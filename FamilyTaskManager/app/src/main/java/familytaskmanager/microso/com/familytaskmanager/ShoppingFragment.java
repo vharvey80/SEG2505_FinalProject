@@ -4,27 +4,17 @@ package familytaskmanager.microso.com.familytaskmanager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EdgeEffect;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,6 +116,7 @@ public class ShoppingFragment extends Fragment implements View.OnClickListener {
 
                 @Override
                 public void run() {
+                    Toast.makeText(getActivity(), "Item deleted", Toast.LENGTH_SHORT).show();
                     adapterTools.remove(aShoppingItem);
                 }
             }, 750);
@@ -134,6 +125,9 @@ public class ShoppingFragment extends Fragment implements View.OnClickListener {
 
                 @Override
                 public void run() {
+                    Toast.makeText(getActivity(), "Item added to fridge", Toast.LENGTH_SHORT).show();
+                    aShoppingItem.setQuantity(1);
+                    ((MainActivity) getActivity()).requestFridgeItemCreation(aShoppingItem);
                     adapterGrocery.remove(aShoppingItem);
                 }
             }, 750);
