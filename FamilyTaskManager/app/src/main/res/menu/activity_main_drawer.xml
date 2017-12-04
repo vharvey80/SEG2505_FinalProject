@@ -10,11 +10,11 @@
             android:id="@+id/nav_tasks"
             android:icon="@drawable/menu_tasks"
             android:title="Open Tasks" />
-        <!--<item
+        <item
             android:id="@+id/nav_schedule"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Schedule" />
-        <item
+        <!--<item
             android:id="@+id/nav_backlog"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Task Backlog" />-->
