@@ -185,6 +185,14 @@ public class TaskDetailActivity extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
         dialogBuilder.setTitle("Task Info (1/2)");
 
+        //If the user is not parent, lock reward at 0 pts
+        if (!(currentUser.getIsParent())) {
+            dialogBuilder.setMessage("Since you're not Parent, reward is default 1.");
+            EditText rewardInput = (EditText) dialogView.findViewById(R.id.dialogRewardField);
+            rewardInput.setText("1");
+            rewardInput.setEnabled(false);
+        }
+
         //get buttons to set onClick
         final Button buttonConfirm = (Button) dialogView.findViewById(R.id.dialogConfirmAndNext);
         final Button buttonCancel = (Button) dialogView.findViewById(R.id.dialogCancel);
@@ -240,7 +248,8 @@ public class TaskDetailActivity extends AppCompatActivity {
 
                 boolean validDate = validateDate(year, month, day); //Validating date
                 if (!validDate && allGood) {
-                    Toast.makeText(getApplicationContext(), "Wrong Date input. Make sure to respect the number of days per month.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Wrong Date input. Make sure to respect the number " +
+                            "of days per month and that you choose future date.", Toast.LENGTH_LONG).show();
                     allGood = false;
                 }
 
@@ -430,6 +439,16 @@ public class TaskDetailActivity extends AppCompatActivity {
             if (day > 30) {
                 valid = false;
             }
+        }
+
+        //Need future date
+        Calendar presentCal = Calendar.getInstance();
+        long presentDate = presentCal.getTimeInMillis();
+        Calendar inputDateCal = Calendar.getInstance();
+        inputDateCal.set(year, month-1, day);
+        long wantedDate = inputDateCal.getTimeInMillis();
+        if(wantedDate < presentDate) {
+            valid = false;
         }
 
         return valid;
