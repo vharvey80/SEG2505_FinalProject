@@ -1,5 +1,6 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
+import android.provider.ContactsContract;
 import android.view.SoundEffectConstants;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class Family {
     //Family Associations
     private List<Tool> tools;
     private List<User> users;
+    private List<ShoppingItem> fridge;
     private List<ShoppingItem> shoppingItems;
     private List<Task> activeTasks;
     private List<Task> inactiveTasks;
@@ -37,6 +39,7 @@ public class Family {
     private DatabaseReference activeTasksReference;
     private DatabaseReference inactiveTasksReference;
     private DatabaseReference currentUserReference;
+    private DatabaseReference fridgeReference;
 
     private User currentUser;
 
@@ -48,6 +51,7 @@ public class Family {
         id = aId;
         tools = new ArrayList<Tool>();
         users = new ArrayList<User>();
+        fridge = new ArrayList<ShoppingItem>();
         //this user will always be replaced
         currentUser = new User("0", "Default", "User", true, "menu_people", 0);
 
@@ -56,6 +60,7 @@ public class Family {
         inactiveTasks = new ArrayList<Task>();
 
         toolsReference = database.getReference("Tools");
+        fridgeReference = database.getReference("Fridge");
         usersReference = database.getReference("Users");
         shoppingItemsReference = database.getReference("ShoppingItems");
         activeTasksReference = database.getReference("ActiveTasks");
@@ -241,6 +246,10 @@ public class Family {
         return index;
     }
 
+    public List<ShoppingItem> getFridge() {
+        return fridge;
+    }
+
     public static int minimumNumberOfTools() {
         return 0;
     }
@@ -361,6 +370,40 @@ public class Family {
         users.addAll(verifiedUsers);
         wasSet = true;
         return wasSet;
+    }
+
+    public boolean addFridgeItem(ShoppingItem aFridgeItem) {
+        boolean wasAdded = false;
+        for (ShoppingItem s : fridge) {
+            if (s.getId().equals(aFridgeItem.getId())) { return false; }
+        }
+        /** DATABASE CODE **/
+        String fridge_id = fridgeReference.push().getKey();
+        aFridgeItem.setId(fridge_id);
+        fridgeReference.child(fridge_id).setValue(aFridgeItem);
+        /** END **/
+        fridge.add(aFridgeItem);
+        wasAdded = true;
+        return wasAdded;
+    }
+
+    // Modified for the database.
+    public boolean removeFridgeItem(String aFridgeItem) {
+        boolean wasRemoved = false;
+        ShoppingItem itemToRemove = null;
+        DatabaseReference fridge_del_ref; // temporary reference
+        for (ShoppingItem s : fridge) {
+            if (s.getId().equals(aFridgeItem)) {
+                /** DATABASE CODE **/
+                fridge_del_ref = fridgeReference.child(aFridgeItem); // get reference
+                fridge_del_ref.removeValue(); // delete the tool
+                /** END **/
+                wasRemoved = true;
+                itemToRemove = s;
+            }
+        }
+        if (itemToRemove != null) { fridge.remove(itemToRemove); } else { throw new IllegalArgumentException("Impossible de supprimer un item inexistant."); }
+        return wasRemoved;
     }
 
     public static int minimumNumberOfShoppingItems() {
@@ -548,6 +591,7 @@ public class Family {
     public void delete() {
         tools.clear();
         users.clear();
+        fridge.clear();
         shoppingItems.clear();
         activeTasks.clear();
     }
@@ -653,6 +697,30 @@ public class Family {
             }
         });
 
+        fridgeReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Clearing the list
+                fridge.clear();
+
+
+                // Iterating through all the nodes
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    // getting each tool
+                    ShoppingItem item = postSnapshot.getValue(ShoppingItem.class);
+
+                    // Add item gotten in the list
+                    fridge.add(item);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         shoppingItemsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -664,7 +732,7 @@ public class Family {
                     // getting each item
                     ShoppingItem shoppingItem = postSnapshot.getValue(ShoppingItem.class);
 
-                    // Add shopping getted in the list
+                    // Add shopping gotten in the list
                     shoppingItems.add(shoppingItem);
                 }
 
@@ -767,6 +835,20 @@ public class Family {
     public boolean requestToolDelete(String deletedTool) {
         try {
             this.removeTool(deletedTool);
+            return true;
+        } catch (Error e) { return false; }
+    }
+
+    public boolean requestFridgeItemCreation(ShoppingItem newShoppingItem) { // Method that allows us to add a new tool to the DB.
+        try {
+            this.addFridgeItem(newShoppingItem);
+            return true;
+        } catch (Error e) { return false; }
+    }
+
+    public boolean requestFridgeItemDelete(String deletedShoppingItem) {
+        try {
+            this.removeFridgeItem(deletedShoppingItem);
             return true;
         } catch (Error e) { return false; }
     }
