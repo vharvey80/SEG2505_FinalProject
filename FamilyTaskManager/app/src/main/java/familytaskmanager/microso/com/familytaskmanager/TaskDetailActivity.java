@@ -96,7 +96,6 @@ public class TaskDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_changeTaskName:
-                Toast.makeText(this, "Can't chane yet, but should be easy", Toast.LENGTH_SHORT).show();
                 if(currentUser.getIsParent()){
                     showDialogPart1();
                 } else {
@@ -108,7 +107,6 @@ public class TaskDetailActivity extends AppCompatActivity {
                 areYouSure();
                 return true;
             case android.R.id.home:
-                System.out.println("Clicked home, xyz");
                 this.finish();
                 return true;
             default:
@@ -326,10 +324,6 @@ public class TaskDetailActivity extends AppCompatActivity {
 
                 for (int i = 0; i < listView.getAdapter().getCount(); i++) {
                     if (checked.get(i)) {
-
-                        //TODO review strategie for adding tool
-                        // To add tool, we will add them to the tool object given in argument to onclick
-                        // and will update DB when going back to MainActivity (startActivityForResult).
                         boolean added = presentTask.addTool(familyToolList.get(i));
                     }
                 }
@@ -455,14 +449,7 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Helper method. Return int if points given is valid. Else, returns -1.
-     * TODO: Add description for arguments
-     * @param pts
-     * @return
-     */
     private int validateReward(String pts) {
-
         int output;
 
         try {
@@ -479,14 +466,6 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Helper method that updates all fields
-     * @param taskName
-     * @param taskTime
-     * @param taskReward
-     * @param taskNote
-     * @return
-     */
     private boolean checkAllFilled(String taskName, String taskTime, String taskReward, String taskNote) {
 
         boolean valid = true;
@@ -705,7 +684,6 @@ public class TaskDetailActivity extends AppCompatActivity {
                     }
                 })
                 .show();
-
     }
 
     @Override
@@ -729,5 +707,4 @@ public class TaskDetailActivity extends AppCompatActivity {
         setResult(MainActivity.TASK_ACTIVITY_REQ_CODE, returnIntent);
         super.finish();
     }
-
 }

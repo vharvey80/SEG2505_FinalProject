@@ -39,7 +39,6 @@ public class PeopleFragment extends Fragment {
 
         peopleListAdapter = new PeopleListAdapter(getActivity().getApplicationContext(), ((MainActivity)getActivity()).getFamilyPeopleList());
         for(User u : ((MainActivity)getActivity()).getFamilyPeopleList()) {
-            System.out.println("In PeopleFragment, printing user " + u);
         }
         listView.setAdapter(peopleListAdapter);
 
@@ -47,15 +46,12 @@ public class PeopleFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 
-                Toast.makeText(getActivity(), "You clicked a view", Toast.LENGTH_SHORT).show();
-
                 final User clickedUser = (User) parent.getItemAtPosition(position);
 
 
                 Intent intent = new Intent(getActivity().getApplicationContext(), UserActivity.class);
                 intent.putExtra("user", (Serializable) clickedUser);
                 startActivity(intent);
-
             }
         });
         //End of List view code
