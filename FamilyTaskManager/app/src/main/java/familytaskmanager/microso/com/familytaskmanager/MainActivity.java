@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity
     public ArrayList<User> users;
     public static final int TOOL_REQUEST_CODE = 1;
     public static final int TASK_ACTIVITY_REQ_CODE = 2;
+    public static final int FRIDGE_REQUEST_CODE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +201,8 @@ public class MainActivity extends AppCompatActivity
             vp_pages.setCurrentItem(2, true);
         } else if (id == R.id.nav_fridge) {
             Intent intent = new Intent(getApplicationContext(), FridgeActivity.class);
-            startActivity(intent);
+            intent.putExtra("fridge", (Serializable) getFamilyFridgeList());
+            startActivityForResult(intent, FRIDGE_REQUEST_CODE);
         } else if (id == R.id.nav_tools) {
             Intent intent = new Intent(getApplicationContext(), ToolActivity.class);
             intent.putExtra("tools", (Serializable) getFamilyToolList());
@@ -262,6 +264,21 @@ public class MainActivity extends AppCompatActivity
                     Toast.makeText(this, "This task has been "+ actionOnTask +".", Toast.LENGTH_SHORT).show();
                 }
             }
+        } else if (requestCode == FRIDGE_REQUEST_CODE) {
+            if (data.hasExtra("addedItems")) {
+                List<ShoppingItem> newItems = (List<ShoppingItem>) data.getSerializableExtra("addedItems");
+                for (ShoppingItem t : newItems) {
+                    if (requestFridgeItemCreation(t)) {
+                        Toast.makeText(this, t.getName() + " has been added to your fridge.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            if (data.hasExtra("deletedItems")) {
+                List<String> oldItems = (List<String>) data.getSerializableExtra("deletedItems");
+                for (String ID : oldItems) {
+                    requestFridgeItemDelete(ID);
+                }
+            }
         }
     }
 
@@ -280,6 +297,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public List<Tool> getFamilyToolList() { return family.getTools(); }
+
+    public List<ShoppingItem> getFamilyFridgeList() { return family.getFridge(); }
 
     public List<User> getFamilyUserList() { return family.getUsers(); }
 
@@ -351,6 +370,8 @@ public class MainActivity extends AppCompatActivity
     }
     public boolean requestToolCreation(Tool newTool) { return family.requestToolCreation(newTool); }
     public boolean requestToolDeletion(String oldTool) { return family.requestToolDelete(oldTool); }
+    public boolean requestFridgeItemCreation(ShoppingItem newItem) { return family.requestFridgeItemCreation(newItem); }
+    public boolean requestFridgeItemDelete(String oldItem) { return family.requestFridgeItemDelete(oldItem); }
 
     public boolean requestTaskDeletion(String oldTask, boolean completed) { return family.requestTaskDelete(oldTask, completed); }
 
