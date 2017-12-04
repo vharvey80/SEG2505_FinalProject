@@ -64,6 +64,7 @@ public class ShoppingItem implements Serializable{
 
     public boolean setQuantity(int aQuantity) {
         boolean wasSet = false;
+        quantity = aQuantity;
         wasSet = true;
         return wasSet;
     }
