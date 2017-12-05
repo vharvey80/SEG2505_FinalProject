@@ -31,6 +31,8 @@ public class ToolActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tool);
 
+        getSupportActionBar().setTitle("Tool management");
+
         returnedIntent = new Intent(getBaseContext(), MainActivity.class);
 
         ListView listView = (ListView) findViewById(R.id.list_tools);

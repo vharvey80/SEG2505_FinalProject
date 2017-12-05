@@ -26,7 +26,8 @@
             android:name=".UserModifyActivity"
             android:parentActivityName=".UserActivity" />
         <activity
-            android:name=".TaskDetailActivity"/>
+            android:name=".TaskDetailActivity"
+            android:parentActivityName=".MainActivity"/>
 
         <activity
             android:name=".CalendarActivity"

@@ -150,8 +150,7 @@ public class UserModifyActivity extends AppCompatActivity {
             }
         });
     }
-
-
+    
     /**
      * Method activated on Submit button press, returns the newly edited
      * values back to the class that called the intent, UserActivity

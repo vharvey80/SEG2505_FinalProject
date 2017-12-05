@@ -39,6 +39,7 @@ public class User implements Serializable {
         accumulatedPts = aAccumulatedPts;
         assignedTo = new ArrayList<Task>();
         tasks = new ArrayList<Task>();
+        password = "1234";
     }
 
     //------------------------
@@ -101,10 +102,9 @@ public class User implements Serializable {
         return removed;
     }
 
-    //TODO return actual password
     public String getPassword() {
-        return "1234";
-    } //TODO PASSWORD
+        return this.password;
+    }
 
     public void setPassword(String pass) {
         password = pass;

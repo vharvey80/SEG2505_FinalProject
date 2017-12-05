@@ -2,6 +2,7 @@ package familytaskmanager.microso.com.familytaskmanager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -117,17 +118,22 @@ public class UserChangeAdapter extends ArrayAdapter<User> {
             @Override
             public void onClick(View v) {
                 //if password is correct, call change user
-                int num1 = pin1.getValue();
-                int num2 = pin2.getValue();
-                int num3 = pin3.getValue();
-                int num4 = pin4.getValue();
-                String password = ""+num1+num2+num3+num4;
+                String num1 = Integer.toString(pin1.getValue());
+                String num2 = Integer.toString(pin2.getValue());
+                String num3 = Integer.toString(pin3.getValue());
+                String num4 = Integer.toString(pin4.getValue());
+                StringBuilder passBuilder = new StringBuilder();
+                passBuilder.append(num1);
+                passBuilder.append(num2);
+                passBuilder.append(num3);
+                passBuilder.append(num4);
+                String password = passBuilder.toString();
 
                 if(password.equals(selected_user.getPassword())) {
                     changeUser(position);
                     dialog.dismiss();
                 } else {
-                    Toast.makeText(activity, "Wrong Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Wrong password, you've entered : " + password, Toast.LENGTH_SHORT).show();
                 }
             }
         });

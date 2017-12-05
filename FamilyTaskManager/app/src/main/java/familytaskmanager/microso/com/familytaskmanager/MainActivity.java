@@ -187,7 +187,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) { // doesn't detect the return of my tool Activity TODO
         super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(this, "HELLO ?" + requestCode, Toast.LENGTH_SHORT).show();
         //TODO a switch statement might be better
         if (requestCode == TOOL_REQUEST_CODE) {
             if (data.hasExtra("addedTools")) { // for my specific tool treatment.
@@ -247,7 +246,6 @@ public class MainActivity extends AppCompatActivity
         } else if (requestCode == USER_REQUEST_CODE) {
             if (data.hasExtra("user")) {
                 User userChange = (User) data.getSerializableExtra("user");
-                Toast.makeText(this, userChange.getFname() + " " + userChange.getLname(), Toast.LENGTH_SHORT).show();
                 family.updateUser(userChange);
             }
         }
