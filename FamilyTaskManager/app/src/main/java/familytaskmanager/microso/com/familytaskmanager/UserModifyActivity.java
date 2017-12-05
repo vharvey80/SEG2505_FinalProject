@@ -30,9 +30,10 @@ public class UserModifyActivity extends AppCompatActivity {
     private User selectedUser;
     // Intent used to return the user object via the finish() method
     // Globally store imageId to return at end
-    private int imageId;
+    private int imageId, requestCode;
     private String resourceName;
     private EditText editFname, editLname;
+    private int resultCode;
 
 
     /**
@@ -43,43 +44,39 @@ public class UserModifyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_modify);
 
-        // Create object to accesss display statistics
-        Display d = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        // TODO: 03/12/17 Oliver: Use this to set sizes
-
         // Extract user from intent that created this instance as selectedUser
         Intent intent = getIntent();
-        selectedUser = (User) intent.getSerializableExtra("user");
+        requestCode = (int) intent.getSerializableExtra("requestCode");
 
-        // Set title of page as user's
-        String s = selectedUser.getFname() + " " + selectedUser.getLname();
-        setTitle(s);
-
-        // Grab the user's current image and set it to the ImageView
         final ImageView userIcon = (ImageView) findViewById(R.id.userIcon);
-        imageId = getResources().getIdentifier(selectedUser.getProfilePicResourceName(), "drawable", getPackageName());
-        userIcon.setImageResource(imageId);
-
-        // Populate the test next to the user image in the page. This should stay constant as the old
-        // value to give the user some context.
         final TextView userName = (TextView) findViewById(R.id.userName);
-        userName.setText(s);
-
-        // Label the text view "First name:" next to the edit text field
         final TextView title_edit_first_name = (TextView) findViewById(R.id.title_edit_first_name);
         title_edit_first_name.setText("First name");
-
-        // Pre-populate the field with the user's current first name
-        editFname = (EditText) findViewById(R.id.edit_first_name);
-        editFname.setText(selectedUser.getFname(), TextView.BufferType.EDITABLE);
-
-        // Label the text view "Last name:" next to the edit text field
         final TextView title_edit_last_name = (TextView) findViewById(R.id.title_edit_last_name);
         title_edit_last_name.setText("Last name");
-
-        // Pre-populate the field with the user's current first name
+        editFname = (EditText) findViewById(R.id.edit_first_name);
         editLname = (EditText) findViewById(R.id.edit_last_name);
-        editLname.setText(selectedUser.getLname(), TextView.BufferType.EDITABLE);
+
+        if (requestCode == 1) {
+            selectedUser = (User) intent.getSerializableExtra("user");
+            String s = selectedUser.getFname() + " " + selectedUser.getLname();
+            setTitle(s);
+            userName.setText(s);
+            imageId = getResources().getIdentifier(selectedUser.getProfilePicResourceName(), "drawable", getPackageName());
+            userIcon.setImageResource(imageId);
+            editFname.setText(selectedUser.getFname(), TextView.BufferType.EDITABLE);
+            editLname.setText(selectedUser.getLname(), TextView.BufferType.EDITABLE);
+        }
+        if (requestCode == 0) {
+            selectedUser = new User();
+            String s = "New user";
+            setTitle(s);
+            userName.setText(s);
+            imageId = R.drawable.man1;
+            userIcon.setImageResource(imageId);
+            editFname.setText("", TextView.BufferType.EDITABLE);
+            editLname.setText("", TextView.BufferType.EDITABLE);
+        }
 
 
         //****START IMAGE BUTTONS****//
@@ -92,7 +89,6 @@ public class UserModifyActivity extends AppCompatActivity {
                Resources resources = getResources();
                imageId = resources.getIdentifier(resourceName,"drawable", "familytaskmanager.microso.com.familytaskmanager");
                userIcon.setImageResource(imageId);
-               selectedUser.setProfilePicResourceName(resourceName);
             }
         };
 
@@ -146,6 +142,7 @@ public class UserModifyActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                resultCode = 1;
                 finish();
             }
         });
@@ -157,19 +154,16 @@ public class UserModifyActivity extends AppCompatActivity {
      */
     @Override
     public void finish() {
-        //if (!selectedUser.getFname().equals(editFname.getText().toString())) {
-            selectedUser.setFname(editFname.getText().toString());
-        //}
-        //if (!selectedUser.getLname().equals(editLname.getText().toString())) {
-            selectedUser.setLname(editLname.getText().toString());
-        //}
+        selectedUser.setFname(editFname.getText().toString());
+        selectedUser.setLname(editLname.getText().toString());
+        selectedUser.setProfilePicResourceName(resourceName);
 
         Intent returnedIntent = new Intent();
         // Load the user object into the returnedIntent
         returnedIntent.putExtra("user", selectedUser);
 
         // Return required result code to parent
-        setResult(1, returnedIntent);
+        setResult(resultCode, returnedIntent);
 
         super.finish();
     }
@@ -178,6 +172,7 @@ public class UserModifyActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                resultCode = 0;
                 finish();
                 return true;
         }
