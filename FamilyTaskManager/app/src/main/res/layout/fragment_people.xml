@@ -1,20 +1,46 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="familytaskmanager.microso.com.familytaskmanager.PeopleFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/peopleListView"
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addUserFAB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="32dp"
+            android:clickable="true"
+            android:scaleType="center"
+            app:backgroundTint="@color/colorPrimaryBlue"
+            app:borderWidth="6dp"
+            app:elevation="5dp"
+            app:fabSize="normal"
+            app:rippleColor="@color/cardview_dark_background"
+            app:srcCompat="@drawable/tooladd"
+            tools:layout_editor_absoluteX="312dp"
+            tools:layout_editor_absoluteY="430dp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="15dp" />
-    </LinearLayout>
+            android:layout_marginTop="100dp"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/peopleListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </FrameLayout>

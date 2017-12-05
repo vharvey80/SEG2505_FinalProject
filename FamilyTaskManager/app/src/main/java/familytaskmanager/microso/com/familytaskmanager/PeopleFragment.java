@@ -2,6 +2,7 @@ package familytaskmanager.microso.com.familytaskmanager;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,17 @@ public class PeopleFragment extends Fragment {
         //List view code
         ListView listView = (ListView) view.findViewById(R.id.peopleListView);
 
+        // Get floating action button from view
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.addUserFAB);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                taskFabClicked();
+            }
+        });
+
+
+
         peopleListAdapter = new PeopleListAdapter(getActivity().getApplicationContext(), ((MainActivity)getActivity()).getFamilyPeopleList());
         for(User u : ((MainActivity)getActivity()).getFamilyPeopleList()) {
         }
@@ -57,6 +69,15 @@ public class PeopleFragment extends Fragment {
         //End of List view code
 
         return view;
+    }
+
+    /**
+     * Method to open create new User activity on floating action button click
+     */
+    public void taskFabClicked() {
+        Toast.makeText(getActivity(), "User FAB clicked", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity().getApplication().getApplicationContext(), UserActivity.class);
+        startActivity(intent);
     }
 
 }
