@@ -122,12 +122,17 @@ public class ToolActivity extends AppCompatActivity {
             if (addedTools.size() <= 0) {
                 deletedTools.add(toolToDelete.getId());
             } else {
+                boolean added = false;
                 for (Tool t : addedTools) {
-                    if (!t.getId().equals(toolToDelete.getId())) {
-                        deletedTools.add(toolToDelete.getId());
-                    } else {
-                        addedTools.remove(toolToDelete);
+                    if (t.getId().equals(toolToDelete.getId())) {
+                        added = true;
+                        break;
                     }
+                }
+                if(added) {
+                    addedTools.remove(toolToDelete);
+                } else {
+                    deletedTools.add(toolToDelete.getId());
                 }
             }
             toolListAdapter.notifyDataSetChanged();

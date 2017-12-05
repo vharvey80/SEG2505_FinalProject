@@ -34,6 +34,6 @@ Priority List for functionnality:
 
 ---------BONUS----------
 
-- [ ] Authentification of users (+8%)
+- [x] Authentification of users (+8%)
 
-- [ ] Can see all tasks on a calendar (+8%)
+- [x] Can see all tasks on a calendar (+8%)
