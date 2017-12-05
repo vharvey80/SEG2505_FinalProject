@@ -63,7 +63,7 @@ public class PeopleFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity().getApplicationContext(), UserActivity.class);
                 intent.putExtra("user", (Serializable) clickedUser);
-                startActivity(intent);
+                getActivity().startActivityForResult(intent, MainActivity.USER_REQUEST_CODE);
             }
         });
         //End of List view code
@@ -76,8 +76,8 @@ public class PeopleFragment extends Fragment {
      */
     public void taskFabClicked() {
         Toast.makeText(getActivity(), "User FAB clicked", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getActivity().getApplication().getApplicationContext(), UserActivity.class);
-        startActivity(intent);
+        /*Intent intent = new Intent(getActivity().getApplication().getApplicationContext(), UserActivity.class);
+        startActivity(intent);*/
     }
 
 }

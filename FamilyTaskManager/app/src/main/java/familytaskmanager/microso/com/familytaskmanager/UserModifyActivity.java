@@ -2,11 +2,13 @@ package familytaskmanager.microso.com.familytaskmanager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.NoSuchPropertyException;
 import android.view.Display;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -15,6 +17,7 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 
@@ -86,54 +89,56 @@ public class UserModifyActivity extends AppCompatActivity {
            public void onClick(View v) {
                ImageButton ib = (ImageButton) findViewById(v.getId());
                resourceName = (String) ib.getTag();
-               imageId = getResources().getIdentifier(resourceName ,"drawable", getPackageName());
+               Resources resources = getResources();
+               imageId = resources.getIdentifier(resourceName,"drawable", "familytaskmanager.microso.com.familytaskmanager");
                userIcon.setImageResource(imageId);
+               selectedUser.setProfilePicResourceName(resourceName);
             }
         };
 
         // Initialise ImageButton man1
         final ImageButton man1 = (ImageButton) findViewById(R.id.select_man1);
-        man1.setTag("R.drawable.man1");
+        man1.setTag("man1");
         man1.setOnClickListener(iconClickHandler);
 
         // Initialise ImageButton man2
         final ImageButton man2 = (ImageButton) findViewById(R.id.select_man2);
-        man2.setTag("R.drawable.man2");
+        man2.setTag("man2");
         man2.setOnClickListener(iconClickHandler);
 
         // Initialise ImageButton man3
         final ImageButton man3 = (ImageButton) findViewById(R.id.select_man3);
-        man3.setTag("R.drawable.man3");
+        man3.setTag("man3");
         man3.setOnClickListener(iconClickHandler);
 
         // Initialise ImageButton man4
         final ImageButton man4 = (ImageButton) findViewById(R.id.select_man4);
-        man4.setTag("R.drawable.man4");
+        man4.setTag("man4");
         man4.setOnClickListener(iconClickHandler);
 
         // Initialise ImageButton man5
         final ImageButton man5 = (ImageButton) findViewById(R.id.select_man5);
-        man5.setTag("R.drawable.man5");
+        man5.setTag("man5");
         man5.setOnClickListener(iconClickHandler);
 
         // Initialise ImageButton woman1
         final ImageButton woman1 = (ImageButton) findViewById(R.id.select_woman1);
-        woman1.setTag("R.drawable.woman1");
+        woman1.setTag("woman1");
         woman1.setOnClickListener(iconClickHandler);
 
         // Initialise ImageButton woman2
         final ImageButton woman2 = (ImageButton) findViewById(R.id.select_woman2);
-        woman2.setTag("R.drawable.woman2");
+        woman2.setTag("woman2");
         woman2.setOnClickListener(iconClickHandler);
 
         // Initialise ImageButton woman3
         final ImageButton woman3 = (ImageButton) findViewById(R.id.select_woman3);
-        woman3.setTag("R.drawable.woman3");
+        woman3.setTag("woman3");
         woman3.setOnClickListener(iconClickHandler);
 
         // Initialise ImageButton woman4
         final ImageButton woman4 = (ImageButton) findViewById(R.id.select_woman4);
-        woman4.setTag("R.drawable.woman4");
+        woman4.setTag("woman4");
         woman4.setOnClickListener(iconClickHandler);
         //****END IMAGE BUTTONS****//
 
@@ -160,7 +165,7 @@ public class UserModifyActivity extends AppCompatActivity {
             selectedUser.setLname(editLname.getText().toString());
         //}
 
-        Intent returnedIntent = new Intent(getApplicationContext(), UserActivity.class);
+        Intent returnedIntent = new Intent();
         // Load the user object into the returnedIntent
         returnedIntent.putExtra("user", selectedUser);
 
@@ -168,5 +173,15 @@ public class UserModifyActivity extends AppCompatActivity {
         setResult(1, returnedIntent);
 
         super.finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

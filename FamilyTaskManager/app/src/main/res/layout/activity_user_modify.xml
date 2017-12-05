@@ -109,6 +109,7 @@
                 android:id="@+id/grid_pictures"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:columnCount="3"
                 android:rowCount="3">
 

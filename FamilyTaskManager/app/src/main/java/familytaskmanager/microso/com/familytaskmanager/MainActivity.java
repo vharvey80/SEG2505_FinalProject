@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     public static final int TOOL_REQUEST_CODE = 1;
     public static final int TASK_ACTIVITY_REQ_CODE = 2;
     public static final int FRIDGE_REQUEST_CODE = 3;
+    public static final int USER_REQUEST_CODE = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,6 +187,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) { // doesn't detect the return of my tool Activity TODO
         super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(this, "HELLO ?" + requestCode, Toast.LENGTH_SHORT).show();
         //TODO a switch statement might be better
         if (requestCode == TOOL_REQUEST_CODE) {
             if (data.hasExtra("addedTools")) { // for my specific tool treatment.
@@ -241,6 +243,12 @@ public class MainActivity extends AppCompatActivity
                 for (String ID : oldItems) {
                     requestFridgeItemDelete(ID);
                 }
+            }
+        } else if (requestCode == USER_REQUEST_CODE) {
+            if (data.hasExtra("user")) {
+                User userChange = (User) data.getSerializableExtra("user");
+                Toast.makeText(this, userChange.getFname() + " " + userChange.getLname(), Toast.LENGTH_SHORT).show();
+                family.updateUser(userChange);
             }
         }
     }

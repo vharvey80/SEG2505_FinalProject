@@ -75,6 +75,9 @@ public class UserActivity extends AppCompatActivity {
 
     @Override
     public void finish() {
+        Intent returnedIntent = new Intent();
+        returnedIntent.putExtra("user", selectedUser);
+        setResult(4, returnedIntent);
         super.finish();
     }
 
@@ -110,6 +113,9 @@ public class UserActivity extends AppCompatActivity {
                 return true;
             case R.id.action_deletaTask: // Delete user
                 Toast.makeText(this, "Can't delete yet, might get complicated", Toast.LENGTH_SHORT).show();
+            case android.R.id.home:
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item); //Simply copied this line from official Android Tutorials
         }
@@ -119,7 +125,6 @@ public class UserActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == 1) {
             selectedUser = (User) data.getSerializableExtra("user");
-
             setUserInfoInView();
         }
     }

@@ -104,7 +104,7 @@ public class User implements Serializable {
     //TODO return actual password
     public String getPassword() {
         return "1234";
-    }
+    } //TODO PASSWORD
 
     public void setPassword(String pass) {
         password = pass;
