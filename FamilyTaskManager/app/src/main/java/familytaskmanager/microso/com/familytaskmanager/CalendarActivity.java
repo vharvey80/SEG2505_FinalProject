@@ -1,18 +1,14 @@
 package familytaskmanager.microso.com.familytaskmanager;
 
-        import android.support.annotation.NonNull;
-        import android.support.v7.app.AppCompatActivity;
-        import android.os.Bundle;
-        import android.text.format.DateUtils;
-        import android.widget.CalendarView;
-        import android.widget.ListView;
-        import android.widget.Toast;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.CalendarView;
+import android.widget.ListView;
 
-        import java.text.SimpleDateFormat;
-        import java.util.ArrayList;
-        import java.util.Calendar;
-        import java.util.Date;
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class CalendarActivity extends AppCompatActivity {
 
@@ -41,24 +37,39 @@ public class CalendarActivity extends AppCompatActivity {
         adapter = new CalendarListAdapter(this, visibleTasks);
         listView.setAdapter(adapter);
 
+        //Creating a new listener for when the user changes day.
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
                 visibleTasks.clear();
 
+                //For all of the active tasks, check if they are on the date selected and add them
+                //in the list showed.
                 for(Task t : tasks) {
                     if(sameDay(year, month, day, t.getDueDate())) {
                         visibleTasks.add(t);
                     }
                 }
+
                 adapter.notifyDataSetChanged();
             }
         });
     }
 
+    /**Helper function that returns if two dates are on the same day.
+     *
+     *@param year year of the first date to compare
+     *@param month month of the first date to compare
+     *@param day day of the first date to compare
+     *@param date2 Date 2 to compare in Epoch Unix format
+     *
+     *@return Return true if the two dates are on the same day
+     */
     public static boolean sameDay(int year, int month, int day, long date2) {
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
+
+        //Storing the two dates in a calendar instance to compare them.
         cal1.set(year, month, day);
         cal2.setTimeInMillis(date2);
 

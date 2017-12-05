@@ -45,6 +45,8 @@ public class FridgeActivity extends AppCompatActivity {
         fridgeAdapter = new FridgeListAdapter(this, fridge);
         listView.setAdapter(fridgeAdapter);
 
+
+        //Setting the listener on the add grocery button.
         FloatingActionButton add_grocerie = (FloatingActionButton) findViewById(R.id.grocerie_add_btn);
         add_grocerie.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +62,6 @@ public class FridgeActivity extends AppCompatActivity {
                 final EditText supply_edit = (EditText) mView.findViewById(R.id.tool_supply);
                 supply_edit.setHint("Quantity"); // personalize the hint in the edittext
                 final ImageView image = (ImageView) mView.findViewById(R.id.add_pic);
-                //image.setImageResource(R.drawable.foodadd); // personalize the picture at the top
                 final TextView add_title = (TextView) mView.findViewById(R.id.add_title);
                 add_title.setText("ADD GROCERIE MANAGER"); // personalize the title of your dialog
                 /* END OF PERSONALIZATION */
@@ -94,6 +95,10 @@ public class FridgeActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Overides the function that gets called when the activity gets closed, returns the added/
+     * deleted items as an intent to the MainActivity for further processing in the DB.
+     */
     @Override
     public void finish() {
         returnedIntent.putExtra("addedItems", (Serializable) addedItems);
@@ -117,6 +122,11 @@ public class FridgeActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Simple function asking the user if he really wants to delete the item.
+     *
+     * @param itemToDelete Reference to the item that needs to be deleted.
+     */
     private void areYouSure(final ShoppingItem itemToDelete) {
         AlertDialog.Builder builder = new AlertDialog.Builder(FridgeActivity.this);
         builder.setTitle("Are you sure you want to delete this item ? ");

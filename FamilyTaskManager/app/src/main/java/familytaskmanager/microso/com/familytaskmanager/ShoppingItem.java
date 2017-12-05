@@ -101,10 +101,6 @@ public class ShoppingItem implements Serializable{
         return category;
     }
 
-//    public boolean isNeedToBuy() {
-//        return needToBuy;
-//    }
-
     public void delete() {
     }
 
