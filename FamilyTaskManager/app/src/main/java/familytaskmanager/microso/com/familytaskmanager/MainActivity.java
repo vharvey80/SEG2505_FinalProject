@@ -162,6 +162,10 @@ public class MainActivity extends AppCompatActivity
             vp_pages.setCurrentItem(1, true);
         } else if (id == R.id.nav_people) {
             vp_pages.setCurrentItem(2, true);
+        } else if (id == R.id.nav_schedule) {
+            Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
+            intent.putExtra("tasks", (Serializable) getFamilyActiveTaskList());
+            startActivity(intent);
         } else if (id == R.id.nav_fridge) {
             Intent intent = new Intent(getApplicationContext(), FridgeActivity.class);
             intent.putExtra("fridge", (Serializable) getFamilyFridgeList());

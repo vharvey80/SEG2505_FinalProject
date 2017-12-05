@@ -26,15 +26,22 @@
             android:name=".UserModifyActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".TaskDetailActivity"
+            android:name=".TaskDetailActivity"/>
+
+        <activity
+            android:name=".CalendarActivity"
+
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".FridgeActivity"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ToolActivity"
-            android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".UserAddActivity"></activity>
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".UserAddActivity"
+            android:parentActivityName=".MainActivity"/>
+
     </application>
 
 </manifest>

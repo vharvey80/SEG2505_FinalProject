@@ -28,7 +28,7 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        // Get the Intent that started this activity and extract the string
+        // Get the Intent that started this activity and extract the user
         Intent intent = getIntent();
         selectedUser = (User) intent.getSerializableExtra("user");
 
@@ -43,16 +43,27 @@ public class UserActivity extends AppCompatActivity {
         }
 
         //Get the views from the layout
-        TextView userName = (TextView) findViewById(R.id.userName);
         TextView rewardValue = (TextView) findViewById(R.id.rewardValue);
-        ImageView userIcon = (ImageView) findViewById(R.id.userIcon);
 
 
         //Set user info into the views
+        String s = selectedUser.getAccumulatedPts() + " pts";
+        rewardValue.setText(s);
+
+        setUserInfoInView();
+
+        //Set tasks list view
+        ListView listView = (ListView) findViewById(R.id.currentTasksListView);
+        TaskListAdapter taskListAdapter = new TaskListAdapter(this.getApplicationContext(), taskList, null, this);
+        listView.setAdapter(taskListAdapter);
+    }
+
+    public void setUserInfoInView() {
+        TextView userName = (TextView) findViewById(R.id.userName);
         String s = selectedUser.getFname() + " " + selectedUser.getLname();
         userName.setText(s);
-        s = selectedUser.getAccumulatedPts() + " pts";
-        rewardValue.setText(s);
+
+        ImageView userIcon = (ImageView) findViewById(R.id.userIcon);
         //Getting profile pic
         String resourceName = selectedUser.getProfilePicResourceName();
         Resources resources = getResources();
@@ -60,10 +71,6 @@ public class UserActivity extends AppCompatActivity {
         userIcon.setImageResource(resourceId);
         //end of getting picture
 
-        //Set tasks list view
-        ListView listView = (ListView) findViewById(R.id.currentTasksListView);
-        TaskListAdapter taskListAdapter = new TaskListAdapter(this.getApplicationContext(), taskList, null, this);
-        listView.setAdapter(taskListAdapter);
     }
 
     @Override
@@ -98,13 +105,22 @@ public class UserActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_changeTaskName: // Actually change user
                 Intent intent = new Intent(getApplicationContext(), UserModifyActivity.class);
-                intent.putExtra("user", (Serializable) selectedUser);
-                startActivity(intent);
+                intent.putExtra("user", selectedUser);
+                startActivityForResult(intent, 1);
                 return true;
             case R.id.action_deletaTask: // Delete user
                 Toast.makeText(this, "Can't delete yet, might get complicated", Toast.LENGTH_SHORT).show();
             default:
                 return super.onOptionsItemSelected(item); //Simply copied this line from official Android Tutorials
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == 1) {
+            selectedUser = (User) data.getSerializableExtra("user");
+
+            setUserInfoInView();
         }
     }
 }
