@@ -364,7 +364,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         calendar.setTime(new Date(presentTask.getDueDate()));
 
         yearPicker.setValue(calendar.get(Calendar.YEAR));
-        monthPicker.setValue(calendar.get(Calendar.MONTH));
+        monthPicker.setValue(calendar.get(Calendar.MONTH)+1);
         dayPicker.setValue(calendar.get(Calendar.DAY_OF_MONTH));
 
         taskPoints.setText(Integer.toString(presentTask.getRewardPts()));
