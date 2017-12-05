@@ -31,6 +31,8 @@ public class FridgeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fridge);
 
+        getSupportActionBar().setTitle("Fridge management");
+
         returnedIntent = new Intent(getBaseContext(), MainActivity.class);
 
         ListView listView = (ListView) findViewById(R.id.list_groceries);

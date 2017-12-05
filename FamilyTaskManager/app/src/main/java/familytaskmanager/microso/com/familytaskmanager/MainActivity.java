@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     public static final int TOOL_REQUEST_CODE = 1;
     public static final int TASK_ACTIVITY_REQ_CODE = 2;
     public static final int FRIDGE_REQUEST_CODE = 3;
+    public static final int USER_REQUEST_CODE = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,6 +242,11 @@ public class MainActivity extends AppCompatActivity
                 for (String ID : oldItems) {
                     requestFridgeItemDelete(ID);
                 }
+            }
+        } else if (requestCode == USER_REQUEST_CODE) {
+            if (data.hasExtra("user")) {
+                User userChange = (User) data.getSerializableExtra("user");
+                family.updateUser(userChange);
             }
         }
     }
