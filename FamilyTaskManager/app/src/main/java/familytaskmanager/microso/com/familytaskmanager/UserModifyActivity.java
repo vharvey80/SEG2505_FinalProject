@@ -30,10 +30,9 @@ public class UserModifyActivity extends AppCompatActivity {
     private User selectedUser;
     // Intent used to return the user object via the finish() method
     // Globally store imageId to return at end
-    private int imageId, requestCode;
+    private int imageId, requestCode, resultCode;
     private String resourceName;
     private EditText editFname, editLname;
-    private int resultCode;
 
 
     /**
@@ -54,6 +53,7 @@ public class UserModifyActivity extends AppCompatActivity {
         title_edit_first_name.setText("First name");
         final TextView title_edit_last_name = (TextView) findViewById(R.id.title_edit_last_name);
         title_edit_last_name.setText("Last name");
+        final TextView title_modify_user = (TextView) findViewById(R.id.title_modify_user);
         editFname = (EditText) findViewById(R.id.edit_first_name);
         editLname = (EditText) findViewById(R.id.edit_last_name);
 
@@ -62,15 +62,17 @@ public class UserModifyActivity extends AppCompatActivity {
             String s = selectedUser.getFname() + " " + selectedUser.getLname();
             setTitle(s);
             userName.setText(s);
+            title_modify_user.setText("Modifying user");
             imageId = getResources().getIdentifier(selectedUser.getProfilePicResourceName(), "drawable", getPackageName());
             userIcon.setImageResource(imageId);
             editFname.setText(selectedUser.getFname(), TextView.BufferType.EDITABLE);
             editLname.setText(selectedUser.getLname(), TextView.BufferType.EDITABLE);
         }
-        if (requestCode == 0) {
+        if (requestCode == 4) {
             selectedUser = new User();
             String s = "New user";
             setTitle(s);
+            title_modify_user.setText("Creating user");
             userName.setText(s);
             imageId = R.drawable.man1;
             userIcon.setImageResource(imageId);
@@ -143,6 +145,17 @@ public class UserModifyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 resultCode = 1;
+                if (requestCode == 4) {
+                    resultCode = 2;
+                }
+                finish();
+            }
+        });
+        final Button cancel = (Button) findViewById(R.id.cancelChangedUser);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resultCode = 0;
                 finish();
             }
         });
