@@ -245,18 +245,8 @@ public class MainActivity extends AppCompatActivity
             }
         } else if (requestCode == USER_REQUEST_CODE) {
             if (data.hasExtra("user")) {
-                Toast.makeText(getApplicationContext(), "I activated 1"+resultCode, Toast.LENGTH_LONG).show();
                 User userChange = (User) data.getSerializableExtra("user");
                 family.updateUser(userChange);
-                /**
-                if (resultCode == 0) {
-                    Toast.makeText(getApplicationContext(), "I activated zero", Toast.LENGTH_LONG).show();
-                }
-                if (resultCode == 2) {
-                    Toast.makeText(getApplicationContext(), "I activated 2", Toast.LENGTH_LONG).show();
-                    User newUser = (User) data.getSerializableExtra("user");
-                    family.addUser(newUser);
-                }*/
             }
         }
     }
