@@ -3,6 +3,8 @@ package familytaskmanager.microso.com.familytaskmanager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -30,9 +33,10 @@ public class UserModifyActivity extends AppCompatActivity {
     private User selectedUser;
     // Intent used to return the user object via the finish() method
     // Globally store imageId to return at end
-    private int imageId;
+    private int imageId, requestCode, resultCode;
     private String resourceName;
-    private EditText editFname, editLname;
+    private EditText editFname, editLname, password;
+    private CheckBox is_parent_check;
 
 
     /**
@@ -43,43 +47,48 @@ public class UserModifyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_modify);
 
-        // Create object to accesss display statistics
-        Display d = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        // TODO: 03/12/17 Oliver: Use this to set sizes
-
         // Extract user from intent that created this instance as selectedUser
         Intent intent = getIntent();
-        selectedUser = (User) intent.getSerializableExtra("user");
+        requestCode = (int) intent.getSerializableExtra("requestCode");
 
-        // Set title of page as user's
-        String s = selectedUser.getFname() + " " + selectedUser.getLname();
-        setTitle(s);
-
-        // Grab the user's current image and set it to the ImageView
         final ImageView userIcon = (ImageView) findViewById(R.id.userIcon);
-        imageId = getResources().getIdentifier(selectedUser.getProfilePicResourceName(), "drawable", getPackageName());
-        userIcon.setImageResource(imageId);
-
-        // Populate the test next to the user image in the page. This should stay constant as the old
-        // value to give the user some context.
         final TextView userName = (TextView) findViewById(R.id.userName);
-        userName.setText(s);
-
-        // Label the text view "First name:" next to the edit text field
         final TextView title_edit_first_name = (TextView) findViewById(R.id.title_edit_first_name);
         title_edit_first_name.setText("First name");
-
-        // Pre-populate the field with the user's current first name
-        editFname = (EditText) findViewById(R.id.edit_first_name);
-        editFname.setText(selectedUser.getFname(), TextView.BufferType.EDITABLE);
-
-        // Label the text view "Last name:" next to the edit text field
         final TextView title_edit_last_name = (TextView) findViewById(R.id.title_edit_last_name);
         title_edit_last_name.setText("Last name");
-
-        // Pre-populate the field with the user's current first name
+        final TextView title_modify_user = (TextView) findViewById(R.id.title_modify_user);
+        editFname = (EditText) findViewById(R.id.edit_first_name);
         editLname = (EditText) findViewById(R.id.edit_last_name);
-        editLname.setText(selectedUser.getLname(), TextView.BufferType.EDITABLE);
+        password = (EditText) findViewById(R.id.edit_password);
+        is_parent_check = (CheckBox) findViewById(R.id.check_box);
+
+        if (requestCode == 1) {
+            selectedUser = (User) intent.getSerializableExtra("user");
+            String s = selectedUser.getFname() + " " + selectedUser.getLname();
+            setTitle(s);
+            userName.setText(s);
+            title_modify_user.setText("Modifying user");
+            resourceName = selectedUser.getProfilePicResourceName();
+            imageId = getResources().getIdentifier(selectedUser.getProfilePicResourceName(), "drawable", getPackageName());
+            userIcon.setImageResource(imageId);
+            password.setHint("****");
+            is_parent_check.setChecked(selectedUser.getIsParent());
+            editFname.setText(selectedUser.getFname(), TextView.BufferType.EDITABLE);
+            editLname.setText(selectedUser.getLname(), TextView.BufferType.EDITABLE);
+        }
+        if (requestCode == 4) {
+            selectedUser = new User();
+            String s = "New user";
+            setTitle(s);
+            title_modify_user.setText("Creating user");
+            userName.setText(s);
+            resourceName = "man1";
+            imageId = R.drawable.man1;
+            userIcon.setImageResource(imageId);
+            editFname.setText("", TextView.BufferType.EDITABLE);
+            editLname.setText("", TextView.BufferType.EDITABLE);
+        }
 
 
         //****START IMAGE BUTTONS****//
@@ -92,7 +101,6 @@ public class UserModifyActivity extends AppCompatActivity {
                Resources resources = getResources();
                imageId = resources.getIdentifier(resourceName,"drawable", "familytaskmanager.microso.com.familytaskmanager");
                userIcon.setImageResource(imageId);
-               selectedUser.setProfilePicResourceName(resourceName);
             }
         };
 
@@ -146,6 +154,34 @@ public class UserModifyActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (editFname.getText().toString().matches("")) {
+                    editFname.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+                }
+                if (editLname.getText().toString().matches("")) {
+                    editLname.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+                }
+                if (editFname.getText().toString().matches("") || editLname.getText().toString().matches("")) {
+                    Toast.makeText(getApplicationContext(), "Please make sure name fields are populated", Toast.LENGTH_LONG).show();
+                } else if (!password.getText().toString().matches("\\d{4}") && !password.getText().toString().matches("")) {
+                    Toast.makeText(getApplicationContext(), "Your password must be 4 numbers", Toast.LENGTH_LONG).show();
+                    password.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+                } else if (password.getText().toString().matches("") && requestCode == 4) {
+                    Toast.makeText(getApplicationContext(), "Please set a password", Toast.LENGTH_LONG).show();
+                    password.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+                } else {
+                    resultCode = 1;
+                    if (requestCode == 4) {
+                        resultCode = 2;
+                    }
+                    finish();
+                }
+            }
+        });
+        final Button cancel = (Button) findViewById(R.id.cancelChangedUser);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resultCode = 0;
                 finish();
             }
         });
@@ -157,19 +193,19 @@ public class UserModifyActivity extends AppCompatActivity {
      */
     @Override
     public void finish() {
-        //if (!selectedUser.getFname().equals(editFname.getText().toString())) {
-            selectedUser.setFname(editFname.getText().toString());
-        //}
-        //if (!selectedUser.getLname().equals(editLname.getText().toString())) {
-            selectedUser.setLname(editLname.getText().toString());
-        //}
-
+        selectedUser.setFname(editFname.getText().toString());
+        selectedUser.setLname(editLname.getText().toString());
+        selectedUser.setProfilePicResourceName(resourceName);
+        selectedUser.setIsParent(is_parent_check.isChecked());
+        if (!password.getText().toString().matches("")) {
+            selectedUser.setPassword(password.getText().toString());
+        }
         Intent returnedIntent = new Intent();
         // Load the user object into the returnedIntent
         returnedIntent.putExtra("user", selectedUser);
 
         // Return required result code to parent
-        setResult(1, returnedIntent);
+        setResult(resultCode, returnedIntent);
 
         super.finish();
     }
@@ -178,6 +214,7 @@ public class UserModifyActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                resultCode = 0;
                 finish();
                 return true;
         }

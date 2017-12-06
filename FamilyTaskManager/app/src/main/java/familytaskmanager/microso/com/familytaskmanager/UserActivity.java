@@ -107,9 +107,11 @@ public class UserActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected (MenuItem item){
         switch (item.getItemId()) {
             case R.id.action_changeTaskName: // Actually change user
+                int requestCode = 1;
                 Intent intent = new Intent(getApplicationContext(), UserModifyActivity.class);
                 intent.putExtra("user", selectedUser);
-                startActivityForResult(intent, 1);
+                intent.putExtra("requestCode", requestCode);
+                startActivityForResult(intent,  requestCode);
                 return true;
             case R.id.action_deletaTask: // Delete user
                 Toast.makeText(this, "Can't delete yet, might get complicated", Toast.LENGTH_SHORT).show();

@@ -75,9 +75,19 @@ public class PeopleFragment extends Fragment {
      * Method to open create new User activity on floating action button click
      */
     public void taskFabClicked() {
+        int requestCode = 4;
         Toast.makeText(getActivity(), "User FAB clicked", Toast.LENGTH_SHORT).show();
-        /*Intent intent = new Intent(getActivity().getApplication().getApplicationContext(), UserActivity.class);
-        startActivity(intent);*/
+        Intent intent = new Intent(getActivity().getApplication().getApplicationContext(), UserModifyActivity.class);
+        intent.putExtra("requestCode", requestCode);
+        startActivityForResult(intent, requestCode);
+    }
+
+    public void onActivityResult (int requestCode, int resultCode, Intent data) {
+        if (resultCode == 2) {
+            Toast.makeText((MainActivity) getContext(), "I activated 2", Toast.LENGTH_LONG).show();
+            User newUser = (User) data.getSerializableExtra("user");
+            ((MainActivity) getContext()).family.addUser(newUser);
+        }
     }
 
 }
