@@ -6,5 +6,5 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <!-- Added dimension for icons in add/modify user-->
-    <dimen name="icon_select_side">90dp</dimen>
+    <dimen name="icon_select_side">80dp</dimen>
 </resources>
