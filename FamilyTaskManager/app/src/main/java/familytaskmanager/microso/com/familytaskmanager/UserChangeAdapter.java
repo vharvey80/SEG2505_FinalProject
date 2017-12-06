@@ -57,7 +57,7 @@ public class UserChangeAdapter extends ArrayAdapter<User> {
         //set the views so they don't reset when the alert dialogue opens up
         nameView.setText(current.getFname());
         ptsView.setText(Integer.toString(current.getAccumulatedPts()));
-        String resourceName = selected_user.getProfilePicResourceName();
+        String resourceName = current.getProfilePicResourceName();
         Resources resources = context.getResources();
         int resourceId = resources.getIdentifier(resourceName, "drawable", "familytaskmanager.microso.com.familytaskmanager");
         pic.setImageResource(resourceId);
