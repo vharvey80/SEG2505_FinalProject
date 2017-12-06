@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * Created by Jean-Gabriel on 11/23/2017.
+ * Overrides the class ArrayAdapter and is used for showing the items in teh FridgeACtivity.
  */
 
 public class FridgeListAdapter extends ArrayAdapter<ShoppingItem> {
@@ -30,12 +31,16 @@ public class FridgeListAdapter extends ArrayAdapter<ShoppingItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        //Getting a reference to the selected item in the list
         selected_grocerie = groceries.get(position);
+
+        //Getting references to all the needed variables
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.grocerie_list_item, parent, false);
         TextView nameView = (TextView) rowView.findViewById(R.id.grocerieListItemName);
         TextView supplyView = (TextView) rowView.findViewById(R.id.grocerieListItemNbr);
         Button btnDelete = (Button) rowView.findViewById(R.id.delete);
+
         nameView.setText(selected_grocerie.getName());
         btnDelete.setTag(selected_grocerie);
         supplyView.setText(Integer.toString(selected_grocerie.getQuantity()));

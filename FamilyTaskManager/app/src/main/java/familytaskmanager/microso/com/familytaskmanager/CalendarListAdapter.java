@@ -35,7 +35,7 @@ public class CalendarListAdapter extends ArrayAdapter<Task> {
 
         taskName.setText(task.getTitle());
 
-        //This is only place holder logic. Once I get UI done, make this fancier
+        //Get the information concerning the user and updates the UI
         if (task.hasUser()) {
             taskUser.setText("User: " + task.getUser().getFname());
         } else {

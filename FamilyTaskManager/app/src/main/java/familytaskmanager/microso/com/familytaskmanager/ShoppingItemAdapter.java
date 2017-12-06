@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Adapter used for the shopping list UI
  * Created by jean-gabriel on 11/22/2017.
  */
 
@@ -42,6 +43,7 @@ public class ShoppingItemAdapter extends ArrayAdapter<ShoppingItem> {
 
         ShoppingItem item = shoppingItems.get(position);
 
+        //Setting a new listener to delete the item when ticked.
         taskName.setOnClickListener(new View.OnClickListener() {
 
             @Override
