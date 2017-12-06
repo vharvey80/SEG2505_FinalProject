@@ -69,8 +69,10 @@ public class UserModifyActivity extends AppCompatActivity {
             setTitle(s);
             userName.setText(s);
             title_modify_user.setText("Modifying user");
+            resourceName = selectedUser.getProfilePicResourceName();
             imageId = getResources().getIdentifier(selectedUser.getProfilePicResourceName(), "drawable", getPackageName());
             userIcon.setImageResource(imageId);
+            password.setHint("****");
             is_parent_check.setChecked(selectedUser.getIsParent());
             editFname.setText(selectedUser.getFname(), TextView.BufferType.EDITABLE);
             editLname.setText(selectedUser.getLname(), TextView.BufferType.EDITABLE);
@@ -81,6 +83,7 @@ public class UserModifyActivity extends AppCompatActivity {
             setTitle(s);
             title_modify_user.setText("Creating user");
             userName.setText(s);
+            resourceName = "man1";
             imageId = R.drawable.man1;
             userIcon.setImageResource(imageId);
             editFname.setText("", TextView.BufferType.EDITABLE);
@@ -156,10 +159,15 @@ public class UserModifyActivity extends AppCompatActivity {
                 }
                 if (editLname.getText().toString().matches("")) {
                     editLname.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
-
                 }
                 if (editFname.getText().toString().matches("") || editLname.getText().toString().matches("")) {
                     Toast.makeText(getApplicationContext(), "Please make sure name fields are populated", Toast.LENGTH_LONG).show();
+                } else if (!password.getText().toString().matches("\\d{4}") && !password.getText().toString().matches("")) {
+                    Toast.makeText(getApplicationContext(), "Your password must be 4 numbers", Toast.LENGTH_LONG).show();
+                    password.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+                } else if (password.getText().toString().matches("") && requestCode == 4) {
+                    Toast.makeText(getApplicationContext(), "Please set a password", Toast.LENGTH_LONG).show();
+                    password.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
                 } else {
                     resultCode = 1;
                     if (requestCode == 4) {
@@ -189,7 +197,9 @@ public class UserModifyActivity extends AppCompatActivity {
         selectedUser.setLname(editLname.getText().toString());
         selectedUser.setProfilePicResourceName(resourceName);
         selectedUser.setIsParent(is_parent_check.isChecked());
-
+        if (!password.getText().toString().matches("")) {
+            selectedUser.setPassword(password.getText().toString());
+        }
         Intent returnedIntent = new Intent();
         // Load the user object into the returnedIntent
         returnedIntent.putExtra("user", selectedUser);
