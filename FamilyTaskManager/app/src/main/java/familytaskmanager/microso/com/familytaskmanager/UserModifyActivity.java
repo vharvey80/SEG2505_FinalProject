@@ -3,6 +3,8 @@ package familytaskmanager.microso.com.familytaskmanager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -32,7 +35,8 @@ public class UserModifyActivity extends AppCompatActivity {
     // Globally store imageId to return at end
     private int imageId, requestCode, resultCode;
     private String resourceName;
-    private EditText editFname, editLname;
+    private EditText editFname, editLname, password;
+    private CheckBox is_parent_check;
 
 
     /**
@@ -56,6 +60,8 @@ public class UserModifyActivity extends AppCompatActivity {
         final TextView title_modify_user = (TextView) findViewById(R.id.title_modify_user);
         editFname = (EditText) findViewById(R.id.edit_first_name);
         editLname = (EditText) findViewById(R.id.edit_last_name);
+        password = (EditText) findViewById(R.id.edit_password);
+        is_parent_check = (CheckBox) findViewById(R.id.check_box);
 
         if (requestCode == 1) {
             selectedUser = (User) intent.getSerializableExtra("user");
@@ -65,6 +71,7 @@ public class UserModifyActivity extends AppCompatActivity {
             title_modify_user.setText("Modifying user");
             imageId = getResources().getIdentifier(selectedUser.getProfilePicResourceName(), "drawable", getPackageName());
             userIcon.setImageResource(imageId);
+            is_parent_check.setChecked(selectedUser.getIsParent());
             editFname.setText(selectedUser.getFname(), TextView.BufferType.EDITABLE);
             editLname.setText(selectedUser.getLname(), TextView.BufferType.EDITABLE);
         }
@@ -144,11 +151,22 @@ public class UserModifyActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                resultCode = 1;
-                if (requestCode == 4) {
-                    resultCode = 2;
+                if (editFname.getText().toString().matches("")) {
+                    editFname.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
                 }
-                finish();
+                if (editLname.getText().toString().matches("")) {
+                    editLname.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+
+                }
+                if (editFname.getText().toString().matches("") || editLname.getText().toString().matches("")) {
+                    Toast.makeText(getApplicationContext(), "Please make sure name fields are populated", Toast.LENGTH_LONG).show();
+                } else {
+                    resultCode = 1;
+                    if (requestCode == 4) {
+                        resultCode = 2;
+                    }
+                    finish();
+                }
             }
         });
         final Button cancel = (Button) findViewById(R.id.cancelChangedUser);
@@ -170,6 +188,7 @@ public class UserModifyActivity extends AppCompatActivity {
         selectedUser.setFname(editFname.getText().toString());
         selectedUser.setLname(editLname.getText().toString());
         selectedUser.setProfilePicResourceName(resourceName);
+        selectedUser.setIsParent(is_parent_check.isChecked());
 
         Intent returnedIntent = new Intent();
         // Load the user object into the returnedIntent

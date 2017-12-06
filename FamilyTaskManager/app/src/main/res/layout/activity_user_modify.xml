@@ -99,10 +99,43 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/title_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Pin" />
+
+                <EditText
+                    android:id="@+id/edit_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="(Four numbers long)"
+                    android:ems="10"
+                    android:hint="4 numbers"
+                    android:inputType="textPersonName" />
+
+                <CheckBox
+                    android:id="@+id/check_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Parent" />
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/title_choose_picture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Choose a picture" />
 
             <GridLayout
