@@ -22,6 +22,7 @@ public class UserActivity extends AppCompatActivity {
 
     private User selectedUser;
     private List<Task> taskList;
+    private boolean currentUserIsParent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class UserActivity extends AppCompatActivity {
         // Get the Intent that started this activity and extract the user
         Intent intent = getIntent();
         selectedUser = (User) intent.getSerializableExtra("user");
+        currentUserIsParent = (boolean) intent.getSerializableExtra("currentUserIsParent");
 
         //Get the user list of tasks
         taskList = selectedUser.getAssignedTo();
@@ -111,6 +113,7 @@ public class UserActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), UserModifyActivity.class);
                 intent.putExtra("user", selectedUser);
                 intent.putExtra("requestCode", requestCode);
+                intent.putExtra("currentUserIsParent", (Serializable) currentUserIsParent);
                 startActivityForResult(intent,  requestCode);
                 return true;
             case R.id.action_deletaTask: // Delete user

@@ -63,6 +63,7 @@ public class PeopleFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity().getApplicationContext(), UserActivity.class);
                 intent.putExtra("user", (Serializable) clickedUser);
+                intent.putExtra("currentUserIsParent", (Serializable) ((MainActivity)getActivity()).getCurrentUser().getIsParent());
                 getActivity().startActivityForResult(intent, MainActivity.USER_REQUEST_CODE);
             }
         });
@@ -78,6 +79,7 @@ public class PeopleFragment extends Fragment {
         int requestCode = 4;
         Intent intent = new Intent(getActivity().getApplication().getApplicationContext(), UserModifyActivity.class);
         intent.putExtra("requestCode", requestCode);
+        intent.putExtra("currentUserIsParent", (Serializable) ((MainActivity)getActivity()).getCurrentUser().getIsParent());
         startActivityForResult(intent, requestCode);
     }
 
