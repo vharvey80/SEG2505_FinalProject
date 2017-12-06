@@ -111,8 +111,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Pin"
-                    android:inputType="numberPassword"/>
+                    android:inputType="numberPassword"
+                    android:text="Pin" />
 
                 <EditText
                     android:id="@+id/edit_password"
