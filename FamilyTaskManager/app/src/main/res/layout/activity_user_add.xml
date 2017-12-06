@@ -8,7 +8,7 @@
     tools:context="familytaskmanager.microso.com.familytaskmanager.UserAddActivity">
 
     <!-- Master stack layout for entire view -->
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -195,6 +195,6 @@
             </LinearLayout>
 
         </LinearLayout>
-    </RelativeLayout>
+    </ScrollView>
 
 </FrameLayout>

@@ -37,6 +37,7 @@ public class UserModifyActivity extends AppCompatActivity {
     private String resourceName;
     private EditText editFname, editLname, password;
     private CheckBox is_parent_check;
+    private boolean currentUserIsParent;
 
 
     /**
@@ -50,6 +51,7 @@ public class UserModifyActivity extends AppCompatActivity {
         // Extract user from intent that created this instance as selectedUser
         Intent intent = getIntent();
         requestCode = (int) intent.getSerializableExtra("requestCode");
+        currentUserIsParent = (boolean) intent.getSerializableExtra("currentUserIsParent");
 
         final ImageView userIcon = (ImageView) findViewById(R.id.userIcon);
         final TextView userName = (TextView) findViewById(R.id.userName);
@@ -62,6 +64,11 @@ public class UserModifyActivity extends AppCompatActivity {
         editLname = (EditText) findViewById(R.id.edit_last_name);
         password = (EditText) findViewById(R.id.edit_password);
         is_parent_check = (CheckBox) findViewById(R.id.check_box);
+
+        //kids can't decide if parent
+        if (!currentUserIsParent) {
+            is_parent_check.setEnabled(false);
+        }
 
         if (requestCode == 1) {
             selectedUser = (User) intent.getSerializableExtra("user");

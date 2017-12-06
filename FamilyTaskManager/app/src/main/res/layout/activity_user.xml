@@ -25,8 +25,8 @@
 
             <ImageView
                 android:id="@+id/userIcon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
                 android:layout_weight="1"
                 app:srcCompat="@mipmap/ic_launcher" />
 
@@ -76,7 +76,7 @@
                         android:id="@+id/rewardTextField"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Reward"
+                        android:text=""
                         android:textSize="10dp" />
                 </LinearLayout>
 
